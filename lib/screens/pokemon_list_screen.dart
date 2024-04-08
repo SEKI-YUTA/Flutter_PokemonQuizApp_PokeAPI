@@ -3,6 +3,7 @@ import 'dart:ffi';
 
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:pokemon_quiz_app/model/PokemonListItem.dart';
 
 class PokemonListScreen extends StatefulWidget {
   const PokemonListScreen({super.key});
@@ -14,7 +15,7 @@ class PokemonListScreen extends StatefulWidget {
 class _PokemonListScreenState extends State<PokemonListScreen> {
   final String _baseURL = 'https://pokeapi.co/api/v2/';
   final String _pokemonListEndPoint = 'pokemon';
-  List pokemonList = [];
+  List<PokemonListItem> pokemonList = [];
   String? nextURL;
   bool _isLoading = false;
   late ScrollController scrollController;
@@ -28,11 +29,15 @@ class _PokemonListScreenState extends State<PokemonListScreen> {
         nextURL != null ? nextURL! : _baseURL + _pokemonListEndPoint;
     var response = await http.get(Uri.parse(fetchURL));
     var decoded = jsonDecode(response.body);
+    List<PokemonListItem> fetchedList =
+        List<PokemonListItem>.from(decoded['results'].map((item) {
+      return PokemonListItem(name: item['name'], url: item['url']);
+    }));
+    print(pokemonList);
     setState(() {
       nextURL = decoded['next'];
-      pokemonList = appendMode!
-          ? [...pokemonList, ...decoded['results']]
-          : decoded['results'];
+      pokemonList =
+          appendMode! ? [...pokemonList, ...fetchedList] : fetchedList;
       _isLoading = false;
     });
   }
@@ -68,8 +73,8 @@ class _PokemonListScreenState extends State<PokemonListScreen> {
           }
           var pokemon = pokemonList[index];
           return ListTile(
-            title: Text(pokemon['name']),
-            subtitle: Text(pokemon['url']),
+            title: Text(pokemon.name),
+            subtitle: Text(pokemon.url),
           );
         });
   }
