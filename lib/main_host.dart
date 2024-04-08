@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:pokemon_quiz_app/screens/placeholder_screen.dart';
+import 'package:pokemon_quiz_app/screens/pokemon_list_screen.dart';
 
 class MainHost extends StatefulWidget {
   const MainHost({super.key});
@@ -10,16 +11,17 @@ class MainHost extends StatefulWidget {
 
 class _MainHostState extends State<MainHost> {
   static const _screens = [
-    PlaceholderScreen(title: 'ポケモン図鑑'),
+    PokemonListScreen(),
+    // PlaceholderScreen(title: 'ポケモン図鑑'),
     PlaceholderScreen(title: 'ポケモンクイズ'),
   ];
   int _selectedIndex = 0;
 
-void _onTabTapped(int index) {
-  setState(() {
-    _selectedIndex = index;
-  });
-}
+  void _onTabTapped(int index) {
+    setState(() {
+      _selectedIndex = index;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
