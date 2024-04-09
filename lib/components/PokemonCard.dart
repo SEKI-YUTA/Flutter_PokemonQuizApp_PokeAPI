@@ -3,6 +3,8 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:pokemon_quiz_app/model/PokemonListItem.dart';
+import 'package:pokemon_quiz_app/screens/Pokemon_detail_screen.dart';
+import 'package:pokemon_quiz_app/screens/placeholder_screen.dart';
 
 class PokemonCard extends StatefulWidget {
   PokemonListItem item;
@@ -40,16 +42,24 @@ class _PokemonCardState extends State<PokemonCard> {
       padding: const EdgeInsets.all(8.0),
       child: _isLoading
           ? const LoadingContent()
-          : Row(
-              children: [
-                Image.network(
-                  _imageUrlStr,
-                  width: 100,
-                  height: 100,
-                ),
-                Text(widget.item.name,
-                    style: Theme.of(context).textTheme.headlineMedium),
-              ],
+          : GestureDetector(
+              onTap: () {
+                Navigator.of(context)
+                    .push(MaterialPageRoute(builder: (context) {
+                  return PokemonDetailScreen();
+                }));
+              },
+              child: Row(
+                children: [
+                  Image.network(
+                    _imageUrlStr,
+                    width: 100,
+                    height: 100,
+                  ),
+                  Text(widget.item.name,
+                      style: Theme.of(context).textTheme.headlineMedium),
+                ],
+              ),
             ),
     );
   }
