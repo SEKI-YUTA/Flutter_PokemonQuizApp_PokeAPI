@@ -27,6 +27,9 @@ class PokemonCard extends StatelessWidget {
               width: 100,
               height: 100,
             ),
+            const SizedBox(
+              width: 16,
+            ),
             Text(item.pokemonName,
                 style: Theme.of(context).textTheme.headlineMedium),
           ],
