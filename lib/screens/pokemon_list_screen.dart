@@ -73,8 +73,6 @@ class _PokemonListScreenState extends State<PokemonListScreen> {
           }
           var pokemon = pokemonList[index];
           return PokemonCard(item: pokemon);
-          // return ListTile(
-          //     title: Text(pokemon.name), subtitle: Text(pokemon.url));
         });
   }
 }
