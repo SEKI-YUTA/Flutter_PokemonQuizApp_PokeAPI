@@ -30,16 +30,33 @@ class _PokemonListScreenState extends State<PokemonListScreen> {
         nextURL != null ? nextURL! : _baseURL + _pokemonListEndPoint;
     var response = await http.get(Uri.parse(fetchURL));
     var decoded = jsonDecode(response.body);
-    List<PokemonListItem> fetchedList =
-        List<PokemonListItem>.from(decoded['results'].map((item) {
-      return PokemonListItem(name: item['name'], url: item['url']);
-    }));
+    List<PokemonListItem> list = [];
+    for (var item in decoded['results']) {
+      list.add(await _fetchPokemonDetail(item['url']));
+    }
     setState(() {
       nextURL = decoded['next'];
-      pokemonList =
-          appendMode! ? [...pokemonList, ...fetchedList] : fetchedList;
+      pokemonList = appendMode! ? [...pokemonList, ...list] : list;
       _isLoading = false;
     });
+  }
+
+  Future<PokemonListItem> _fetchPokemonDetail(String detailURL) async {
+    var detailResponse = await http.get(Uri.parse(detailURL));
+    var detailDecoded = jsonDecode(detailResponse.body);
+    var speciesResponse =
+        await http.get(Uri.parse(detailDecoded['species']['url']));
+    var speciesDecoded = jsonDecode(speciesResponse.body);
+    // print("speciesDecoed $speciesDecoded");
+    print(
+        "name: ${speciesDecoded['names'].where((item) => item["language"]["name"] == "ja-Hrkt").first["name"]}");
+    return PokemonListItem(
+      pokemonName: speciesDecoded['names']
+          .where((item) => item['language']['name'] == 'ja-Hrkt')
+          .first['name'],
+      pokemonImageURL: detailDecoded['sprites']['other']['official-artwork']
+          ['front_default'],
+    );
   }
 
   @override
