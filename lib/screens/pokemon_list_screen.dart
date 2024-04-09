@@ -4,6 +4,7 @@ import 'dart:ffi';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:pokemon_quiz_app/components/PokemonCard.dart';
+import 'package:pokemon_quiz_app/components/center_message.dart';
 import 'package:pokemon_quiz_app/model/PokemonListItem.dart';
 
 class PokemonListScreen extends StatefulWidget {
@@ -77,19 +78,27 @@ class _PokemonListScreenState extends State<PokemonListScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return ListView.builder(
-        controller: scrollController,
-        itemCount: pokemonList.length + 1,
-        itemBuilder: (context, index) {
-          if (index == pokemonList.length) {
-            return _isLoading
-                ? const SizedBox(
-                    width: double.infinity,
-                    child: Center(child: CircularProgressIndicator()))
-                : Container();
-          }
-          var pokemon = pokemonList[index];
-          return PokemonCard(item: pokemon);
-        });
+    return Container(
+        width: MediaQuery.of(context).size.width,
+        height: MediaQuery.of(context).size.height,
+        child: _isLoading && pokemonList.isEmpty
+            ? CenterMessage(
+                message: "読み込み中...",
+                showingLoadingIndicatoro: true,
+              )
+            : ListView.builder(
+                controller: scrollController,
+                itemCount: pokemonList.length + 1,
+                itemBuilder: (context, index) {
+                  if (index == pokemonList.length) {
+                    return _isLoading
+                        ? const SizedBox(
+                            width: double.infinity,
+                            child: Center(child: CircularProgressIndicator()))
+                        : Container();
+                  }
+                  var pokemon = pokemonList[index];
+                  return PokemonCard(item: pokemon);
+                }));
   }
 }
