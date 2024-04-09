@@ -3,6 +3,7 @@ import 'dart:ffi';
 
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:pokemon_quiz_app/components/PokemonCard.dart';
 import 'package:pokemon_quiz_app/model/PokemonListItem.dart';
 
 class PokemonListScreen extends StatefulWidget {
@@ -72,10 +73,9 @@ class _PokemonListScreenState extends State<PokemonListScreen> {
                 : Container();
           }
           var pokemon = pokemonList[index];
-          return ListTile(
-            title: Text(pokemon.name),
-            subtitle: Text(pokemon.url),
-          );
+          return PokemonCard(item: pokemon);
+          // return ListTile(
+          //     title: Text(pokemon.name), subtitle: Text(pokemon.url));
         });
   }
 }
