@@ -17,11 +17,8 @@ class _PokemonCardState extends State<PokemonCard> {
   bool _isLoading = true;
 
   Future<void> _fetchPokemonInfo() async {
-    print(widget.item.url);
     var response = await http.get(Uri.parse(widget.item.url));
     var decoded = jsonDecode(response.body);
-    print("card: $decoded");
-    print(decoded['sprites']['other']['official-artwork']['front_default']);
     if (mounted) {
       setState(() {
         _imageUrlStr =

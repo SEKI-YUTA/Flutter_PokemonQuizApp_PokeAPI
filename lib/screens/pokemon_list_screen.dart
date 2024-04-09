@@ -34,7 +34,6 @@ class _PokemonListScreenState extends State<PokemonListScreen> {
         List<PokemonListItem>.from(decoded['results'].map((item) {
       return PokemonListItem(name: item['name'], url: item['url']);
     }));
-    print(pokemonList);
     setState(() {
       nextURL = decoded['next'];
       pokemonList =
