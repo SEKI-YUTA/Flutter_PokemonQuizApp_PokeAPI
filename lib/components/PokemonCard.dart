@@ -17,7 +17,7 @@ class PokemonCard extends StatelessWidget {
       child: GestureDetector(
         onTap: () {
           Navigator.of(context).push(MaterialPageRoute(builder: (context) {
-            return PokemonDetailScreen();
+            return PokemonDetailScreen(pokemonItem: item);
           }));
         },
         child: Row(

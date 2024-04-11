@@ -17,7 +17,7 @@ class PokemonListScreen extends StatefulWidget {
 class _PokemonListScreenState extends State<PokemonListScreen> {
   final String _baseURL = 'https://pokeapi.co/api/v2/';
   final String _pokemonListEndPoint = 'pokemon';
-  List<PokemonListItem> pokemonList = [];
+  List<PokemonListItem?> pokemonList = [];
   String? nextURL;
   bool _isLoading = false;
   late ScrollController scrollController;
@@ -31,10 +31,17 @@ class _PokemonListScreenState extends State<PokemonListScreen> {
         nextURL != null ? nextURL! : _baseURL + _pokemonListEndPoint;
     var response = await http.get(Uri.parse(fetchURL));
     var decoded = jsonDecode(response.body);
-    List<PokemonListItem> list = [];
-    for (var item in decoded['results']) {
-      list.add(await _fetchPokemonDetail(item['url']));
+    List<Future<void>> futureList = [];
+    List<PokemonListItem?> list =
+        List.generate(decoded['results'].length, (item) => null);
+    for (int i = 0; i < decoded['results'].length; i++) {
+      var item = decoded['results'][i];
+      var f = _fetchPokemonDetail(item['url']).then((value) {
+        list[i] = value;
+      });
+      futureList.add(f);
     }
+    await Future.wait(futureList);
     setState(() {
       nextURL = decoded['next'];
       pokemonList = appendMode! ? [...pokemonList, ...list] : list;
@@ -48,16 +55,14 @@ class _PokemonListScreenState extends State<PokemonListScreen> {
     var speciesResponse =
         await http.get(Uri.parse(detailDecoded['species']['url']));
     var speciesDecoded = jsonDecode(speciesResponse.body);
-    // print("speciesDecoed $speciesDecoded");
-    print(
-        "name: ${speciesDecoded['names'].where((item) => item["language"]["name"] == "ja-Hrkt").first["name"]}");
-    return PokemonListItem(
+    var data = PokemonListItem(
       pokemonName: speciesDecoded['names']
           .where((item) => item['language']['name'] == 'ja-Hrkt')
           .first['name'],
       pokemonImageURL: detailDecoded['sprites']['other']['official-artwork']
           ['front_default'],
     );
+    return data;
   }
 
   @override
@@ -98,7 +103,9 @@ class _PokemonListScreenState extends State<PokemonListScreen> {
                         : Container();
                   }
                   var pokemon = pokemonList[index];
-                  return PokemonCard(item: pokemon);
+                  return pokemon != null
+                      ? PokemonCard(item: pokemon)
+                      : const SizedBox();
                 }));
   }
 }
