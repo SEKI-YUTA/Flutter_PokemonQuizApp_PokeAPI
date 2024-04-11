@@ -17,9 +17,10 @@ jobs:
           channel: 'stable'
       - name: Check Flutter Version
         run: flutter --version
-        run: flutter pub get
-      - name: Build Android
+      - run: flutter pub get
+      - name: Build Android APK
         run: flutter build apk
+      - name: Build Android App Bundle
         run: flutter build appbundle
       - name: Build iOS
         run: flutter build ios --no-codesign
