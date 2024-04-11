@@ -1,0 +1,27 @@
+name: Flutter Build CI
+
+on:
+    pull_request:
+
+jobs:
+    build:
+        runs-on: ubuntu-latest
+
+        steps:
+            - name: clone repository
+              uses: actions/checkout@v4
+            - name: Setup Flutter
+              uses: subosito/flutter-action@v2
+              with:
+                  flutter-version: "3.19.5"
+                  channel: "stable"
+            - name: Check Flutter Version
+              run: flutter --version
+            - run: flutter pub get
+            - name: Build Android APK
+              run: flutter build apk
+            - name: Build Android App Bundle
+              run: flutter build appbundle
+            # macOSで実行する必要があるのでAndroidのビルドだけにする
+            # - name: Build iOS
+            #   run: flutter build ios --no-codesign
