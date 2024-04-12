@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:pokemon_quiz_app/screens/placeholder_screen.dart';
 import 'package:pokemon_quiz_app/screens/basket_screen.dart';
 import 'package:pokemon_quiz_app/screens/pokemon_list_screen.dart';
 import 'package:pokemon_quiz_app/screens/pokemon_quiz_screen.dart';
