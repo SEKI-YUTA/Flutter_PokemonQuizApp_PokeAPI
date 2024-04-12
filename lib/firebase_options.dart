@@ -65,4 +65,5 @@ class DefaultFirebaseOptions {
     storageBucket: 'pokemonquizapp-543e2.appspot.com',
     iosBundleId: 'com.example.pokemonQuizApp',
   );
+
 }
