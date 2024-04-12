@@ -38,6 +38,9 @@ dependencies:
   http: ^1.2.0
   flutter_riverpod: ^2.5.1
   riverpod_annotation: ^2.3.5
+  firebase_core: ^2.29.0
+  firebase_auth: ^4.19.1
+  cloud_firestore: ^4.16.1
 
 dev_dependencies:
   flutter_test:
