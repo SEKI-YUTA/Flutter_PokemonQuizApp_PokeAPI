@@ -15,7 +15,7 @@ class _SplashScreenState extends State<SplashScreen> {
       const Text("Splash Screen"),
       ElevatedButton(
           onPressed: () {
-            Navigator.of(context).pushNamed('/auth');
+            Navigator.of(context).pushReplacementNamed('/auth');
           },
           child: const Text("navigate to auth screen"))
     ]));
