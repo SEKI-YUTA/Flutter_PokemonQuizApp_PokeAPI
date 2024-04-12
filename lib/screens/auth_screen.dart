@@ -22,7 +22,7 @@ class _AuthScreenState extends State<AuthScreen> {
             SignInButton(Buttons.google, onPressed: () {}),
             ElevatedButton(
                 onPressed: () {
-                  Navigator.of(context).pushNamed('/mainHost');
+                  Navigator.of(context).pushReplacementNamed('/mainHost');
                 },
                 child: Text("Navigate to mainHost"))
           ],
