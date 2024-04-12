@@ -3,7 +3,7 @@ import 'dart:ffi';
 
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
-import 'package:pokemon_quiz_app/components/pokemonCard.dart';
+import 'package:pokemon_quiz_app/components/pokemon_card.dart';
 import 'package:pokemon_quiz_app/components/center_message.dart';
 import 'package:pokemon_quiz_app/model/PokemonListItem.dart';
 
