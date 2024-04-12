@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 
 class CenterMessage extends StatelessWidget {
-  String message;
-  bool showingLoadingIndicatoro;
-  CenterMessage(
+  final String message;
+  final bool showingLoadingIndicatoro;
+  const CenterMessage(
       {super.key,
       required this.message,
       this.showingLoadingIndicatoro = false});
