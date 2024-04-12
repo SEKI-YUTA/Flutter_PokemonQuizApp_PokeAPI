@@ -1,10 +1,6 @@
-import 'dart:convert';
-
 import 'package:flutter/material.dart';
-import 'package:http/http.dart' as http;
 import 'package:pokemon_quiz_app/model/PokemonListItem.dart';
-import 'package:pokemon_quiz_app/screens/Pokemon_detail_screen.dart';
-import 'package:pokemon_quiz_app/screens/placeholder_screen.dart';
+import 'package:pokemon_quiz_app/screens/pokemon_detail_screen.dart';
 
 class PokemonCard extends StatelessWidget {
   PokemonListItem item;
