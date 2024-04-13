@@ -5,6 +5,7 @@ import 'package:http/http.dart' as http;
 import 'package:pokemon_quiz_app/components/pokemon_card.dart';
 import 'package:pokemon_quiz_app/components/center_message.dart';
 import 'package:pokemon_quiz_app/model/PokemonListItem.dart';
+import 'package:pokemon_quiz_app/other/PokeApiEndpoints.dart';
 
 class PokemonListScreen extends StatefulWidget {
   const PokemonListScreen({super.key});
@@ -14,8 +15,6 @@ class PokemonListScreen extends StatefulWidget {
 }
 
 class _PokemonListScreenState extends State<PokemonListScreen> {
-  final String _baseURL = 'https://pokeapi.co/api/v2/';
-  final String _pokemonListEndPoint = 'pokemon';
   List<PokemonListItem?> pokemonList = [];
   String? nextURL;
   bool _isLoading = false;
@@ -26,8 +25,9 @@ class _PokemonListScreenState extends State<PokemonListScreen> {
     setState(() {
       _isLoading = true;
     });
-    final String fetchURL =
-        nextURL != null ? nextURL! : _baseURL + _pokemonListEndPoint;
+    final String fetchURL = nextURL != null
+        ? nextURL!
+        : "${PokeApiEndpoints.BASE_URL}/${PokeApiEndpoints.POKEMON}";
     var response = await http.get(Uri.parse(fetchURL));
     var decoded = jsonDecode(response.body);
     List<Future<void>> futureList = [];
