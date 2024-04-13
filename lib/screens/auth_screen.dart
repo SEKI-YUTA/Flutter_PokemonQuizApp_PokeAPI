@@ -88,6 +88,8 @@ class _AuthScreenState extends State<AuthScreen> {
                       setState(() {
                         _isLoginMode = !_isLoginMode;
                       });
+                      _emailController.text = "";
+                      _passwordController.text = "";
                     },
                     child: Text(_isLoginMode ? "新規登録画面へ" : "ログイン画面へ")),
                 ElevatedButton(
