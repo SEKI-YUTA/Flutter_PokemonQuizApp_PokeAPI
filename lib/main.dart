@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
@@ -18,16 +19,10 @@ class PokemonQuizApp extends StatefulWidget {
 }
 
 class _PokemonQuizAppState extends State<PokemonQuizApp> {
-  Future<void> initFirebase() async {
-    await Firebase.initializeApp(
-      options: DefaultFirebaseOptions.currentPlatform,
-    );
-  }
 
   @override
   void initState() {
     // TODO: implement initState
-    initFirebase();
     super.initState();
   }
 
