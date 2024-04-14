@@ -1,12 +1,8 @@
-import 'dart:convert';
-
 import 'package:flutter/material.dart';
-import 'package:http/http.dart' as http;
 import 'package:pokemon_quiz_app/components/pokemon_card.dart';
 import 'package:pokemon_quiz_app/components/center_message.dart';
 import 'package:pokemon_quiz_app/data/PokeApi.dart';
-import 'package:pokemon_quiz_app/model/PokemonListItem.dart';
-import 'package:pokemon_quiz_app/other/PokeApiEndpoints.dart';
+import 'package:pokemon_quiz_app/data/model/PokemonListItem.dart';
 
 class PokemonListScreen extends StatefulWidget {
   const PokemonListScreen({super.key});
