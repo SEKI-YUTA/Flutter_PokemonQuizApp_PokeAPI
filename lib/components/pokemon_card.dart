@@ -3,7 +3,7 @@ import 'package:pokemon_quiz_app/data/model/PokemonData.dart';
 import 'package:pokemon_quiz_app/screens/pokemon_detail_screen.dart';
 
 class PokemonCard extends StatelessWidget {
-  PokemonListItem item;
+  PokemonData item;
   PokemonCard({super.key, required this.item});
 
   @override

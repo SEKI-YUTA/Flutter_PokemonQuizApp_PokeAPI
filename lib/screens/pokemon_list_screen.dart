@@ -12,7 +12,7 @@ class PokemonListScreen extends StatefulWidget {
 }
 
 class _PokemonListScreenState extends State<PokemonListScreen> {
-  List<PokemonListItem?> pokemonList = [];
+  List<PokemonData?> pokemonList = [];
   String? nextURL;
   bool _isLoading = false;
   late ScrollController scrollController;
