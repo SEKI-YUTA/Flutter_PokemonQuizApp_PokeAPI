@@ -1,4 +1,4 @@
-class PokemonListItem {
+class PokemonData {
   final int id;
   final String pokemonName;
   final String pokemonImageURL;
@@ -8,7 +8,7 @@ class PokemonListItem {
   final int defense;
   final int specialDefense;
   final int speed;
-  const PokemonListItem({
+  const PokemonData({
     required this.id,
     required this.pokemonName,
     required this.pokemonImageURL,
