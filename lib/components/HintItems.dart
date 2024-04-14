@@ -9,9 +9,6 @@ class HintItems {
         title: const Text("ヒント1"),
         initiallyExpanded: true,
         children: [
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
               Text(
                 "基本ステータス",
                 style: Theme.of(context).textTheme.bodyLarge,
