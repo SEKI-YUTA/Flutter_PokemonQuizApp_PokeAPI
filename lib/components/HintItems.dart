@@ -11,31 +11,31 @@ class HintItems {
         title: const Text("ヒント1"),
         initiallyExpanded: true,
         children: [
+          Text(
+            "基本ステータス",
+            style: Theme.of(context).textTheme.bodyLarge,
+          ),
+          const SizedBox(
+            height: 8,
+          ),
+          Row(
+            children: [
               Text(
-                "基本ステータス",
+                "HP: ${pokemonData.hp}",
                 style: Theme.of(context).textTheme.bodyLarge,
               ),
-              const SizedBox(
-                height: 8,
-              ),
-              Row(
-                children: [
-                  Text(
-                    "HP: ${pokemonData.hp}",
-                    style: Theme.of(context).textTheme.bodyLarge,
-                  ),
-                ],
-              ),
-              StatusItem(title: "こうげき", value: pokemonData.attack),
-              StatusItem(title: "ぼうぎょ", value: pokemonData.defense),
-              StatusItem(title: "とくこう", value: pokemonData.specialAttack),
-              StatusItem(title: "とくぼう", value: pokemonData.specialDefense),
-              StatusItem(title: "すばやさ", value: pokemonData.speed),
-              const SizedBox(
-                height: 16,
-              )
             ],
           ),
-        ]);
+          StatusItem(title: "こうげき", value: pokemonData.attack),
+          StatusItem(title: "ぼうぎょ", value: pokemonData.defense),
+          StatusItem(title: "とくこう", value: pokemonData.specialAttack),
+          StatusItem(title: "とくぼう", value: pokemonData.specialDefense),
+          StatusItem(title: "すばやさ", value: pokemonData.speed),
+          const SizedBox(
+            height: 16,
+          )
+        ],
+      ),
+    );
   }
 }
