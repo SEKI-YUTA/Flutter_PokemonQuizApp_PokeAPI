@@ -8,15 +8,20 @@ class PokemonData {
   final int defense;
   final int specialDefense;
   final int speed;
-  const PokemonData({
-    required this.id,
-    required this.pokemonName,
-    required this.pokemonImageURL,
-    required this.hp,
-    required this.attack,
-    required this.specialAttack,
-    required this.defense,
-    required this.specialDefense,
-    required this.speed,
-  });
+  final int weight;
+  final int height;
+  final List<dynamic> types;
+  const PokemonData(
+      {required this.id,
+      required this.pokemonName,
+      required this.pokemonImageURL,
+      required this.hp,
+      required this.attack,
+      required this.specialAttack,
+      required this.defense,
+      required this.specialDefense,
+      required this.speed,
+      required this.weight,
+      required this.height,
+      required this.types});
 }
