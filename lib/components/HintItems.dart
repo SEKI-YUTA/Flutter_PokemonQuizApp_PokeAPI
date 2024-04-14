@@ -24,6 +24,9 @@ class HintItems {
               StatusItem(title: "とくこう", value: pokemonData.specialAttack),
               StatusItem(title: "とくぼう", value: pokemonData.specialDefense),
               StatusItem(title: "すばやさ", value: pokemonData.speed),
+              const SizedBox(
+                height: 16,
+              )
             ],
           ),
         ]);
