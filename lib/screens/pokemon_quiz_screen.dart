@@ -1,12 +1,8 @@
-import 'dart:convert';
-
-import 'package:flutter/cupertino.dart';
+import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
-import 'package:http/http.dart' as http;
 import 'package:pokemon_quiz_app/components/HintItems.dart';
 import 'package:pokemon_quiz_app/components/center_message.dart';
-import 'package:pokemon_quiz_app/components/status_item.dart';
+import 'package:pokemon_quiz_app/components/quiz_result_dialog.dart';
 import 'package:pokemon_quiz_app/data/PokeApi.dart';
 import 'package:pokemon_quiz_app/data/model/PokemonData.dart';
 import 'dart:math' as math;
@@ -35,6 +31,26 @@ class _PokemonQuizScreenState extends State<PokemonQuizScreen> {
       pokemonData = data;
       _isLoading = false;
     });
+  }
+
+  Future<void> _answerAction() async {
+    final isCorrect = pokemonData!.pokemonName == _userAnswerController.text;
+    final player = AudioPlayer();
+    player.play(
+        AssetSource(isCorrect
+            ? "sounds/correct_sound.mp3"
+            : "sounds/incorrect_sound.mp3"),
+        mode: PlayerMode.lowLatency,
+        volume: 1);
+    showDialog(
+        context: context,
+        builder: (context) => QuizResultDialog(
+              isCorrect: isCorrect,
+              onNextClick: () {
+                Navigator.of(context).pop();
+                _fetchRandomPokemonData();
+              },
+            ));
   }
 
   @override
@@ -88,7 +104,10 @@ class _PokemonQuizScreenState extends State<PokemonQuizScreen> {
                     height: 8,
                   ),
                   ElevatedButton(
-                      onPressed: () {}, child: const Text("こたえ合わせをする")),
+                      onPressed: () async {
+                        _answerAction();
+                      },
+                      child: const Text("こたえ合わせをする")),
                   const SizedBox(height: 40),
                   ElevatedButton(onPressed: () {}, child: const Text("答えを見る")),
                   Row(mainAxisAlignment: MainAxisAlignment.end, children: [
