@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:pokemon_quiz_app/components/pokemon_card.dart';
 import 'package:pokemon_quiz_app/components/center_message.dart';
 import 'package:pokemon_quiz_app/data/PokeApi.dart';
-import 'package:pokemon_quiz_app/data/model/PokemonListItem.dart';
+import 'package:pokemon_quiz_app/data/model/PokemonData.dart';
 
 class PokemonListScreen extends StatefulWidget {
   const PokemonListScreen({super.key});

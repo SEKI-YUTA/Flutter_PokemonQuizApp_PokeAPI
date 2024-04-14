@@ -1,6 +1,6 @@
 import 'dart:convert';
 
-import 'package:pokemon_quiz_app/data/model/PokemonListItem.dart';
+import 'package:pokemon_quiz_app/data/model/PokemonData.dart';
 import 'package:http/http.dart' as http;
 import 'package:pokemon_quiz_app/other/PokeApiEndpoints.dart';
 
