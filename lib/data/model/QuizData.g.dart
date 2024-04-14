@@ -12,7 +12,7 @@ _$QuizDataImpl _$$QuizDataImplFromJson(Map<String, dynamic> json) =>
           QuizStatus.NOT_ANSWERED,
       pokemonData:
           PokemonData.fromJson(json['pokemonData'] as Map<String, dynamic>),
-      hintStep: json['hintStep'] as int? ?? 1,
+      hintStep: json['hintStep'] as int,
     );
 
 Map<String, dynamic> _$$QuizDataImplToJson(_$QuizDataImpl instance) =>
