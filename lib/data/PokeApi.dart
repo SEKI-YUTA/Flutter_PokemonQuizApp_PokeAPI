@@ -5,7 +5,8 @@ import 'package:http/http.dart' as http;
 import 'package:pokemon_quiz_app/other/PokeApiEndpoints.dart';
 
 class PokeApi {
-  static Future<(List<PokemonListItem?>, String)> fetchPokemonList(String? fetchUrl) async {
+  static Future<(List<PokemonListItem?>, String)> fetchPokemonList(
+      String? fetchUrl) async {
     fetchUrl ??= "${PokeApiEndpoints.BASE_URL}/${PokeApiEndpoints.POKEMON}";
     var response = await http.get(Uri.parse(fetchUrl));
     var decoded = jsonDecode(response.body);
@@ -31,11 +32,30 @@ class PokeApi {
         await http.get(Uri.parse(detailDecoded['species']['url']));
     var speciesDecoded = jsonDecode(speciesResponse.body);
     var data = PokemonListItem(
+      id: detailDecoded['id'],
       pokemonName: speciesDecoded['names']
           .where((item) => item['language']['name'] == 'ja-Hrkt')
           .first['name'],
       pokemonImageURL: detailDecoded['sprites']['other']['official-artwork']
           ['front_default'],
+      hp: detailDecoded['stats']
+          .where((item) => item['stat']['name'] == 'hp')
+          .first['base_stat'],
+      attack: detailDecoded['stats']
+          .where((item) => item['stat']['name'] == 'attack')
+          .first['base_stat'],
+      specialAttack: detailDecoded['stats']
+          .where((item) => item['stat']['name'] == 'special-attack')
+          .first['base_stat'],
+      defense: detailDecoded['stats']
+          .where((item) => item['stat']['name'] == 'defense')
+          .first['base_stat'],
+      specialDefense: detailDecoded['stats']
+          .where((item) => item['stat']['name'] == 'special-defense')
+          .first['base_stat'],
+      speed: detailDecoded['stats']
+          .where((item) => item['stat']['name'] == 'speed')
+          .first['base_stat'],
     );
     return data;
   }
