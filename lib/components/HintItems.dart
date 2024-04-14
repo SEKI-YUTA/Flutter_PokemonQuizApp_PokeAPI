@@ -3,9 +3,11 @@ import 'package:pokemon_quiz_app/components/status_item.dart';
 import 'package:pokemon_quiz_app/data/model/PokemonData.dart';
 
 class HintItems {
-  static ExpansionTile hint1ExpansionTile(
+  static Widget hint1ExpansionTile(
       BuildContext context, PokemonData pokemonData) {
-    return ExpansionTile(
+    return Theme(
+      data: Theme.of(context).copyWith(dividerColor: Colors.transparent),
+      child: ExpansionTile(
         title: const Text("ヒント1"),
         initiallyExpanded: true,
         children: [
