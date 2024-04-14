@@ -1,6 +1,1 @@
-enum QuizStatus {
-  NOT_ANSWERED,
-  ANSWERED,
-  CORRECT,
-  INCORRECT
-}
+enum QuizStatus { NOT_ANSWERED, CORRECT, INCORRECT }
