@@ -134,7 +134,7 @@ class _$QuizDataImpl with DiagnosticableTreeMixin implements _QuizData {
   const _$QuizDataImpl(
       {this.status = QuizStatus.NOT_ANSWERED,
       required this.pokemonData,
-      required this.hintStep = 1});
+      required this.hintStep});
 
   factory _$QuizDataImpl.fromJson(Map<String, dynamic> json) =>
       _$$QuizDataImplFromJson(json);
@@ -145,7 +145,6 @@ class _$QuizDataImpl with DiagnosticableTreeMixin implements _QuizData {
   @override
   final PokemonData pokemonData;
   @override
-  @JsonKey()
   final int hintStep;
 
   @override
