@@ -12,7 +12,7 @@ class QuizData with _$QuizData {
   const factory QuizData({
     @Default(QuizStatus.NOT_ANSWERED) QuizStatus status,
     required PokemonData pokemonData,
-    @Default(1)required int hintStep,
+    required int hintStep,
   }) = _QuizData;
 
   factory QuizData.fromJson(Map<String, Object?> json) =>
