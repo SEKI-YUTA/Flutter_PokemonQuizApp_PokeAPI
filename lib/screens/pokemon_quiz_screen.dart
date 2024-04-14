@@ -4,7 +4,8 @@ import 'package:pokemon_quiz_app/components/HintItems.dart';
 import 'package:pokemon_quiz_app/components/center_message.dart';
 import 'package:pokemon_quiz_app/components/quiz_result_dialog.dart';
 import 'package:pokemon_quiz_app/data/PokeApi.dart';
-import 'package:pokemon_quiz_app/data/model/PokemonData.dart';
+import 'package:pokemon_quiz_app/data/model/QuizData.dart';
+import 'package:pokemon_quiz_app/data/model/QuizStatus.dart';
 import 'dart:math' as math;
 import 'package:pokemon_quiz_app/other/PokeApiEndpoints.dart';
 
@@ -16,7 +17,7 @@ class PokemonQuizScreen extends StatefulWidget {
 }
 
 class _PokemonQuizScreenState extends State<PokemonQuizScreen> {
-  PokemonData? pokemonData;
+  QuizData? _quizData;
   bool _isLoading = false;
   final TextEditingController _userAnswerController = TextEditingController();
   Future<void> _fetchRandomPokemonData() async {
@@ -28,13 +29,14 @@ class _PokemonQuizScreenState extends State<PokemonQuizScreen> {
     var data = await PokeApi.fetchPokemonDetail(
         PokeApiEndpoints.createPokemonDetailURL(randomNumber.toString()));
     setState(() {
-      pokemonData = data;
+      _quizData = QuizData(
+          pokemonData: data, hintStep: 1, status: QuizStatus.NOT_ANSWERED);
       _isLoading = false;
     });
   }
 
   Future<void> _answerAction() async {
-    final isCorrect = pokemonData!.pokemonName == _userAnswerController.text;
+    final isCorrect = _quizData?.pokemonData.pokemonName == _userAnswerController.text;
     final player = AudioPlayer();
     player.play(
         AssetSource(isCorrect
@@ -62,6 +64,7 @@ class _PokemonQuizScreenState extends State<PokemonQuizScreen> {
 
   @override
   Widget build(BuildContext context) {
+    var pokemonData = _quizData?.pokemonData;
     return !_isLoading && pokemonData != null
         ? Padding(
             padding: const EdgeInsets.all(16),
@@ -76,11 +79,11 @@ class _PokemonQuizScreenState extends State<PokemonQuizScreen> {
                       child: SizedBox(
                         width: double.infinity,
                         height: double.infinity,
-                        child: Image.network(pokemonData!.pokemonImageURL),
+                        child: Image.network(pokemonData.pokemonImageURL),
                       ),
                     ),
                   ),
-                  Text(pokemonData!.pokemonName),
+                  Text(pokemonData.pokemonName),
                   Text(
                     "このポケモンの名前は？",
                     style: Theme.of(context)
@@ -91,7 +94,7 @@ class _PokemonQuizScreenState extends State<PokemonQuizScreen> {
                   const SizedBox(
                     height: 16,
                   ),
-                  HintItems.hint1ExpansionTile(context, pokemonData!),
+                  HintItems.hint1ExpansionTile(context, pokemonData),
                   const SizedBox(height: 16),
                   TextField(
                     controller: _userAnswerController,
