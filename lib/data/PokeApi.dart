@@ -1,6 +1,6 @@
 import 'dart:convert';
 
-import 'package:pokemon_quiz_app/model/PokemonListItem.dart';
+import 'package:pokemon_quiz_app/data/model/PokemonListItem.dart';
 import 'package:http/http.dart' as http;
 import 'package:pokemon_quiz_app/other/PokeApiEndpoints.dart';
 
@@ -23,7 +23,7 @@ class PokeApi {
     await Future.wait(futureList);
     return (list, nextUrl);
   }
-  
+
   static Future<PokemonListItem> fetchPokemonDetail(String detailURL) async {
     var detailResponse = await http.get(Uri.parse(detailURL));
     var detailDecoded = jsonDecode(detailResponse.body);
