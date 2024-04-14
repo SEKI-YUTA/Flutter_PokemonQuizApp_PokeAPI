@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:pokemon_quiz_app/components/pokemon_card.dart';
 import 'package:pokemon_quiz_app/components/center_message.dart';
+import 'package:pokemon_quiz_app/data/PokeApi.dart';
 import 'package:pokemon_quiz_app/model/PokemonListItem.dart';
 import 'package:pokemon_quiz_app/other/PokeApiEndpoints.dart';
 
@@ -20,60 +21,32 @@ class _PokemonListScreenState extends State<PokemonListScreen> {
   bool _isLoading = false;
   late ScrollController scrollController;
 
-  Future<void> _fetchPokemonList(bool? appendMode) async {
-    appendMode ??= false;
+  Future<void> _getPokemonData(bool? appendMode) async {
     setState(() {
       _isLoading = true;
     });
-    final String fetchURL = nextURL != null
-        ? nextURL!
-        : "${PokeApiEndpoints.BASE_URL}/${PokeApiEndpoints.POKEMON}";
-    var response = await http.get(Uri.parse(fetchURL));
-    var decoded = jsonDecode(response.body);
-    List<Future<void>> futureList = [];
-    List<PokemonListItem?> list =
-        List.generate(decoded['results'].length, (item) => null);
-    for (int i = 0; i < decoded['results'].length; i++) {
-      var item = decoded['results'][i];
-      var f = _fetchPokemonDetail(item['url']).then((value) {
-        list[i] = value;
-      });
-      futureList.add(f);
-    }
-    await Future.wait(futureList);
+    var (pokemonList, nextUrl) = await PokeApi.fetchPokemonList(nextURL);
     setState(() {
-      nextURL = decoded['next'];
-      pokemonList = appendMode! ? [...pokemonList, ...list] : list;
+      if (appendMode == true) {
+        this.pokemonList.addAll(pokemonList);
+      } else {
+        this.pokemonList = pokemonList;
+      }
+      nextURL = nextUrl;
       _isLoading = false;
     });
   }
 
-  Future<PokemonListItem> _fetchPokemonDetail(String detailURL) async {
-    var detailResponse = await http.get(Uri.parse(detailURL));
-    var detailDecoded = jsonDecode(detailResponse.body);
-    var speciesResponse =
-        await http.get(Uri.parse(detailDecoded['species']['url']));
-    var speciesDecoded = jsonDecode(speciesResponse.body);
-    var data = PokemonListItem(
-      pokemonName: speciesDecoded['names']
-          .where((item) => item['language']['name'] == 'ja-Hrkt')
-          .first['name'],
-      pokemonImageURL: detailDecoded['sprites']['other']['official-artwork']
-          ['front_default'],
-    );
-    return data;
-  }
-
   @override
   void initState() {
-    _fetchPokemonList(null);
+    _getPokemonData(null);
     scrollController = ScrollController();
     scrollController.addListener(() async {
       if (scrollController.position.pixels >=
               scrollController.position.maxScrollExtent * 0.95 &&
           !_isLoading) {
         if (nextURL != null) {
-          _fetchPokemonList(true);
+          _getPokemonData(true);
         }
       }
     });
