@@ -2,6 +2,9 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:pokemon_quiz_app/components/center_message.dart';
+import 'package:pokemon_quiz_app/data/PokeApi.dart';
+import 'package:pokemon_quiz_app/data/model/PokemonData.dart';
 import 'dart:math' as math;
 import 'package:pokemon_quiz_app/other/PokeApiEndpoints.dart';
 
@@ -13,22 +16,15 @@ class PokemonQuizScreen extends StatefulWidget {
 }
 
 class _PokemonQuizScreenState extends State<PokemonQuizScreen> {
-  String? imageURL;
-  String? pokemonName;
+  PokemonData? pokemonData;
   final TextEditingController _userAnswerController = TextEditingController();
   Future<void> _fetchRandomPokemonData() async {
     var maxCount = 1025;
     var randomNumber = math.Random().nextInt(maxCount) + 1;
-    var pokemonData = await http.get(Uri.parse(
-        PokeApiEndpoints.createPokemonDetailURL(randomNumber.toString())));
-    var parsedData = jsonDecode(pokemonData.body);
-    print("randomId: $randomNumber");
-    print(parsedData['name']);
-    print(parsedData['sprites']['other']['front_default']);
+    var data = await PokeApi.fetchPokemonDetail(
+        PokeApiEndpoints.createPokemonDetailURL(randomNumber.toString()));
     setState(() {
-      pokemonName = parsedData['name'];
-      imageURL =
-          parsedData['sprites']['other']['official-artwork']['front_default'];
+      pokemonData = data;
     });
   }
 
@@ -41,40 +37,43 @@ class _PokemonQuizScreenState extends State<PokemonQuizScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        imageURL != null ? Image.network(imageURL!) : Container(),
-        pokemonName != null
-            ? Text(
-                pokemonName!,
+    return pokemonData != null
+        ? Column(
+            children: [
+              Image.network(pokemonData!.pokemonImageURL),
+              Text(
+                pokemonData!.pokemonName,
                 style: Theme.of(context).textTheme.headlineSmall,
-              )
-            : Container(),
-        Text("基本ステータス"),
-        Column(
-          children: [
-            Text("こうげき"),
-            Text("ぼうぎょ"),
-            Text("とくこう"),
-            Text("とくぼう"),
-            Text("すばやさ"),
-            Text("HP")
-          ],
-        ),
-        TextField(
-          controller: _userAnswerController,
-          decoration: const InputDecoration(
-            hintText: "ポケモンの名前(例：ピカチュウ)",
-          ),
-          maxLines: 1,
-        ),
-        ElevatedButton(onPressed: () {}, child: const Text("答えを見る")),
-        ElevatedButton(
-            onPressed: () {
-              _fetchRandomPokemonData();
-            },
-            child: const Text("次の問題")),
-      ],
-    );
+              ),
+              Text("基本ステータス"),
+              Column(
+                children: [
+                  Text("こうげき"),
+                  Text("ぼうぎょ"),
+                  Text("とくこう"),
+                  Text("とくぼう"),
+                  Text("すばやさ"),
+                  Text("HP")
+                ],
+              ),
+              TextField(
+                controller: _userAnswerController,
+                decoration: const InputDecoration(
+                  hintText: "ポケモンの名前(例：ピカチュウ)",
+                ),
+                maxLines: 1,
+              ),
+              ElevatedButton(onPressed: () {}, child: const Text("答えを見る")),
+              ElevatedButton(
+                  onPressed: () {
+                    _fetchRandomPokemonData();
+                  },
+                  child: const Text("次の問題")),
+            ],
+          )
+        : const CenterMessage(
+            message: "読み込み中...",
+            showingLoadingIndicatoro: true,
+          );
   }
 }
