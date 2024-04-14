@@ -1,27 +1,26 @@
-class PokemonData {
-  final int id;
-  final String pokemonName;
-  final String pokemonImageURL;
-  final int hp;
-  final int attack;
-  final int specialAttack;
-  final int defense;
-  final int specialDefense;
-  final int speed;
-  final int weight;
-  final int height;
-  final List<dynamic> types;
-  const PokemonData(
-      {required this.id,
-      required this.pokemonName,
-      required this.pokemonImageURL,
-      required this.hp,
-      required this.attack,
-      required this.specialAttack,
-      required this.defense,
-      required this.specialDefense,
-      required this.speed,
-      required this.weight,
-      required this.height,
-      required this.types});
+import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:flutter/foundation.dart';
+
+part 'PokemonData.freezed.dart';
+part 'PokemonData.g.dart';
+
+@freezed
+class PokemonData with _$PokemonData {
+  const factory PokemonData({
+    required int id,
+    required String pokemonName,
+    required String pokemonImageURL,
+    required int hp,
+    required int attack,
+    required int specialAttack,
+    required int defense,
+    required int specialDefense,
+    required int speed,
+    required int weight,
+    required int height,
+    required List<dynamic> types,
+  }) = _PokemonData;
+
+  factory PokemonData.fromJson(Map<String, Object?> json) =>
+      _$PokemonDataFromJson(json);
 }
