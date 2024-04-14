@@ -43,6 +43,7 @@ dependencies:
     sign_in_button: ^3.2.0
     google_sign_in: ^6.2.1
     audioplayers: ^6.0.0
+    freezed: ^2.5.2
 
 dev_dependencies:
     flutter_test:
