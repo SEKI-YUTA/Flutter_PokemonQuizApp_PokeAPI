@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:pokemon_quiz_app/model/PokemonListItem.dart';
+import 'package:pokemon_quiz_app/data/model/PokemonListItem.dart';
 
 class PokemonDetailScreen extends StatefulWidget {
   final PokemonListItem pokemonItem;
