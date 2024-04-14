@@ -24,7 +24,7 @@ Map<String, dynamic> _$$QuizDataImplToJson(_$QuizDataImpl instance) =>
 
 const _$QuizStatusEnumMap = {
   QuizStatus.NOT_ANSWERED: 'NOT_ANSWERED',
-  QuizStatus.ANSWERED: 'ANSWERED',
   QuizStatus.CORRECT: 'CORRECT',
   QuizStatus.INCORRECT: 'INCORRECT',
+  QuizStatus.GIVE_UP: 'GIVE_UP',
 };
