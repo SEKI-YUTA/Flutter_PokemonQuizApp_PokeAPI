@@ -56,6 +56,10 @@ class PokeApi {
       speed: detailDecoded['stats']
           .where((item) => item['stat']['name'] == 'speed')
           .first['base_stat'],
+      weight: detailDecoded['weight'],
+      height: detailDecoded['height'],
+      types:
+          detailDecoded['types'].map((item) => item['type']['name']).toList(),
     );
     return data;
   }
