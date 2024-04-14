@@ -18,19 +18,23 @@ class _PokemonListScreenState extends State<PokemonListScreen> {
   late ScrollController scrollController;
 
   Future<void> _getPokemonData(bool? appendMode) async {
-    setState(() {
-      _isLoading = true;
-    });
+    if (mounted) {
+      setState(() {
+        _isLoading = true;
+      });
+    }
     var (pokemonList, nextUrl) = await PokeApi.fetchPokemonList(nextURL);
-    setState(() {
-      if (appendMode == true) {
-        this.pokemonList.addAll(pokemonList);
-      } else {
-        this.pokemonList = pokemonList;
-      }
-      nextURL = nextUrl;
-      _isLoading = false;
-    });
+    if (mounted) {
+      setState(() {
+        if (appendMode == true) {
+          this.pokemonList.addAll(pokemonList);
+        } else {
+          this.pokemonList = pokemonList;
+        }
+        nextURL = nextUrl;
+        _isLoading = false;
+      });
+    }
   }
 
   @override
@@ -55,7 +59,7 @@ class _PokemonListScreenState extends State<PokemonListScreen> {
         width: MediaQuery.of(context).size.width,
         height: MediaQuery.of(context).size.height,
         child: _isLoading && pokemonList.isEmpty
-            ? CenterMessage(
+            ? const CenterMessage(
                 message: "読み込み中...",
                 showingLoadingIndicatoro: true,
               )
