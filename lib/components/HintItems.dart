@@ -9,7 +9,12 @@ class HintItems {
     return Theme(
       data: ThemeData(dividerColor: Colors.transparent),
       child: ExpansionTile(
-          title: const Text("ヒント1"),
+          title: Text(
+            "ヒント1",
+            style: TextStyle(
+              color: Theme.of(context).textTheme.bodyLarge!.color,
+            ),
+          ),
           initiallyExpanded: true,
           children: [
             Text(
@@ -27,26 +32,6 @@ class HintItems {
                 ),
               ],
             ),
-            // Row(
-            //   mainAxisAlignment: MainAxisAlignment.center,
-            //   children: [
-            //     Text(
-            //       "こうげき",
-            //       style: Theme.of(context).textTheme.bodyLarge,
-            //     ),
-            //     const SizedBox(width: 16),
-            //     Text(pokemonData.attack.toString()),
-            //     const SizedBox(width: 8),
-            //     Expanded(
-            //       child: LinearProgressIndicator(
-            //         value: pokemonData.attack / 255,
-            //         backgroundColor: Colors.grey,
-            //         valueColor:
-            //             const AlwaysStoppedAnimation<Color>(Colors.green),
-            //       ),
-            //     ),
-            //   ],
-            // ),
             StatusItem(
                 title: "こうげき",
                 value: pokemonData.attack,
@@ -86,7 +71,10 @@ class HintItems {
     return Theme(
       data: ThemeData(dividerColor: Colors.transparent),
       child: ExpansionTile(
-        title: const Text("ヒント2"),
+        title: Text("ヒント2",
+            style: TextStyle(
+              color: Theme.of(context).textTheme.bodyLarge!.color,
+            )),
         controller: controller,
         enabled: expansionEnabled,
         children: [
@@ -129,7 +117,12 @@ class HintItems {
     return Theme(
       data: ThemeData(dividerColor: Colors.transparent),
       child: ExpansionTile(
-        title: const Text("ヒント3"),
+        title: Text(
+          "ヒント3",
+          style: TextStyle(
+            color: Theme.of(context).textTheme.bodyLarge!.color,
+          ),
+        ),
         controller: controller,
         enabled: expansionEnabled,
         children: [
