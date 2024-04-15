@@ -19,7 +19,6 @@ class PokemonQuizApp extends StatefulWidget {
 }
 
 class _PokemonQuizAppState extends State<PokemonQuizApp> {
-
   @override
   void initState() {
     // TODO: implement initState
@@ -28,12 +27,15 @@ class _PokemonQuizAppState extends State<PokemonQuizApp> {
 
   @override
   Widget build(BuildContext context) {
+    ThemeMode themeMode = ThemeMode.system;
     return MaterialApp(
       title: 'Flutter Demo',
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
       ),
+      darkTheme: ThemeData.dark(),
+      themeMode: themeMode,
       initialRoute: '/splash',
       routes: <String, WidgetBuilder>{
         '/splash': (BuildContext context) => const SplashScreen(),
