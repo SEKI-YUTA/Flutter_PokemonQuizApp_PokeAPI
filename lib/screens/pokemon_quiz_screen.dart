@@ -97,7 +97,9 @@ class _PokemonQuizScreenState extends State<PokemonQuizScreen> {
                       ),
                     ),
                   ),
-                  Text(pokemonData.pokemonName),
+                  _quizData!.status == QuizStatus.NOT_ANSWERED
+                      ? Container()
+                      : Text(pokemonData.pokemonName),
                   Text(
                     "このポケモンの名前は？",
                     style: Theme.of(context)
@@ -166,12 +168,30 @@ class _PokemonQuizScreenState extends State<PokemonQuizScreen> {
                     height: 8,
                   ),
                   ElevatedButton(
-                      onPressed: () async {
+                      onPressed: _quizData!.status == QuizStatus.NOT_ANSWERED
+                          ? () {
                         _answerAction();
-                      },
+                            }
+                          : null,
                       child: const Text("こたえ合わせをする")),
                   const SizedBox(height: 40),
-                  ElevatedButton(onPressed: () {}, child: const Text("答えを見る")),
+                  ElevatedButton(
+                      onPressed: _quizData!.status == QuizStatus.NOT_ANSWERED
+                          ? () {
+                              setState(() {
+                                _quizData = _quizData!
+                                    .copyWith(status: QuizStatus.GIVE_UP);
+                              });
+                            }
+                          : null,
+                      child: const Text("答えを見る")),
+                  Row(children: [
+                    const Text("答え: "),
+                    _quizData!.status == QuizStatus.NOT_ANSWERED
+                        ? Container()
+                        : Expanded(
+                            child: Text(_quizData!.pokemonData.pokemonName))
+                  ]),
                   Row(mainAxisAlignment: MainAxisAlignment.end, children: [
                     ElevatedButton(
                         onPressed: () {
