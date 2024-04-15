@@ -2,6 +2,7 @@ import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/material.dart';
 import 'package:pokemon_quiz_app/components/HintItems.dart';
 import 'package:pokemon_quiz_app/components/center_message.dart';
+import 'package:pokemon_quiz_app/components/question_image.dart';
 import 'package:pokemon_quiz_app/components/quiz_result_dialog.dart';
 import 'package:pokemon_quiz_app/data/PokeApi.dart';
 import 'package:pokemon_quiz_app/data/model/QuizData.dart';
@@ -36,7 +37,8 @@ class _PokemonQuizScreenState extends State<PokemonQuizScreen> {
   }
 
   Future<void> _answerAction() async {
-    final isCorrect = _quizData?.pokemonData.pokemonName == _userAnswerController.text;
+    final isCorrect =
+        _quizData?.pokemonData.pokemonName == _userAnswerController.text;
     final player = AudioPlayer();
     player.play(
         AssetSource(isCorrect
@@ -44,6 +46,10 @@ class _PokemonQuizScreenState extends State<PokemonQuizScreen> {
             : "sounds/incorrect_sound.mp3"),
         mode: PlayerMode.lowLatency,
         volume: 1);
+    setState(() {
+      _quizData = _quizData!.copyWith(
+          status: isCorrect ? QuizStatus.CORRECT : QuizStatus.INCORRECT);
+    });
     showDialog(
         context: context,
         builder: (context) => QuizResultDialog(
@@ -83,7 +89,9 @@ class _PokemonQuizScreenState extends State<PokemonQuizScreen> {
                       child: SizedBox(
                         width: double.infinity,
                         height: double.infinity,
-                        child: Image.network(pokemonData.pokemonImageURL),
+                        child: _quizData!.status == QuizStatus.NOT_ANSWERED
+                            ? const QuestionImage()
+                            : Image.network(pokemonData.pokemonImageURL),
                       ),
                     ),
                   ),
