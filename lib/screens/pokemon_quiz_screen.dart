@@ -186,13 +186,15 @@ class _PokemonQuizScreenState extends State<PokemonQuizScreen> {
                       "答え: ",
                       style: TextStyle(fontSize: 16),
                     ),
+                    const SizedBox(
+                      width: 16,
+                    ),
                     _quizData!.status == QuizStatus.NOT_ANSWERED
                         ? Container()
-                        : Expanded(
-                            child: Text(
+                        : Text(
                             _quizData!.pokemonData.pokemonName,
                             style: Theme.of(context).textTheme.headlineSmall,
-                          ))
+                          )
                   ]),
                   const SizedBox(
                     height: 8,
