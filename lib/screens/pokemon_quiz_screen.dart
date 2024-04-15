@@ -48,6 +48,8 @@ class _PokemonQuizScreenState extends State<PokemonQuizScreen> {
         context: context,
         builder: (context) => QuizResultDialog(
               isCorrect: isCorrect,
+              pokemonName: _quizData!.pokemonData.pokemonName,
+              pokemonImageUrl: _quizData!.pokemonData.pokemonImageURL,
               onNextClick: () {
                 Navigator.of(context).pop();
                 _fetchRandomPokemonData();
