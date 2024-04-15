@@ -10,6 +10,11 @@ jobs:
         steps:
             - name: clone repository
               uses: actions/checkout@v4
+            - name: Decode Secrets and Create file
+              env:
+                GOOGLE_SERVICES_DATA: ${{secrets.GOOGLE_SERVICES_DATA}}
+              run: |
+                echo $GOOGLE_SERVICES_DATA | base64 --decode > android/app/google-services.json
             - name: Setup Flutter
               uses: subosito/flutter-action@v2
               with:
