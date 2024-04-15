@@ -4,6 +4,7 @@ import 'package:pokemon_quiz_app/components/HintItems.dart';
 import 'package:pokemon_quiz_app/components/center_message.dart';
 import 'package:pokemon_quiz_app/components/question_image.dart';
 import 'package:pokemon_quiz_app/components/quiz_result_dialog.dart';
+import 'package:pokemon_quiz_app/data/FireStoreClient.dart';
 import 'package:pokemon_quiz_app/data/PokeApi.dart';
 import 'package:pokemon_quiz_app/data/model/QuizData.dart';
 import 'package:pokemon_quiz_app/data/model/QuizStatus.dart';
@@ -24,6 +25,7 @@ class _PokemonQuizScreenState extends State<PokemonQuizScreen> {
   final ExpansionTileController hint2Controller = ExpansionTileController();
   final ExpansionTileController hint3Controller = ExpansionTileController();
   Future<void> _fetchRandomPokemonData() async {
+    _userAnswerController.text = "";
     setState(() {
       _isLoading = true;
     });
@@ -43,6 +45,10 @@ class _PokemonQuizScreenState extends State<PokemonQuizScreen> {
   Future<void> _answerAction() async {
     final isCorrect =
         _quizData?.pokemonData.pokemonName == _userAnswerController.text;
+    if (isCorrect) {
+      FireStoreClient.addCaughtPokemon(
+          _quizData!.pokemonData.id, DateTime.now().millisecondsSinceEpoch);
+    }
     final player = AudioPlayer();
     player.play(
         AssetSource(isCorrect
