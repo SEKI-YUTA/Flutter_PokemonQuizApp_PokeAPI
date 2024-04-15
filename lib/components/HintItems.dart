@@ -27,11 +27,49 @@ class HintItems {
                 ),
               ],
             ),
-            StatusItem(title: "こうげき", value: pokemonData.attack),
-            StatusItem(title: "ぼうぎょ", value: pokemonData.defense),
-            StatusItem(title: "とくこう", value: pokemonData.specialAttack),
-            StatusItem(title: "とくぼう", value: pokemonData.specialDefense),
-            StatusItem(title: "すばやさ", value: pokemonData.speed),
+            // Row(
+            //   mainAxisAlignment: MainAxisAlignment.center,
+            //   children: [
+            //     Text(
+            //       "こうげき",
+            //       style: Theme.of(context).textTheme.bodyLarge,
+            //     ),
+            //     const SizedBox(width: 16),
+            //     Text(pokemonData.attack.toString()),
+            //     const SizedBox(width: 8),
+            //     Expanded(
+            //       child: LinearProgressIndicator(
+            //         value: pokemonData.attack / 255,
+            //         backgroundColor: Colors.grey,
+            //         valueColor:
+            //             const AlwaysStoppedAnimation<Color>(Colors.green),
+            //       ),
+            //     ),
+            //   ],
+            // ),
+            StatusItem(
+                title: "こうげき",
+                value: pokemonData.attack,
+                parentContext: context),
+            StatusItem(
+              title: "ぼうぎょ",
+              value: pokemonData.defense,
+              parentContext: context,
+            ),
+            StatusItem(
+              title: "とくこう",
+              value: pokemonData.specialAttack,
+              parentContext: context,
+            ),
+            StatusItem(
+                title: "とくぼう",
+                value: pokemonData.specialDefense,
+                parentContext: context),
+            StatusItem(
+              title: "すばやさ",
+              value: pokemonData.speed,
+              parentContext: context,
+            ),
             const SizedBox(
               height: 16,
             ),
