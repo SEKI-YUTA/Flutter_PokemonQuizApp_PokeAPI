@@ -10,6 +10,11 @@ jobs:
         steps:
             - name: clone repository
               uses: actions/checkout@v4
+            - name: Decode Secrets and Create file
+              env:
+                  GOOGLE_SERVICES_DATA: ${{secrets.GOOGLE_SERVICES_DATA}}
+              run: |
+                  echo $GOOGLE_SERVICES_DATA | base64 --decode > android/app/google-services.json
             - name: Setup Flutter
               uses: subosito/flutter-action@v2
               with:
@@ -22,6 +27,11 @@ jobs:
               run: flutter build apk
             - name: Build Android App Bundle
               run: flutter build appbundle
+            - name: Upload build apk
+              uses: actions/upload-artifact@v4
+              with:
+                  name: pokemonQuiz.apk
+                  path: build/app/outputs/apk/release/app-release.apk
             # macOSで実行する必要があるのでAndroidのビルドだけにする
             # - name: Build iOS
             #   run: flutter build ios --no-codesign
