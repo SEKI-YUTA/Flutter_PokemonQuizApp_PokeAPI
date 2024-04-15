@@ -100,15 +100,16 @@ class _PokemonQuizScreenState extends State<PokemonQuizScreen> {
                     ),
                   ),
                   _quizData!.status == QuizStatus.NOT_ANSWERED
-                      ? Container()
-                      : Text(pokemonData.pokemonName),
-                  Text(
-                    "このポケモンの名前は？",
-                    style: Theme.of(context)
-                        .textTheme
-                        .headlineSmall!
-                        .copyWith(color: Colors.red),
-                  ),
+                      ? Text("このポケモンの名前は？",
+                          style: Theme.of(context)
+                              .textTheme
+                              .headlineSmall!
+                              .copyWith(color: Colors.red))
+                      : Text(
+                          pokemonData.pokemonName,
+                          style: Theme.of(context).textTheme.headlineSmall,
+                        ),
+                  // ),
                   const SizedBox(
                     height: 16,
                   ),
@@ -174,6 +175,22 @@ class _PokemonQuizScreenState extends State<PokemonQuizScreen> {
                           : null,
                       child: const Text("こたえ合わせをする")),
                   const SizedBox(height: 40),
+                  Row(crossAxisAlignment: CrossAxisAlignment.center, children: [
+                    const Text(
+                      "答え: ",
+                      style: TextStyle(fontSize: 16),
+                    ),
+                    _quizData!.status == QuizStatus.NOT_ANSWERED
+                        ? Container()
+                        : Expanded(
+                            child: Text(
+                            _quizData!.pokemonData.pokemonName,
+                            style: Theme.of(context).textTheme.headlineSmall,
+                          ))
+                  ]),
+                  const SizedBox(
+                    height: 8,
+                  ),
                   ElevatedButton(
                       onPressed: _quizData!.status == QuizStatus.NOT_ANSWERED
                           ? () {
@@ -184,13 +201,7 @@ class _PokemonQuizScreenState extends State<PokemonQuizScreen> {
                             }
                           : null,
                       child: const Text("答えを見る")),
-                  Row(children: [
-                    const Text("答え: "),
-                    _quizData!.status == QuizStatus.NOT_ANSWERED
-                        ? Container()
-                        : Expanded(
-                            child: Text(_quizData!.pokemonData.pokemonName))
-                  ]),
+                  const SizedBox(height: 40),
                   Row(mainAxisAlignment: MainAxisAlignment.end, children: [
                     ElevatedButton(
                         onPressed: () {
