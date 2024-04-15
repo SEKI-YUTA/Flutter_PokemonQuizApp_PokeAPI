@@ -4,6 +4,15 @@ import 'package:pokemon_quiz_app/data/model/PokemonData.dart';
 import 'package:pokemon_quiz_app/util/PokemonTypeConverter.dart';
 
 class HintItems {
+  static Widget hintItemFooter = const Column(
+    children: [
+      SizedBox(
+        height: 16,
+      ),
+      Divider()
+    ],
+  );
+
   static Widget hint1ExpansionTile(
       BuildContext context, PokemonData pokemonData) {
     return Theme(
@@ -53,9 +62,7 @@ class HintItems {
               value: pokemonData.speed,
               parentContext: context,
             ),
-            const SizedBox(
-              height: 16,
-            ),
+            hintItemFooter
           ]),
     );
   }
@@ -100,7 +107,8 @@ class HintItems {
                 )
               ],
             ),
-          )
+          ),
+          hintItemFooter
         ],
       ),
     );
@@ -135,7 +143,8 @@ class HintItems {
                 ),
               ],
             ),
-          )
+          ),
+          hintItemFooter
         ],
       ),
     );
