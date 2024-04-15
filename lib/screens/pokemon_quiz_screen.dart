@@ -21,6 +21,8 @@ class _PokemonQuizScreenState extends State<PokemonQuizScreen> {
   QuizData? _quizData;
   bool _isLoading = false;
   final TextEditingController _userAnswerController = TextEditingController();
+  final ExpansionTileController hint2Controller = ExpansionTileController();
+  final ExpansionTileController hint3Controller = ExpansionTileController();
   Future<void> _fetchRandomPokemonData() async {
     setState(() {
       _isLoading = true;
@@ -30,11 +32,11 @@ class _PokemonQuizScreenState extends State<PokemonQuizScreen> {
     var data = await PokeApi.fetchPokemonDetail(
         PokeApiEndpoints.createPokemonDetailURL(randomNumber.toString()));
     if (mounted) {
-    setState(() {
-      _quizData = QuizData(
-          pokemonData: data, hintStep: 1, status: QuizStatus.NOT_ANSWERED);
-      _isLoading = false;
-    });
+      setState(() {
+        _quizData = QuizData(
+            pokemonData: data, hintStep: 1, status: QuizStatus.NOT_ANSWERED);
+        _isLoading = false;
+      });
     }
   }
 
@@ -75,8 +77,8 @@ class _PokemonQuizScreenState extends State<PokemonQuizScreen> {
   @override
   Widget build(BuildContext context) {
     var pokemonData = _quizData?.pokemonData;
-    final ExpansionTileController hint2Controller = ExpansionTileController();
-    final ExpansionTileController hint3Controller = ExpansionTileController();
+    print(pokemonData?.pokemonName);
+
     return !_isLoading && pokemonData != null
         ? Padding(
             padding: const EdgeInsets.all(16),
@@ -170,7 +172,7 @@ class _PokemonQuizScreenState extends State<PokemonQuizScreen> {
                   ElevatedButton(
                       onPressed: _quizData!.status == QuizStatus.NOT_ANSWERED
                           ? () {
-                        _answerAction();
+                              _answerAction();
                             }
                           : null,
                       child: const Text("こたえ合わせをする")),
