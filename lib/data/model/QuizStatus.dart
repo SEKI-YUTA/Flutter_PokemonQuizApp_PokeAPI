@@ -1,0 +1,1 @@
+enum QuizStatus { NOT_ANSWERED, CORRECT, INCORRECT, GIVE_UP }

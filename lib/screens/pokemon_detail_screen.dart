@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:pokemon_quiz_app/model/PokemonListItem.dart';
+import 'package:pokemon_quiz_app/data/model/PokemonData.dart';
 
 class PokemonDetailScreen extends StatefulWidget {
-  final PokemonListItem pokemonItem;
+  final PokemonData pokemonItem;
   const PokemonDetailScreen({super.key, required this.pokemonItem});
 
   @override
