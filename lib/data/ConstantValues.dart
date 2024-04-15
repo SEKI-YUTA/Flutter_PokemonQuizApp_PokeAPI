@@ -60,7 +60,7 @@ const List<Map<String, dynamic>> pokemonTypeMapList = [
     'data': {'typeJa': 'こおり', 'color': 'ff87e6f3'},
   },
   {
-    'typeEn': 'dragon',
+    'typeEn': 'dark',
     'data': {'typeJa': 'あく', 'color': 'ff6d80ce'},
   },
   {
