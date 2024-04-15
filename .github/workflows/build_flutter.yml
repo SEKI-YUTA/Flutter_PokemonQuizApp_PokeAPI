@@ -27,6 +27,11 @@ jobs:
               run: flutter build apk
             - name: Build Android App Bundle
               run: flutter build appbundle
+            - name: Upload build apk
+              uses: actions/upload-artifact@v4
+              with:
+                name: debug-apk
+                path: build/app/outputs/apk/debug/app-debug.apk
             # macOSで実行する必要があるのでAndroidのビルドだけにする
             # - name: Build iOS
             #   run: flutter build ios --no-codesign
