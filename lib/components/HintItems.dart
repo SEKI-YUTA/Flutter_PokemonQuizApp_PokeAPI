@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:pokemon_quiz_app/components/status_item.dart';
 import 'package:pokemon_quiz_app/data/model/PokemonData.dart';
+import 'package:pokemon_quiz_app/util/PokemonTypeConverter.dart';
 
 class HintItems {
   static Widget hint1ExpansionTile(
@@ -55,7 +56,13 @@ class HintItems {
               children: [
                 Text("重さ: ${pokemonData.weight / 10}kg"),
                 Text("高さ: ${pokemonData.height / 10}m"),
-                Text("タイプ: ${pokemonData.types.join(", ")}"),
+                // Text("タイプ: ${pokemonData.types.map((e) => PokemonTypeConverter.convertTypeFromEnToJa(e)).join(", ")}"),
+                Wrap(
+                  children: [
+                    ...PokemonTypeConverter.convertTypeFromEnToBadge(
+                        pokemonData.types.cast())
+                  ],
+                )
               ],
             ),
           )
