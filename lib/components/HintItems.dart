@@ -24,13 +24,11 @@ class HintItems {
             const SizedBox(
               height: 8,
             ),
-            Row(
-              children: [
-                Text(
-                  "HP: ${pokemonData.hp}",
-                  style: Theme.of(context).textTheme.bodyLarge,
-                ),
-              ],
+            StatusItem(
+              title: "HP",
+              value: pokemonData.hp,
+              parentContext: context,
+              requireIndicator: false,
             ),
             StatusItem(
                 title: "こうげき",
