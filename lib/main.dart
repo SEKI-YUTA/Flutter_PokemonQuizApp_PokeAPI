@@ -5,7 +5,7 @@ import 'package:flutter/widgets.dart';
 import 'package:pokemon_quiz_app/firebase_options.dart';
 import 'package:pokemon_quiz_app/main_host.dart';
 import 'package:pokemon_quiz_app/screens/auth_screen.dart';
-import 'package:pokemon_quiz_app/screens/splash_screen.dart';
+import 'package:pokemon_quiz_app/screens/destination_screen.dart';
 
 void main() {
   runApp(const PokemonQuizApp());
@@ -19,7 +19,6 @@ class PokemonQuizApp extends StatefulWidget {
 }
 
 class _PokemonQuizAppState extends State<PokemonQuizApp> {
-
   @override
   void initState() {
     // TODO: implement initState
@@ -28,15 +27,18 @@ class _PokemonQuizAppState extends State<PokemonQuizApp> {
 
   @override
   Widget build(BuildContext context) {
+    ThemeMode themeMode = ThemeMode.system;
     return MaterialApp(
       title: 'Flutter Demo',
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
       ),
+      darkTheme: ThemeData.dark(),
+      themeMode: themeMode,
       initialRoute: '/splash',
       routes: <String, WidgetBuilder>{
-        '/splash': (BuildContext context) => const SplashScreen(),
+        '/splash': (BuildContext context) => const DestinationScreen(),
         '/mainHost': (BuildContext context) => const MainHost(),
         '/auth': (BuildContext context) => const AuthScreen()
       },

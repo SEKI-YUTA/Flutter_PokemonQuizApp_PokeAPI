@@ -4,12 +4,26 @@ import 'package:pokemon_quiz_app/data/model/PokemonData.dart';
 import 'package:pokemon_quiz_app/util/PokemonTypeConverter.dart';
 
 class HintItems {
+  static Widget hintItemFooter = const Column(
+    children: [
+      SizedBox(
+        height: 16,
+      ),
+      Divider()
+    ],
+  );
+
   static Widget hint1ExpansionTile(
       BuildContext context, PokemonData pokemonData) {
     return Theme(
       data: ThemeData(dividerColor: Colors.transparent),
       child: ExpansionTile(
-          title: const Text("ヒント1"),
+          title: Text(
+            "ヒント1",
+            style: TextStyle(
+              color: Theme.of(context).textTheme.bodyLarge!.color,
+            ),
+          ),
           initiallyExpanded: true,
           children: [
             Text(
@@ -19,22 +33,36 @@ class HintItems {
             const SizedBox(
               height: 8,
             ),
-            Row(
-              children: [
-                Text(
-                  "HP: ${pokemonData.hp}",
-                  style: Theme.of(context).textTheme.bodyLarge,
-                ),
-              ],
+            StatusItem(
+              title: "HP",
+              value: pokemonData.hp,
+              parentContext: context,
+              requireIndicator: false,
             ),
-            StatusItem(title: "こうげき", value: pokemonData.attack),
-            StatusItem(title: "ぼうぎょ", value: pokemonData.defense),
-            StatusItem(title: "とくこう", value: pokemonData.specialAttack),
-            StatusItem(title: "とくぼう", value: pokemonData.specialDefense),
-            StatusItem(title: "すばやさ", value: pokemonData.speed),
-            const SizedBox(
-              height: 16,
+            StatusItem(
+                title: "こうげき",
+                value: pokemonData.attack,
+                parentContext: context),
+            StatusItem(
+              title: "ぼうぎょ",
+              value: pokemonData.defense,
+              parentContext: context,
             ),
+            StatusItem(
+              title: "とくこう",
+              value: pokemonData.specialAttack,
+              parentContext: context,
+            ),
+            StatusItem(
+                title: "とくぼう",
+                value: pokemonData.specialDefense,
+                parentContext: context),
+            StatusItem(
+              title: "すばやさ",
+              value: pokemonData.speed,
+              parentContext: context,
+            ),
+            hintItemFooter
           ]),
     );
   }
@@ -48,7 +76,10 @@ class HintItems {
     return Theme(
       data: ThemeData(dividerColor: Colors.transparent),
       child: ExpansionTile(
-        title: const Text("ヒント2"),
+        title: Text("ヒント2",
+            style: TextStyle(
+              color: Theme.of(context).textTheme.bodyLarge!.color,
+            )),
         controller: controller,
         enabled: expansionEnabled,
         children: [
@@ -76,7 +107,8 @@ class HintItems {
                 )
               ],
             ),
-          )
+          ),
+          hintItemFooter
         ],
       ),
     );
@@ -91,7 +123,12 @@ class HintItems {
     return Theme(
       data: ThemeData(dividerColor: Colors.transparent),
       child: ExpansionTile(
-        title: const Text("ヒント3"),
+        title: Text(
+          "ヒント3",
+          style: TextStyle(
+            color: Theme.of(context).textTheme.bodyLarge!.color,
+          ),
+        ),
         controller: controller,
         enabled: expansionEnabled,
         children: [
@@ -106,7 +143,8 @@ class HintItems {
                 ),
               ],
             ),
-          )
+          ),
+          hintItemFooter
         ],
       ),
     );
