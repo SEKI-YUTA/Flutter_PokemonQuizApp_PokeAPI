@@ -53,8 +53,8 @@ class HintItems {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text("重さ: ${pokemonData.weight}"),
-                Text("高さ: ${pokemonData.height}"),
+                Text("重さ: ${pokemonData.weight / 10}kg"),
+                Text("高さ: ${pokemonData.height / 10}m"),
                 Text("タイプ: ${pokemonData.types.join(", ")}"),
               ],
             ),
