@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:pokemon_quiz_app/util/ColorUtil.dart';
 
 class TypeBadge extends StatelessWidget {
   Map<String, dynamic> data;
