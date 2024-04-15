@@ -29,11 +29,13 @@ class _PokemonQuizScreenState extends State<PokemonQuizScreen> {
     var randomNumber = math.Random().nextInt(maxCount) + 1;
     var data = await PokeApi.fetchPokemonDetail(
         PokeApiEndpoints.createPokemonDetailURL(randomNumber.toString()));
+    if (mounted) {
     setState(() {
       _quizData = QuizData(
           pokemonData: data, hintStep: 1, status: QuizStatus.NOT_ANSWERED);
       _isLoading = false;
     });
+    }
   }
 
   Future<void> _answerAction() async {
