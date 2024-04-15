@@ -65,6 +65,8 @@ class _PokemonQuizScreenState extends State<PokemonQuizScreen> {
   @override
   Widget build(BuildContext context) {
     var pokemonData = _quizData?.pokemonData;
+    final ExpansionTileController hint2Controller = ExpansionTileController();
+    final ExpansionTileController hint3Controller = ExpansionTileController();
     return !_isLoading && pokemonData != null
         ? Padding(
             padding: const EdgeInsets.all(16),
@@ -95,6 +97,51 @@ class _PokemonQuizScreenState extends State<PokemonQuizScreen> {
                     height: 16,
                   ),
                   HintItems.hint1ExpansionTile(context, pokemonData),
+                  const SizedBox(height: 16),
+                  Stack(
+                    alignment: AlignmentDirectional.center,
+                    children: [
+                      HintItems.hint2ExpansionTile(pokemonData, hint2Controller,
+                          _quizData!.hintStep >= 2),
+                      _quizData!.hintStep < 2
+                          ? ElevatedButton(
+                              onPressed: () {
+                                if (_quizData!.hintStep == 1) {
+                                  setState(() {
+                                    hint2Controller.expand();
+                                    _quizData =
+                                        _quizData!.copyWith(hintStep: 2);
+                                  });
+                                }
+                              },
+                              child: const Text("ヒント2を見る"))
+                          : Container()
+                    ],
+                  ),
+                  const SizedBox(height: 16),
+                  Stack(
+                    alignment: AlignmentDirectional.center,
+                    children: [
+                      HintItems.hint3ExpansionTile(
+                        pokemonData,
+                        hint3Controller,
+                        _quizData!.hintStep >= 3,
+                      ),
+                      _quizData!.hintStep < 3
+                          ? ElevatedButton(
+                              onPressed: () {
+                                if (_quizData!.hintStep == 2) {
+                                  hint3Controller.expand();
+                                  setState(() {
+                                    _quizData =
+                                        _quizData!.copyWith(hintStep: 3);
+                                  });
+                                }
+                              },
+                              child: const Text("ヒント3を見る"))
+                          : Container()
+                    ],
+                  ),
                   const SizedBox(height: 16),
                   TextField(
                     controller: _userAnswerController,
