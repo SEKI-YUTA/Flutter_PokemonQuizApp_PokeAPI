@@ -5,16 +5,22 @@ class StatusItem extends StatelessWidget {
   final String title;
   final int value;
   final statusMax = 255;
-  const StatusItem({super.key, required this.title, required this.value});
+  final BuildContext parentContext;
+  const StatusItem(
+      {super.key,
+      required this.title,
+      required this.value,
+      required this.parentContext});
 
   @override
   Widget build(BuildContext context) {
+    final myStyle = Theme.of(parentContext).textTheme.bodyLarge;
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         Text(
           title,
-          style: Theme.of(context).textTheme.bodyLarge,
+          style: myStyle,
         ),
         const SizedBox(width: 16),
         Text(value.toString()),
