@@ -7,7 +7,7 @@ import 'package:pokemon_quiz_app/other/PokeApiEndpoints.dart';
 class PokeApi {
   static Future<(List<PokemonData?>, String)> fetchPokemonList(
       String? fetchUrl) async {
-    fetchUrl ??= "${PokeApiEndpoints.BASE_URL}/${PokeApiEndpoints.POKEMON}";
+    fetchUrl ??= "${PokeApiEndpoints.BASE_URL}${PokeApiEndpoints.POKEMON}";
     var response = await http.get(Uri.parse(fetchUrl));
     var decoded = jsonDecode(response.body);
     String nextUrl = decoded['next'];
