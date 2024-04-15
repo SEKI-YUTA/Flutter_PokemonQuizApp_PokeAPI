@@ -40,8 +40,11 @@ class HintItems {
   }
 
   // 重さ高さタイプ
-  static Widget hint2ExpansionTile(PokemonData pokemonData,
-      ExpansionTileController controller, bool expansionEnabled) {
+  static Widget hint2ExpansionTile(
+      PokemonData pokemonData,
+      ExpansionTileController controller,
+      bool expansionEnabled,
+      BuildContext context) {
     return Theme(
       data: ThemeData(dividerColor: Colors.transparent),
       child: ExpansionTile(
@@ -54,9 +57,17 @@ class HintItems {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text("重さ: ${pokemonData.weight / 10}kg"),
-                Text("高さ: ${pokemonData.height / 10}m"),
-                // Text("タイプ: ${pokemonData.types.map((e) => PokemonTypeConverter.convertTypeFromEnToJa(e)).join(", ")}"),
+                Text(
+                  "重さ: ${pokemonData.weight / 10}kg",
+                  style: Theme.of(context).textTheme.bodyLarge,
+                ),
+                Text(
+                  "高さ: ${pokemonData.height / 10}m",
+                  style: Theme.of(context).textTheme.bodyLarge,
+                ),
+                const SizedBox(
+                  height: 8,
+                ),
                 Wrap(
                   children: [
                     ...PokemonTypeConverter.convertTypeFromEnToBadge(
@@ -72,8 +83,11 @@ class HintItems {
   }
 
   // 図鑑番号
-  static Widget hint3ExpansionTile(PokemonData pokemonData,
-      ExpansionTileController controller, bool expansionEnabled) {
+  static Widget hint3ExpansionTile(
+      PokemonData pokemonData,
+      ExpansionTileController controller,
+      bool expansionEnabled,
+      BuildContext context) {
     return Theme(
       data: ThemeData(dividerColor: Colors.transparent),
       child: ExpansionTile(
@@ -86,7 +100,10 @@ class HintItems {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text("図鑑番号: ${pokemonData.id}"),
+                Text(
+                  "図鑑番号: ${pokemonData.id}",
+                  style: Theme.of(context).textTheme.bodyLarge,
+                ),
               ],
             ),
           )

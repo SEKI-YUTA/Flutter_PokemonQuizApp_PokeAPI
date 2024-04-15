@@ -118,7 +118,7 @@ class _PokemonQuizScreenState extends State<PokemonQuizScreen> {
                     alignment: AlignmentDirectional.center,
                     children: [
                       HintItems.hint2ExpansionTile(pokemonData, hint2Controller,
-                          _quizData!.hintStep >= 2),
+                          _quizData!.hintStep >= 2, context),
                       _quizData!.hintStep < 2
                           ? ElevatedButton(
                               onPressed: () {
@@ -138,11 +138,8 @@ class _PokemonQuizScreenState extends State<PokemonQuizScreen> {
                   Stack(
                     alignment: AlignmentDirectional.center,
                     children: [
-                      HintItems.hint3ExpansionTile(
-                        pokemonData,
-                        hint3Controller,
-                        _quizData!.hintStep >= 3,
-                      ),
+                      HintItems.hint3ExpansionTile(pokemonData, hint3Controller,
+                          _quizData!.hintStep >= 3, context),
                       _quizData!.hintStep < 3
                           ? ElevatedButton(
                               onPressed: () {
