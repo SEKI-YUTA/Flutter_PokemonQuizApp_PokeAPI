@@ -3,13 +3,15 @@ import 'package:pokemon_quiz_app/data/model/CaughtPokemon.dart';
 
 class FireStoreClient {
   static addCaughtPokemon(
+    String uid,
     int pokemonId,
     int? caughtAt,
   ) {
+    if (uid == "") return;
     caughtAt ??= DateTime.now().millisecondsSinceEpoch;
     FirebaseFirestore.instance
         .collection("users")
-        .doc("testUser1")
+        .doc(uid)
         .collection("caughtPokemonList")
         .doc(pokemonId.toString())
         .set({
@@ -18,10 +20,11 @@ class FireStoreClient {
     });
   }
 
-  static Future<List<CaughtPokemon>> getCaughtPokemonList() async {
+  static Future<List<CaughtPokemon>> getCaughtPokemonList(String uid) async {
+    if (uid == "") return [];
     final snapshot = await FirebaseFirestore.instance
         .collection("users")
-        .doc("testUser1")
+        .doc(uid)
         .collection("caughtPokemonList")
         .get();
     snapshot.docs.map((doc) => doc.data()["pokemonId"]).toList();
