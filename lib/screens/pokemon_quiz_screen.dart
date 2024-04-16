@@ -75,7 +75,6 @@ class _PokemonQuizScreenState extends State<PokemonQuizScreen> {
 
   @override
   void initState() {
-    // TODO: implement initState
     _fetchRandomPokemonData();
     super.initState();
   }
@@ -115,7 +114,6 @@ class _PokemonQuizScreenState extends State<PokemonQuizScreen> {
                           pokemonData.pokemonName,
                           style: Theme.of(context).textTheme.headlineSmall,
                         ),
-                  // ),
                   const SizedBox(
                     height: 16,
                   ),

@@ -16,7 +16,6 @@ class _MainHostState extends State<MainHost> {
     PokemonListScreen(),
     PokemonQuizScreen(),
     BoxScreen(),
-    // PlaceholderScreen(title: 'ポケモン図鑑'),
     SettingScreen()
   ];
   int _selectedIndex = 0;
