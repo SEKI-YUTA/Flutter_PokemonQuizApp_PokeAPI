@@ -58,6 +58,7 @@ class _PokemonDetailScreenState extends State<PokemonDetailScreen> {
                 value: widget.pokemonData.hp,
                 parentContext: context,
                 requireIndicator: false,
+                maskText: widget.shouldShowStatus ? null : "???",
               ),
               StatusItem(
                 title: "こうげき",
