@@ -17,7 +17,6 @@ class PokemonQuizApp extends StatefulWidget {
 class _PokemonQuizAppState extends State<PokemonQuizApp> {
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
   }
 

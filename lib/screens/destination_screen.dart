@@ -24,7 +24,6 @@ class _DestinationScreenState extends State<DestinationScreen> {
 
   @override
   void initState() {
-    // TODO: implement initState
     initApp();
     super.initState();
   }
