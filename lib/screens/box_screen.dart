@@ -8,6 +8,7 @@ import 'package:pokemon_quiz_app/data/PokeApi.dart';
 import 'package:pokemon_quiz_app/data/model/CaughtPokemon.dart';
 import 'package:pokemon_quiz_app/data/model/PokemonData.dart';
 import 'package:pokemon_quiz_app/other/PokeApiEndpoints.dart';
+import 'package:pokemon_quiz_app/screens/pokemon_detail_screen.dart';
 
 class BoxScreen extends StatefulWidget {
   const BoxScreen({super.key});
@@ -91,7 +92,14 @@ class _BoxScreenState extends State<BoxScreen> {
                         itemCount: _pokemonList.length,
                         itemBuilder: (context, index) {
                           var pokemonData = _pokemonList[index];
-                          return PokemonCard(item: pokemonData);
+                          return PokemonCard(
+                            item: pokemonData,
+                            onPressed: () {
+                              Navigator.of(context).push(MaterialPageRoute(
+                                  builder: (context) => PokemonDetailScreen(
+                                      pokemonItem: pokemonData)));
+                            },
+                          );
                         }),
                   ),
                 ],
