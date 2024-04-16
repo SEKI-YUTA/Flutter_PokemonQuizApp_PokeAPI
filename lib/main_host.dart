@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:pokemon_quiz_app/screens/basket_screen.dart';
+import 'package:pokemon_quiz_app/screens/box_screen.dart';
 import 'package:pokemon_quiz_app/screens/pokemon_list_screen.dart';
 import 'package:pokemon_quiz_app/screens/pokemon_quiz_screen.dart';
 import 'package:pokemon_quiz_app/screens/setting_screen.dart';
@@ -15,7 +15,7 @@ class _MainHostState extends State<MainHost> {
   static const _screens = [
     PokemonListScreen(),
     PokemonQuizScreen(),
-    BasketScreen(),
+    BoxScreen(),
     // PlaceholderScreen(title: 'ポケモン図鑑'),
     SettingScreen()
   ];
