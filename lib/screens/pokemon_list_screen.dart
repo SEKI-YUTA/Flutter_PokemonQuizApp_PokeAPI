@@ -57,35 +57,35 @@ class _PokemonListScreenState extends State<PokemonListScreen> {
   @override
   Widget build(BuildContext context) {
     return Container(
-        width: MediaQuery.of(context).size.width,
-        height: MediaQuery.of(context).size.height,
-        child: _isLoading && pokemonList.isEmpty
-            ? const CenterMessage(
-                message: "読み込み中...",
-                showingLoadingIndicatoro: true,
-              )
-            : ListView.builder(
-                controller: scrollController,
-                itemCount: pokemonList.length + 1,
-                itemBuilder: (context, index) {
-                  if (index == pokemonList.length) {
-                    return _isLoading
-                        ? const SizedBox(
-                            width: double.infinity,
-                            child: Center(child: CircularProgressIndicator()))
-                        : Container();
-                  }
-                  var pokemonData = pokemonList[index];
-                  return pokemonData != null
-                      ? PokemonCard(
-                          item: pokemonData,
-                          onPressed: () {
-                            Navigator.of(context).push(MaterialPageRoute(
-                                builder: (context) =>
-                                    PokemonDetailScreen(pokemonItem: pokemonData)));
-                          },
-                        )
-                      : const SizedBox();
+          width: MediaQuery.of(context).size.width,
+          height: MediaQuery.of(context).size.height,
+          child: _isLoading && pokemonList.isEmpty
+              ? const CenterMessage(
+                  message: "読み込み中...",
+                  showingLoadingIndicatoro: true,
+                )
+              : ListView.builder(
+                  controller: scrollController,
+                  itemCount: pokemonList.length + 1,
+                  itemBuilder: (context, index) {
+                    if (index == pokemonList.length) {
+                      return _isLoading
+                          ? const SizedBox(
+                              width: double.infinity,
+                              child: Center(child: CircularProgressIndicator()))
+                          : Container();
+                    }
+                    var pokemonData = pokemonList[index];
+                    return pokemonData != null
+                        ? PokemonCard(
+                            item: pokemonData,
+                            onPressed: () {
+                              Navigator.of(context).push(MaterialPageRoute(
+                                  builder: (context) => PokemonDetailScreen(
+                                      pokemonData: pokemonData)));
+                            },
+                          )
+                        : const SizedBox();
                 }));
   }
 }
