@@ -24,21 +24,12 @@ class _DestinationScreenState extends State<DestinationScreen> {
 
   @override
   void initState() {
-    // TODO: implement initState
     initApp();
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-        body: Column(children: [
-      const Text("Splash Screen"),
-      ElevatedButton(
-          onPressed: () {
-            Navigator.of(context).pushReplacementNamed('/auth');
-          },
-          child: const Text("navigate to auth screen"))
-    ]));
+    return Container();
   }
 }
