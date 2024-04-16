@@ -20,10 +20,18 @@ class QuizResultDialog extends StatelessWidget {
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            const Text("クイズの結果"),
-            Text(isCorrect ? "正解" : "不正解"),
+            Text(
+              "クイズの結果",
+              style: Theme.of(context).textTheme.headlineSmall,
+            ),
+            const SizedBox(height: 8),
+            Text(
+              isCorrect ? "正解!!🎉" : "不正解😭",
+              style: Theme.of(context).textTheme.bodyLarge,
+            ),
             Image.network(width: 200, height: 200, pokemonImageUrl),
-            Text(pokemonName),
+            Text("$pokemonNameを捕まえたよ!!",
+                style: Theme.of(context).textTheme.bodyMedium),
             const SizedBox(height: 16),
             ElevatedButton(onPressed: onNextClick, child: const Text("次の問題へ"))
           ],
