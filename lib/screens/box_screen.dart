@@ -89,8 +89,17 @@ class _BoxScreenState extends State<BoxScreen> {
                   ),
                   Flexible(
                     child: ListView.builder(
-                        itemCount: _pokemonList.length,
+                        controller: scrollController,
+                        itemCount: _pokemonList.length + 1,
                         itemBuilder: (context, index) {
+                          if (index == _pokemonList.length) {
+                            return _isLoading
+                                ? const SizedBox(
+                                    width: double.infinity,
+                                    child: Center(
+                                        child: CircularProgressIndicator()))
+                                : Container();
+                          }
                           var pokemonData = _pokemonList[index];
                           return PokemonCard(
                             item: pokemonData,
