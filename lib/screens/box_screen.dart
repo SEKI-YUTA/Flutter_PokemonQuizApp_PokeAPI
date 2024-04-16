@@ -1,11 +1,8 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:pokemon_quiz_app/components/center_message.dart';
 import 'package:pokemon_quiz_app/components/pokemon_card.dart';
 import 'package:pokemon_quiz_app/data/FireStoreClient.dart';
 import 'package:pokemon_quiz_app/data/PokeApi.dart';
-import 'package:pokemon_quiz_app/data/model/CaughtPokemon.dart';
 import 'package:pokemon_quiz_app/data/model/PokemonData.dart';
 import 'package:pokemon_quiz_app/other/PokeApiEndpoints.dart';
 import 'package:pokemon_quiz_app/screens/pokemon_detail_screen.dart';
@@ -76,18 +73,20 @@ class _BoxScreenState extends State<BoxScreen> {
     return SizedBox(
         width: MediaQuery.of(context).size.width,
         height: MediaQuery.of(context).size.height,
-        child: _isLoading && _pokemonList.isEmpty
-            ? const CenterMessage(
-                message: "読み込み中...",
-                showingLoadingIndicatoro: true,
-              )
-            : Column(
-                children: [
-                  Text(
-                    "捕まえたポケモン",
-                    style: Theme.of(context).textTheme.headlineMedium,
-                  ),
-                  Flexible(
+        child: Column(
+          children: [
+            const SizedBox(height: 16),
+            Text(
+              "捕まえたポケモン",
+              style: Theme.of(context).textTheme.headlineMedium,
+            ),
+            const SizedBox(height: 8),
+            _isLoading && _pokemonList.isEmpty
+                ? const CenterMessage(
+                    message: "読み込み中...",
+                    showingLoadingIndicatoro: true,
+                  )
+                : Flexible(
                     child: ListView.builder(
                         controller: scrollController,
                         itemCount: _pokemonList.length + 1,
@@ -111,7 +110,7 @@ class _BoxScreenState extends State<BoxScreen> {
                           );
                         }),
                   ),
-                ],
-              ));
+          ],
+        ));
   }
 }

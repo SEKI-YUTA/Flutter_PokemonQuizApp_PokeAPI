@@ -10,14 +10,16 @@ class CenterMessage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Center(
-        child: Column(
-      mainAxisSize: MainAxisSize.min,
-      children: [
-        Text(message),
-        const SizedBox(height: 16),
-        if (showingLoadingIndicatoro) const CircularProgressIndicator()
-      ],
-    ));
+    return Expanded(
+      child: Center(
+          child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Text(message),
+          const SizedBox(height: 16),
+          if (showingLoadingIndicatoro) const CircularProgressIndicator()
+        ],
+      )),
+    );
   }
 }
