@@ -84,6 +84,12 @@ class _BoxScreenState extends State<BoxScreen> {
               style: Theme.of(context).textTheme.headlineMedium,
             ),
             const SizedBox(height: 8),
+            !_isLoading && _pokemonList.isEmpty
+                ? const CenterMessage(
+                    message: "捕まえたポケモンがいません。\n ポケモンクイズに正解してポケモンを捕まえよう!",
+                    showingLoadingIndicatoro: false,
+                  )
+                : Container(),
             _isLoading && _pokemonList.isEmpty
                 ? const CenterMessage(
                     message: "読み込み中...",
