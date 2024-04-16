@@ -24,6 +24,7 @@ class _PokemonQuizAppState extends State<PokemonQuizApp> {
   Widget build(BuildContext context) {
     ThemeMode themeMode = ThemeMode.system;
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
       title: 'Flutter Demo',
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
