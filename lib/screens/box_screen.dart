@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:pokemon_quiz_app/data/FireStoreClient.dart';
 
-class BasketScreen extends StatefulWidget {
-  const BasketScreen({super.key});
+class BoxScreen extends StatefulWidget {
+  const BoxScreen({super.key});
 
   @override
-  State<BasketScreen> createState() => _BasketScreenState();
+  State<BoxScreen> createState() => _BoxScreenState();
 }
 
-class _BasketScreenState extends State<BasketScreen> {
+class _BoxScreenState extends State<BoxScreen> {
   Future<void> _readData() async {
     var list = await FireStoreClient.getCaughtPokemonList();
     print("caughtPokemonList $list");
