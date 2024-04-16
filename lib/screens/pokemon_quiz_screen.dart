@@ -1,6 +1,7 @@
 import 'package:audioplayers/audioplayers.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:pokemon_quiz_app/components/HintItems.dart';
 import 'package:pokemon_quiz_app/components/center_message.dart';
 import 'package:pokemon_quiz_app/components/question_image.dart';
@@ -85,144 +86,171 @@ class _PokemonQuizScreenState extends State<PokemonQuizScreen> {
     var pokemonData = _quizData?.pokemonData;
     print(pokemonData?.pokemonName);
 
-    return !_isLoading && pokemonData != null
-        ? Padding(
-            padding: const EdgeInsets.all(16),
-            child: SingleChildScrollView(
-              child: Column(
-                children: [
-                  SizedBox(
-                    width: double.infinity,
-                    child: ConstrainedBox(
-                      constraints:
-                          const BoxConstraints(maxWidth: 300, maxHeight: 300),
-                      child: SizedBox(
-                        width: double.infinity,
-                        height: double.infinity,
-                        child: _quizData!.status == QuizStatus.NOT_ANSWERED
-                            ? const QuestionImage()
-                            : Image.network(pokemonData.pokemonImageURL),
+    return SizedBox(
+      width: MediaQuery.of(context).size.width,
+      height: MediaQuery.of(context).size.height,
+      child: Padding(
+        padding: const EdgeInsets.all(16),
+        child: Column(
+          children: [
+            _isLoading || pokemonData == null
+                ? const CenterMessage(
+                    message: "読み込み中...",
+                    showingLoadingIndicatoro: true,
+                  )
+                : Flexible(
+                    child: SingleChildScrollView(
+                      child: Column(
+                        children: [
+                          SizedBox(
+                            width: double.infinity,
+                            child: ConstrainedBox(
+                              constraints: const BoxConstraints(
+                                  maxWidth: 300, maxHeight: 300),
+                              child: SizedBox(
+                                width: double.infinity,
+                                height: double.infinity,
+                                child:
+                                    _quizData!.status == QuizStatus.NOT_ANSWERED
+                                        ? const QuestionImage()
+                                        : Image.network(
+                                            pokemonData.pokemonImageURL),
+                              ),
+                            ),
+                          ),
+                          _quizData!.status == QuizStatus.NOT_ANSWERED
+                              ? Text("このポケモンの名前は？",
+                                  style: Theme.of(context)
+                                      .textTheme
+                                      .headlineSmall!
+                                      .copyWith(color: Colors.red))
+                              : Text(
+                                  pokemonData.pokemonName,
+                                  style:
+                                      Theme.of(context).textTheme.headlineSmall,
+                                ),
+                          const SizedBox(
+                            height: 16,
+                          ),
+                          HintItems.hint1ExpansionTile(context, pokemonData),
+                          const SizedBox(height: 16),
+                          Stack(
+                            alignment: AlignmentDirectional.center,
+                            children: [
+                              HintItems.hint2ExpansionTile(
+                                  pokemonData,
+                                  hint2Controller,
+                                  _quizData!.hintStep >= 2,
+                                  context),
+                              _quizData!.hintStep < 2
+                                  ? ElevatedButton(
+                                      onPressed: () {
+                                        if (_quizData!.hintStep == 1) {
+                                          setState(() {
+                                            hint2Controller.expand();
+                                            _quizData = _quizData!
+                                                .copyWith(hintStep: 2);
+                                          });
+                                        }
+                                      },
+                                      child: const Text("ヒント2を見る"))
+                                  : Container()
+                            ],
+                          ),
+                          const SizedBox(height: 16),
+                          Stack(
+                            alignment: AlignmentDirectional.center,
+                            children: [
+                              HintItems.hint3ExpansionTile(
+                                  pokemonData,
+                                  hint3Controller,
+                                  _quizData!.hintStep >= 3,
+                                  context),
+                              _quizData!.hintStep < 3
+                                  ? ElevatedButton(
+                                      onPressed: () {
+                                        if (_quizData!.hintStep == 2) {
+                                          hint3Controller.expand();
+                                          setState(() {
+                                            _quizData = _quizData!
+                                                .copyWith(hintStep: 3);
+                                          });
+                                        }
+                                      },
+                                      child: const Text("ヒント3を見る"))
+                                  : Container()
+                            ],
+                          ),
+                          const SizedBox(height: 16),
+                          TextField(
+                            controller: _userAnswerController,
+                            decoration: const InputDecoration(
+                              hintText: "ポケモンの名前(例：ピカチュウ)",
+                            ),
+                            maxLines: 1,
+                          ),
+                          const SizedBox(
+                            height: 8,
+                          ),
+                          ElevatedButton(
+                              onPressed:
+                                  _quizData!.status == QuizStatus.NOT_ANSWERED
+                                      ? () {
+                                          _answerAction();
+                                        }
+                                      : null,
+                              child: const Text("こたえ合わせをする")),
+                          const SizedBox(height: 40),
+                          Row(
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: [
+                                const Text(
+                                  "答え: ",
+                                  style: TextStyle(fontSize: 16),
+                                ),
+                                const SizedBox(
+                                  width: 16,
+                                ),
+                                _quizData!.status == QuizStatus.NOT_ANSWERED
+                                    ? Container()
+                                    : Text(
+                                        _quizData!.pokemonData.pokemonName,
+                                        style: Theme.of(context)
+                                            .textTheme
+                                            .headlineSmall,
+                                      )
+                              ]),
+                          const SizedBox(
+                            height: 8,
+                          ),
+                          ElevatedButton(
+                              onPressed:
+                                  _quizData!.status == QuizStatus.NOT_ANSWERED
+                                      ? () {
+                                          setState(() {
+                                            _quizData = _quizData!.copyWith(
+                                                status: QuizStatus.GIVE_UP);
+                                          });
+                                        }
+                                      : null,
+                              child: const Text("答えを見る")),
+                          const SizedBox(height: 40),
+                          Row(
+                              mainAxisAlignment: MainAxisAlignment.end,
+                              children: [
+                                ElevatedButton(
+                                    onPressed: () {
+                                      _fetchRandomPokemonData();
+                                    },
+                                    child: const Text("次の問題")),
+                              ])
+                        ],
                       ),
                     ),
-                  ),
-                  _quizData!.status == QuizStatus.NOT_ANSWERED
-                      ? Text("このポケモンの名前は？",
-                          style: Theme.of(context)
-                              .textTheme
-                              .headlineSmall!
-                              .copyWith(color: Colors.red))
-                      : Text(
-                          pokemonData.pokemonName,
-                          style: Theme.of(context).textTheme.headlineSmall,
-                        ),
-                  const SizedBox(
-                    height: 16,
-                  ),
-                  HintItems.hint1ExpansionTile(context, pokemonData),
-                  const SizedBox(height: 16),
-                  Stack(
-                    alignment: AlignmentDirectional.center,
-                    children: [
-                      HintItems.hint2ExpansionTile(pokemonData, hint2Controller,
-                          _quizData!.hintStep >= 2, context),
-                      _quizData!.hintStep < 2
-                          ? ElevatedButton(
-                              onPressed: () {
-                                if (_quizData!.hintStep == 1) {
-                                  setState(() {
-                                    hint2Controller.expand();
-                                    _quizData =
-                                        _quizData!.copyWith(hintStep: 2);
-                                  });
-                                }
-                              },
-                              child: const Text("ヒント2を見る"))
-                          : Container()
-                    ],
-                  ),
-                  const SizedBox(height: 16),
-                  Stack(
-                    alignment: AlignmentDirectional.center,
-                    children: [
-                      HintItems.hint3ExpansionTile(pokemonData, hint3Controller,
-                          _quizData!.hintStep >= 3, context),
-                      _quizData!.hintStep < 3
-                          ? ElevatedButton(
-                              onPressed: () {
-                                if (_quizData!.hintStep == 2) {
-                                  hint3Controller.expand();
-                                  setState(() {
-                                    _quizData =
-                                        _quizData!.copyWith(hintStep: 3);
-                                  });
-                                }
-                              },
-                              child: const Text("ヒント3を見る"))
-                          : Container()
-                    ],
-                  ),
-                  const SizedBox(height: 16),
-                  TextField(
-                    controller: _userAnswerController,
-                    decoration: const InputDecoration(
-                      hintText: "ポケモンの名前(例：ピカチュウ)",
-                    ),
-                    maxLines: 1,
-                  ),
-                  const SizedBox(
-                    height: 8,
-                  ),
-                  ElevatedButton(
-                      onPressed: _quizData!.status == QuizStatus.NOT_ANSWERED
-                          ? () {
-                              _answerAction();
-                            }
-                          : null,
-                      child: const Text("こたえ合わせをする")),
-                  const SizedBox(height: 40),
-                  Row(crossAxisAlignment: CrossAxisAlignment.center, children: [
-                    const Text(
-                      "答え: ",
-                      style: TextStyle(fontSize: 16),
-                    ),
-                    const SizedBox(
-                      width: 16,
-                    ),
-                    _quizData!.status == QuizStatus.NOT_ANSWERED
-                        ? Container()
-                        : Text(
-                            _quizData!.pokemonData.pokemonName,
-                            style: Theme.of(context).textTheme.headlineSmall,
-                          )
-                  ]),
-                  const SizedBox(
-                    height: 8,
-                  ),
-                  ElevatedButton(
-                      onPressed: _quizData!.status == QuizStatus.NOT_ANSWERED
-                          ? () {
-                              setState(() {
-                                _quizData = _quizData!
-                                    .copyWith(status: QuizStatus.GIVE_UP);
-                              });
-                            }
-                          : null,
-                      child: const Text("答えを見る")),
-                  const SizedBox(height: 40),
-                  Row(mainAxisAlignment: MainAxisAlignment.end, children: [
-                    ElevatedButton(
-                        onPressed: () {
-                          _fetchRandomPokemonData();
-                        },
-                        child: const Text("次の問題")),
-                  ])
-                ],
-              ),
-            ),
-          )
-        : const CenterMessage(
-            message: "読み込み中...",
-            showingLoadingIndicatoro: true,
-          );
+                  )
+          ],
+        ),
+      ),
+    );
   }
 }
