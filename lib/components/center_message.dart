@@ -16,7 +16,10 @@ class CenterMessage extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            Text(message),
+            Text(
+              message,
+              textAlign: TextAlign.center,
+            ),
             const SizedBox(height: 16),
             if (showingLoadingIndicatoro) const CircularProgressIndicator()
           ],
