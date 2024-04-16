@@ -1,3 +1,5 @@
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:pokemon_quiz_app/components/center_message.dart';
 import 'package:pokemon_quiz_app/components/pokemon_card.dart';
@@ -26,7 +28,8 @@ class _BoxScreenState extends State<BoxScreen> {
     setState(() {
       _isLoading = true;
     });
-    var caughtPokemonList = await FireStoreClient.getCaughtPokemonList();
+    var caughtPokemonList = await FireStoreClient.getCaughtPokemonList(
+        FirebaseAuth.instance.currentUser!.uid);
     var addPokemonList = <PokemonData>[];
     var futureList = <Future>[];
     for (int i = _fetchedIndex; i < (_fetchedIndex + _FETCH_COUNT); i++) {
