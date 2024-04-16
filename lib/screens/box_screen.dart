@@ -104,13 +104,5 @@ class _BoxScreenState extends State<BoxScreen> {
                   ),
                 ],
               ));
-    // return Container(
-    //   child: ElevatedButton(
-    //     child: Text("hogheoge"),
-    //     onPressed: () {
-    //       print(_pokemonList);
-    //     },
-    //   ),
-    // );
   }
 }
