@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:pokemon_quiz_app/data/model/PokemonData.dart';
-import 'package:pokemon_quiz_app/screens/pokemon_detail_screen.dart';
 
 class PokemonCard extends StatelessWidget {
   PokemonData item;
