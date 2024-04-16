@@ -1,4 +1,5 @@
 import 'package:audioplayers/audioplayers.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:pokemon_quiz_app/components/HintItems.dart';
 import 'package:pokemon_quiz_app/components/center_message.dart';
@@ -46,7 +47,7 @@ class _PokemonQuizScreenState extends State<PokemonQuizScreen> {
     final isCorrect =
         _quizData?.pokemonData.pokemonName == _userAnswerController.text;
     if (isCorrect) {
-      FireStoreClient.addCaughtPokemon(
+      FireStoreClient.addCaughtPokemon(FirebaseAuth.instance.currentUser!.uid,
           _quizData!.pokemonData.id, DateTime.now().millisecondsSinceEpoch);
     }
     final player = AudioPlayer();
