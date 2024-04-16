@@ -38,7 +38,7 @@ class _MainHostState extends State<MainHost> {
           BottomNavigationBarItem(icon: Icon(Icons.book), label: '図鑑'),
           BottomNavigationBarItem(icon: Icon(Icons.quiz), label: 'クイズ'),
           BottomNavigationBarItem(
-              icon: Icon(Icons.shopping_basket), label: '持ち物'),
+              icon: Icon(Icons.shopping_basket), label: 'ボックス'),
           BottomNavigationBarItem(icon: Icon(Icons.settings), label: '設定'),
         ],
         type: BottomNavigationBarType.fixed,
