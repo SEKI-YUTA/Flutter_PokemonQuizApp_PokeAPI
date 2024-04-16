@@ -4,18 +4,21 @@ import 'package:pokemon_quiz_app/screens/pokemon_detail_screen.dart';
 
 class PokemonCard extends StatelessWidget {
   PokemonData item;
-  PokemonCard({super.key, required this.item});
+  Function()? onPressed;
+  Function()? onLongPress;
+  PokemonCard(
+      {super.key,
+      required this.item,
+      this.onPressed,
+      this.onLongPress});
 
   @override
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: GestureDetector(
-        onTap: () {
-          Navigator.of(context).push(MaterialPageRoute(builder: (context) {
-            return PokemonDetailScreen(pokemonItem: item);
-          }));
-        },
+        onTap: onPressed,
+        onLongPress: onLongPress,
         child: Row(
           children: [
             Image.network(
