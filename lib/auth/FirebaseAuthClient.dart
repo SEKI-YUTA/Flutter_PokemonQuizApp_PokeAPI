@@ -85,6 +85,9 @@ class FirebaseAuthClient {
   static String exceptionMessage(FirebaseAuthResultStatus result) {
     String message = '';
     switch (result) {
+      case FirebaseAuthResultStatus.Successful:
+        message = '';
+        break;
       case FirebaseAuthResultStatus.InvalidEmail:
         message = 'メールアドレスが間違っています。';
         break;
