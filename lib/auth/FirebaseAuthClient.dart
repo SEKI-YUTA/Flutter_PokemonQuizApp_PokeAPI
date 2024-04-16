@@ -90,7 +90,7 @@ class FirebaseAuthClient {
         break;
 
       case FirebaseAuthResultStatus.InvalidCredential:
-        message = 'パスワードが間違っています。';
+        message = '認証情報が間違っています。';
         break;
 
       case FirebaseAuthResultStatus.WrongPassword:
