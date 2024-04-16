@@ -3,7 +3,9 @@ import 'package:pokemon_quiz_app/data/model/PokemonData.dart';
 
 class PokemonDetailScreen extends StatefulWidget {
   final PokemonData pokemonItem;
-  const PokemonDetailScreen({super.key, required this.pokemonItem});
+  final bool shouldShowStatus;
+  const PokemonDetailScreen(
+      {super.key, required this.pokemonItem, this.shouldShowStatus = false});
 
   @override
   State<PokemonDetailScreen> createState() => _PokemonDetailScreenState();
