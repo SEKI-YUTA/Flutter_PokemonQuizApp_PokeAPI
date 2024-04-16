@@ -30,14 +30,6 @@ class _DestinationScreenState extends State<DestinationScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-        body: Column(children: [
-      const Text("Splash Screen"),
-      ElevatedButton(
-          onPressed: () {
-            Navigator.of(context).pushReplacementNamed('/auth');
-          },
-          child: const Text("navigate to auth screen"))
-    ]));
+    return Container();
   }
 }
