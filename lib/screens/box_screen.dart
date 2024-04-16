@@ -73,18 +73,20 @@ class _BoxScreenState extends State<BoxScreen> {
     return SizedBox(
         width: MediaQuery.of(context).size.width,
         height: MediaQuery.of(context).size.height,
-        child: _isLoading && _pokemonList.isEmpty
-            ? const CenterMessage(
-                message: "読み込み中...",
-                showingLoadingIndicatoro: true,
-              )
-            : Column(
-                children: [
-                  Text(
-                    "捕まえたポケモン",
-                    style: Theme.of(context).textTheme.headlineMedium,
-                  ),
-                  Flexible(
+        child: Column(
+          children: [
+            const SizedBox(height: 16),
+            Text(
+              "捕まえたポケモン",
+              style: Theme.of(context).textTheme.headlineMedium,
+            ),
+            const SizedBox(height: 8),
+            _isLoading && _pokemonList.isEmpty
+                ? const CenterMessage(
+                    message: "読み込み中...",
+                    showingLoadingIndicatoro: true,
+                  )
+                : Flexible(
                     child: ListView.builder(
                         controller: scrollController,
                         itemCount: _pokemonList.length + 1,
@@ -108,7 +110,7 @@ class _BoxScreenState extends State<BoxScreen> {
                           );
                         }),
                   ),
-                ],
-              ));
+          ],
+        ));
   }
 }
