@@ -31,9 +31,9 @@ class _PokemonQuizAppState extends State<PokemonQuizApp> {
       ),
       darkTheme: ThemeData.dark(),
       themeMode: themeMode,
-      initialRoute: '/splash',
+      initialRoute: '/destination',
       routes: <String, WidgetBuilder>{
-        '/splash': (BuildContext context) => const DestinationScreen(),
+        '/destination': (BuildContext context) => const DestinationScreen(),
         '/mainHost': (BuildContext context) => const MainHost(),
         '/auth': (BuildContext context) => const AuthScreen()
       },
