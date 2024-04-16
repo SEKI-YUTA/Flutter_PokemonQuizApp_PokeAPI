@@ -105,7 +105,9 @@ class _BoxScreenState extends State<BoxScreen> {
                             onPressed: () {
                               Navigator.of(context).push(MaterialPageRoute(
                                   builder: (context) => PokemonDetailScreen(
-                                      pokemonItem: pokemonData)));
+                                        pokemonData: pokemonData,
+                                        shouldShowStatus: true,
+                                      )));
                             },
                           );
                         }),

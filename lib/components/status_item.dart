@@ -5,12 +5,14 @@ class StatusItem extends StatelessWidget {
   final int value;
   final statusMax = 255;
   final bool requireIndicator;
+  final String? maskText;
   final BuildContext parentContext;
   const StatusItem(
       {super.key,
       required this.title,
       required this.value,
       this.requireIndicator = true,
+      this.maskText,
       required this.parentContext});
 
   @override
@@ -26,12 +28,12 @@ class StatusItem extends StatelessWidget {
             style: myStyle,
           ),
           const SizedBox(width: 16),
-          Text(value.toString()),
+          Text(maskText ?? value.toString()),
           const SizedBox(width: 8),
           requireIndicator
               ? Expanded(
                   child: LinearProgressIndicator(
-                    value: value / statusMax,
+                    value: maskText != null ? 0 : (value / statusMax),
                     backgroundColor: Colors.grey,
                     valueColor:
                         const AlwaysStoppedAnimation<Color>(Colors.green),
