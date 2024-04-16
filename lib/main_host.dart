@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:pokemon_quiz_app/screens/basket_screen.dart';
+import 'package:pokemon_quiz_app/screens/box_screen.dart';
 import 'package:pokemon_quiz_app/screens/pokemon_list_screen.dart';
 import 'package:pokemon_quiz_app/screens/pokemon_quiz_screen.dart';
 import 'package:pokemon_quiz_app/screens/setting_screen.dart';
@@ -15,7 +15,7 @@ class _MainHostState extends State<MainHost> {
   static const _screens = [
     PokemonListScreen(),
     PokemonQuizScreen(),
-    BasketScreen(),
+    BoxScreen(),
     // PlaceholderScreen(title: 'ポケモン図鑑'),
     SettingScreen()
   ];
@@ -38,7 +38,7 @@ class _MainHostState extends State<MainHost> {
           BottomNavigationBarItem(icon: Icon(Icons.book), label: '図鑑'),
           BottomNavigationBarItem(icon: Icon(Icons.quiz), label: 'クイズ'),
           BottomNavigationBarItem(
-              icon: Icon(Icons.shopping_basket), label: '持ち物'),
+              icon: Icon(Icons.shopping_basket), label: 'ボックス'),
           BottomNavigationBarItem(icon: Icon(Icons.settings), label: '設定'),
         ],
         type: BottomNavigationBarType.fixed,

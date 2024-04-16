@@ -3,6 +3,7 @@ import 'package:pokemon_quiz_app/components/pokemon_card.dart';
 import 'package:pokemon_quiz_app/components/center_message.dart';
 import 'package:pokemon_quiz_app/data/PokeApi.dart';
 import 'package:pokemon_quiz_app/data/model/PokemonData.dart';
+import 'package:pokemon_quiz_app/screens/pokemon_detail_screen.dart';
 
 class PokemonListScreen extends StatefulWidget {
   const PokemonListScreen({super.key});
@@ -74,9 +75,16 @@ class _PokemonListScreenState extends State<PokemonListScreen> {
                             child: Center(child: CircularProgressIndicator()))
                         : Container();
                   }
-                  var pokemon = pokemonList[index];
-                  return pokemon != null
-                      ? PokemonCard(item: pokemon)
+                  var pokemonData = pokemonList[index];
+                  return pokemonData != null
+                      ? PokemonCard(
+                          item: pokemonData,
+                          onPressed: () {
+                            Navigator.of(context).push(MaterialPageRoute(
+                                builder: (context) =>
+                                    PokemonDetailScreen(pokemonItem: pokemonData)));
+                          },
+                        )
                       : const SizedBox();
                 }));
   }
