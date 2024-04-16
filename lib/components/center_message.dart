@@ -12,14 +12,16 @@ class CenterMessage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Expanded(
       child: Center(
-          child: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          Text(message),
-          const SizedBox(height: 16),
-          if (showingLoadingIndicatoro) const CircularProgressIndicator()
-        ],
-      )),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            Text(message),
+            const SizedBox(height: 16),
+            if (showingLoadingIndicatoro) const CircularProgressIndicator()
+          ],
+        ),
+      ),
     );
   }
 }
