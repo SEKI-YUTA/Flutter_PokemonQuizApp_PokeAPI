@@ -1,11 +1,8 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:pokemon_quiz_app/components/center_message.dart';
 import 'package:pokemon_quiz_app/components/pokemon_card.dart';
 import 'package:pokemon_quiz_app/data/FireStoreClient.dart';
 import 'package:pokemon_quiz_app/data/PokeApi.dart';
-import 'package:pokemon_quiz_app/data/model/CaughtPokemon.dart';
 import 'package:pokemon_quiz_app/data/model/PokemonData.dart';
 import 'package:pokemon_quiz_app/other/PokeApiEndpoints.dart';
 import 'package:pokemon_quiz_app/screens/pokemon_detail_screen.dart';
