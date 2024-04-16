@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:pokemon_quiz_app/data/model/FirebaseAuthResultStatus.dart';
 
@@ -33,6 +34,15 @@ class FirebaseAuthClient {
       } else {
         result = FirebaseAuthResultStatus.Successful;
       }
+      FirebaseFirestore.instance
+          .collection("users")
+          .doc(userCredential.user!.uid)
+          .set({
+        "created_at": DateTime.now().millisecondsSinceEpoch,
+        "name": "",
+        "email": email,
+        "photoURL": ""
+      });
     } catch (error) {
       print("error: $error");
       result = handleException(error as FirebaseAuthException);
