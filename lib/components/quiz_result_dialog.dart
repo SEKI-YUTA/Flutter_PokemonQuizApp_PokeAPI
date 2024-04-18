@@ -30,7 +30,7 @@ class QuizResultDialog extends StatelessWidget {
               style: Theme.of(context).textTheme.bodyLarge,
             ),
             Image.network(width: 200, height: 200, pokemonImageUrl),
-            Text("$pokemonNameを捕まえたよ!!",
+            Text(isCorrect ? "$pokemonNameを捕まえたよ!!" : "残念、$pokemonNameは逃げてしまった",
                 style: Theme.of(context).textTheme.bodyMedium),
             const SizedBox(height: 16),
             ElevatedButton(onPressed: onNextClick, child: const Text("次の問題へ"))
