@@ -2,6 +2,7 @@ import 'package:audioplayers/audioplayers.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:pokemon_quiz_app/components/HintItems.dart';
 import 'package:pokemon_quiz_app/components/center_message.dart';
 import 'package:pokemon_quiz_app/components/question_image.dart';
@@ -193,12 +194,17 @@ class _PokemonQuizScreenState extends State<PokemonQuizScreen> {
                             height: 8,
                           ),
                           ElevatedButton(
-                              onPressed:
-                                  _quizData!.status == QuizStatus.NOT_ANSWERED
-                                      ? () {
-                                          _answerAction();
-                                        }
-                                      : null,
+                              onPressed: _quizData!.status ==
+                                      QuizStatus.NOT_ANSWERED
+                                  ? () {
+                                      if (_userAnswerController.text.isEmpty) {
+                                        Fluttertoast.showToast(
+                                            msg: "ポケモンの名前を入力してください");
+                                      } else {
+                                        _answerAction();
+                                      }
+                                    }
+                                  : null,
                               child: const Text("こたえ合わせをする")),
                           const SizedBox(height: 40),
                           Row(
