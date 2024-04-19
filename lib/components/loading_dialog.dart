@@ -1,21 +1,22 @@
 import 'package:flutter/material.dart';
 
 class LoadingDialog extends StatelessWidget {
-  const LoadingDialog({super.key});
+  final String message;
+  const LoadingDialog({super.key, this.message = "読み込み中..."});
 
   @override
   Widget build(BuildContext context) {
-    return const Dialog(
+    return Dialog(
       child: Padding(
-        padding: EdgeInsets.all(16),
+        padding: const EdgeInsets.all(16),
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            CircularProgressIndicator(),
-            SizedBox(
+            const CircularProgressIndicator(),
+            const SizedBox(
               height: 16,
             ),
-            Text("読み込み中"),
+            Text(message),
           ],
         ),
       ),
