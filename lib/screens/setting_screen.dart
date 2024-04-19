@@ -41,19 +41,21 @@ class _SettingScreenState extends State<SettingScreen> {
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.all(16),
-      child: Column(
-        children: [
-          userData != null
-              ? UserInformationCard(userData: userData!)
-              : const ShimmerUserInformationCard(),
-          Expanded(child: Container()),
-          TextButton(
-              onPressed: () async {
-                await FirebaseAuth.instance.signOut();
-                Navigator.of(context).pushReplacementNamed("/auth");
-              },
-              child: const Text("ログアウト"))
-        ],
+      child: SingleChildScrollView(
+        child: Column(
+          children: [
+            userData != null
+                ? UserInformationCard(userData: userData!)
+                : const ShimmerUserInformationCard(),
+            const SizedBox(height: 100),
+            TextButton(
+                onPressed: () async {
+                  await FirebaseAuth.instance.signOut();
+                  Navigator.of(context).pushReplacementNamed("/auth");
+                },
+                child: const Text("ログアウト"))
+          ],
+        ),
       ),
     );
   }
