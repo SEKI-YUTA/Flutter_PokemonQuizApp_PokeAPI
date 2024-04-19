@@ -16,6 +16,7 @@ class AuthScreen extends StatefulWidget {
 class _AuthScreenState extends State<AuthScreen> {
   bool _isLoginMode = true;
   bool _isPasswordVisible = false;
+  bool _isLoading = false;
   String _errorMessage = "";
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
@@ -24,7 +25,7 @@ class _AuthScreenState extends State<AuthScreen> {
   Future<void> _loginOrRegisterAction() async {
     if (!_formKey.currentState!.validate()) return;
     if (mounted) {
-      
+      _isLoading = true;
       showDialog(
           context: context,
           builder: (context) => const LoadingDialog(message: "処理中..."));
@@ -46,6 +47,7 @@ class _AuthScreenState extends State<AuthScreen> {
       } else {
         Navigator.pop(context);
       }
+      _isLoading = false;
     }
   }
 
@@ -125,6 +127,7 @@ class _AuthScreenState extends State<AuthScreen> {
                         const SizedBox(height: 8),
                         ElevatedButton(
                             onPressed: () async {
+                              if (_isLoading) return;
                               await _loginOrRegisterAction();
                             },
                             child: Text(_isLoginMode ? "ログイン" : "新規登録")),
