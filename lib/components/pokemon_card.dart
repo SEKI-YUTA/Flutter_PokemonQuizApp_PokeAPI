@@ -17,10 +17,14 @@ class PokemonCard extends StatelessWidget {
         onLongPress: onLongPress,
         child: Row(
           children: [
-            Image.network(
-              item.pokemonImageURL,
+            SizedBox(
               width: 100,
               height: 100,
+              child: item.pokemonImageURL != ""
+                  ? Image.network(
+                      item.pokemonImageURL,
+                    )
+                  : Container(),
             ),
             const SizedBox(
               width: 16,
