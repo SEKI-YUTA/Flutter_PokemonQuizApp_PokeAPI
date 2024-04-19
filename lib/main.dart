@@ -1,10 +1,17 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:pokemon_quiz_app/data/model/PokemonData.dart';
+import 'package:pokemon_quiz_app/data/model/PokemonDictionaryList.dart';
 import 'package:pokemon_quiz_app/main_host.dart';
 import 'package:pokemon_quiz_app/screens/auth_screen.dart';
 import 'package:pokemon_quiz_app/screens/destination_screen.dart';
 
+final pokemonDictionaryListProvider =
+    NotifierProvider<PokemonDictionaryList, List<PokemonData?>>(
+        PokemonDictionaryList.new);
+
 void main() {
-  runApp(const PokemonQuizApp());
+  runApp(const ProviderScope(child: PokemonQuizApp()));
 }
 
 class PokemonQuizApp extends StatefulWidget {

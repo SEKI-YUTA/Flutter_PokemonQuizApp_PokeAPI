@@ -1,19 +1,19 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:pokemon_quiz_app/components/pokemon_card.dart';
 import 'package:pokemon_quiz_app/components/center_message.dart';
 import 'package:pokemon_quiz_app/data/PokeApi.dart';
-import 'package:pokemon_quiz_app/data/model/PokemonData.dart';
+import 'package:pokemon_quiz_app/main.dart';
 import 'package:pokemon_quiz_app/screens/pokemon_detail_screen.dart';
 
-class PokemonListScreen extends StatefulWidget {
+class PokemonListScreen extends ConsumerStatefulWidget {
   const PokemonListScreen({super.key});
 
   @override
-  State<PokemonListScreen> createState() => _PokemonListScreenState();
+  ConsumerState<PokemonListScreen> createState() => _PokemonListScreenState();
 }
 
-class _PokemonListScreenState extends State<PokemonListScreen> {
-  List<PokemonData?> pokemonList = [];
+class _PokemonListScreenState extends ConsumerState<PokemonListScreen> {
   String? nextURL;
   bool _isLoading = false;
   late ScrollController scrollController;
@@ -28,9 +28,11 @@ class _PokemonListScreenState extends State<PokemonListScreen> {
     if (mounted) {
       setState(() {
         if (appendMode == true) {
-          this.pokemonList.addAll(pokemonList);
+          ref.read(pokemonDictionaryListProvider.notifier).addAll(pokemonList);
         } else {
-          this.pokemonList = pokemonList;
+          ref
+              .read(pokemonDictionaryListProvider.notifier)
+              .setValue(pokemonList);
         }
         nextURL = nextUrl;
         _isLoading = false;
@@ -56,6 +58,7 @@ class _PokemonListScreenState extends State<PokemonListScreen> {
 
   @override
   Widget build(BuildContext context) {
+    var pokemonList = ref.watch(pokemonDictionaryListProvider);
     return SizedBox(
         width: MediaQuery.of(context).size.width,
         height: MediaQuery.of(context).size.height,
