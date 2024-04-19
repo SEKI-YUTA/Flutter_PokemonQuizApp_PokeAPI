@@ -27,6 +27,7 @@ class PokeApi {
     return list;
   }
 
+  // こっちは近いうちに消す予定
   static Future<(List<PokemonData?>, String)> fetchPokemonList(
       String? fetchUrl) async {
     fetchUrl ??= "${PokeApiEndpoints.BASE_URL}${PokeApiEndpoints.POKEMON}";
@@ -54,32 +55,39 @@ class PokeApi {
         await http.get(Uri.parse(detailDecoded['species']['url']));
     var speciesDecoded = jsonDecode(speciesResponse.body);
     var data = PokemonData(
-      id: detailDecoded['id'],
+      id: detailDecoded['id'] ?? -1,
       pokemonName: speciesDecoded['names']
-          .where((item) => item['language']['name'] == 'ja-Hrkt')
-          .first['name'],
+              .where((item) => item['language']['name'] == 'ja-Hrkt')
+              .first['name'] ??
+          "",
       pokemonImageURL: detailDecoded['sprites']['other']['official-artwork']
-          ['front_default'],
+              ['front_default'] ??
+          "",
       hp: detailDecoded['stats']
-          .where((item) => item['stat']['name'] == 'hp')
-          .first['base_stat'],
+              .where((item) => item['stat']['name'] == 'hp')
+              .first['base_stat'] ??
+          0,
       attack: detailDecoded['stats']
-          .where((item) => item['stat']['name'] == 'attack')
-          .first['base_stat'],
+              .where((item) => item['stat']['name'] == 'attack')
+              .first['base_stat'] ??
+          0,
       specialAttack: detailDecoded['stats']
-          .where((item) => item['stat']['name'] == 'special-attack')
-          .first['base_stat'],
+              .where((item) => item['stat']['name'] == 'special-attack')
+              .first['base_stat'] ??
+          0,
       defense: detailDecoded['stats']
           .where((item) => item['stat']['name'] == 'defense')
           .first['base_stat'],
       specialDefense: detailDecoded['stats']
-          .where((item) => item['stat']['name'] == 'special-defense')
-          .first['base_stat'],
+              .where((item) => item['stat']['name'] == 'special-defense')
+              .first['base_stat'] ??
+          0,
       speed: detailDecoded['stats']
-          .where((item) => item['stat']['name'] == 'speed')
-          .first['base_stat'],
-      weight: detailDecoded['weight'],
-      height: detailDecoded['height'],
+              .where((item) => item['stat']['name'] == 'speed')
+              .first['base_stat'] ??
+          0,
+      weight: detailDecoded['weight'] ?? 0,
+      height: detailDecoded['height'] ?? 0,
       types:
           detailDecoded['types'].map((item) => item['type']['name']).toList(),
     );
