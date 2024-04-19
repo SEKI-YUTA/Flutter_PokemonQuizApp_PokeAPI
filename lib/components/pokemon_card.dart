@@ -6,10 +6,7 @@ class PokemonCard extends StatelessWidget {
   Function()? onPressed;
   Function()? onLongPress;
   PokemonCard(
-      {super.key,
-      required this.item,
-      this.onPressed,
-      this.onLongPress});
+      {super.key, required this.item, this.onPressed, this.onLongPress});
 
   @override
   Widget build(BuildContext context) {
@@ -20,6 +17,8 @@ class PokemonCard extends StatelessWidget {
         onLongPress: onLongPress,
         child: Row(
           children: [
+            Text(item.id.toString(),
+                style: Theme.of(context).textTheme.headlineMedium),
             Image.network(
               item.pokemonImageURL,
               width: 100,
