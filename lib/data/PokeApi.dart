@@ -5,6 +5,28 @@ import 'package:http/http.dart' as http;
 import 'package:pokemon_quiz_app/other/PokeApiEndpoints.dart';
 
 class PokeApi {
+  static Future<List<PokemonData?>> fetchPokemonListWithOffsetIndex(
+      int? offset, int? fetchSize) async {
+    offset = offset ?? 0;
+    fetchSize = fetchSize ?? 20;
+    var response = await http.get(
+        Uri.parse(PokeApiEndpoints.createPokemonListURL(offset, fetchSize)));
+    var decoded = jsonDecode(response.body);
+    List<Future<void>> futureList = [];
+    List<PokemonData?> list =
+        List.generate(decoded['results'].length, (item) => null);
+    for (int i = 0; i < decoded['results'].length; i++) {
+      var item = decoded['results'][i];
+      var f = fetchPokemonDetail(item['url']).then((value) {
+        list[i] = value;
+      });
+      futureList.add(f);
+    }
+    futureList = futureList.where((f) => f != null).toList();
+    await Future.wait(futureList);
+    return list;
+  }
+
   static Future<(List<PokemonData?>, String)> fetchPokemonList(
       String? fetchUrl) async {
     fetchUrl ??= "${PokeApiEndpoints.BASE_URL}${PokeApiEndpoints.POKEMON}";
