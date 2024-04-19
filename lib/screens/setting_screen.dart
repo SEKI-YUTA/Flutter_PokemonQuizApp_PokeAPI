@@ -1,8 +1,5 @@
-import 'dart:ffi';
-
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:pokemon_quiz_app/components/shimmer_user_information_card.dart';
 import 'package:pokemon_quiz_app/components/user_information_card.dart';
 import 'package:pokemon_quiz_app/data/FireStoreClient.dart';
@@ -55,7 +52,7 @@ class _SettingScreenState extends State<SettingScreen> {
                 await FirebaseAuth.instance.signOut();
                 Navigator.of(context).pushReplacementNamed("/auth");
               },
-              child: Text("ログアウト"))
+              child: const Text("ログアウト"))
         ],
       ),
     );
