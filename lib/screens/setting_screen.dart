@@ -3,6 +3,7 @@ import 'dart:ffi';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:pokemon_quiz_app/components/shimmer_user_information_card.dart';
 import 'package:pokemon_quiz_app/components/user_information_card.dart';
 import 'package:pokemon_quiz_app/data/FireStoreClient.dart';
 import 'package:pokemon_quiz_app/data/model/UserData.dart';
@@ -47,7 +48,7 @@ class _SettingScreenState extends State<SettingScreen> {
         children: [
           userData != null
               ? UserInformationCard(userData: userData!)
-              : Container(),
+              : const ShimmerUserInformationCard(),
           Expanded(child: Container()),
           TextButton(
               onPressed: () async {
