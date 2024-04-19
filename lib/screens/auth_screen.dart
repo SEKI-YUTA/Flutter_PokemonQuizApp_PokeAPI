@@ -28,6 +28,7 @@ class _AuthScreenState extends State<AuthScreen> {
       _isLoading = true;
       showDialog(
           context: context,
+          barrierDismissible: false,
           builder: (context) => const LoadingDialog(message: "処理中..."));
     }
     FirebaseAuthResultStatus status;
