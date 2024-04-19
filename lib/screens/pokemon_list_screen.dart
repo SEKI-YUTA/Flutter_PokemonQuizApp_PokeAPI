@@ -14,27 +14,36 @@ class PokemonListScreen extends ConsumerStatefulWidget {
 }
 
 class _PokemonListScreenState extends ConsumerState<PokemonListScreen> {
-  String? nextURL;
+  int _nextOffset = 0;
+  final int FETCH_SIZE = 20;
   bool _isLoading = false;
   late ScrollController scrollController;
 
   Future<void> _getPokemonData(bool? appendMode) async {
+    if (ref.read(pokemonDictionaryListProvider).length >
+        _nextOffset + FETCH_SIZE) {
+      if (mounted) {
+        setState(() {
+          _nextOffset = ref.read(pokemonDictionaryListProvider).length;
+        });
+      }
+      return;
+    }
     if (mounted) {
       setState(() {
         _isLoading = true;
       });
     }
-    var (pokemonList, nextUrl) = await PokeApi.fetchPokemonList(nextURL);
+    var pokemonList =
+        await PokeApi.fetchPokemonListWithOffsetIndex(_nextOffset, FETCH_SIZE);
+    if (appendMode == true) {
+      ref.read(pokemonDictionaryListProvider.notifier).addAll(pokemonList);
+    } else {
+      ref.read(pokemonDictionaryListProvider.notifier).setValue(pokemonList);
+    }
     if (mounted) {
       setState(() {
-        if (appendMode == true) {
-          ref.read(pokemonDictionaryListProvider.notifier).addAll(pokemonList);
-        } else {
-          ref
-              .read(pokemonDictionaryListProvider.notifier)
-              .setValue(pokemonList);
-        }
-        nextURL = nextUrl;
+        _nextOffset += FETCH_SIZE;
         _isLoading = false;
       });
     }
@@ -48,9 +57,7 @@ class _PokemonListScreenState extends ConsumerState<PokemonListScreen> {
       if (scrollController.position.pixels >=
               scrollController.position.maxScrollExtent * 0.95 &&
           !_isLoading) {
-        if (nextURL != null) {
-          _getPokemonData(true);
-        }
+        _getPokemonData(true);
       }
     });
     super.initState();
