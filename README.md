@@ -1,16 +1,16 @@
-# pokemon_quiz_app
+# ポケモンクイズアプリ
+ポケモンのステータスからポケモンの名前を推測するゲームです。
+ヒント１
+HP, こうげき、ぼうぎょ、とくこう、とくぼう、すばやさの６つのステータスの値が与えられます。
+ヒント２
+ポケモンの重さ、高さ、タイプが与えれます。
+ヒント３
+ポケモンの図鑑番号が与えれます。
 
-A new Flutter project.
+これら3つのヒントからポケモンの名前を当てる事ができれば、ポケモンを捕まえる事ができて、ボックスから確認できます。
 
-## Getting Started
+## 各種画面
 
-This project is a starting point for a Flutter application.
-
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+| 図鑑画面 | クイズ画面 | ボックス画面 |  設定画面 |
+| ---- | ---- | ---- | ---- |
+| ![dictionary](assets/readme/dictionary_screen.png) | ![quiz](assets/readme/quiz_screen.png) | ![box](assets/readme/box_screen.png) | ![setting](assets/readme/setting_screen.png)
