@@ -21,6 +21,37 @@ class _AuthScreenState extends State<AuthScreen> {
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
   final _formKey = GlobalKey<FormState>();
+
+  Future<void> _loginOrRegisterAction() async {
+    if (!_formKey.currentState!.validate()) return;
+    if (mounted) {
+      _isLoading = true;
+      showDialog(
+          context: context,
+          barrierDismissible: false,
+          builder: (context) => const LoadingDialog(message: "処理中..."));
+    }
+    FirebaseAuthResultStatus status;
+    if (_isLoginMode) {
+      status = await FirebaseAuthClient.login(
+          _emailController.text, _passwordController.text);
+    } else {
+      status = await FirebaseAuthClient.register(
+          _emailController.text, _passwordController.text);
+    }
+    setState(() {
+      _errorMessage = FirebaseAuthClient.exceptionMessage(status);
+    });
+    if (mounted) {
+      if (status == FirebaseAuthResultStatus.Successful) {
+        Navigator.of(context).pushReplacementNamed('/mainHost');
+      } else {
+        Navigator.pop(context);
+      }
+      _isLoading = false;
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -97,32 +128,8 @@ class _AuthScreenState extends State<AuthScreen> {
                         const SizedBox(height: 8),
                         ElevatedButton(
                             onPressed: () async {
-                              if (!_formKey.currentState!.validate()) return;
-                              setState(() {
-                                _isLoading = true;
-                              });
-                              FirebaseAuthResultStatus status;
-                              if (_isLoginMode) {
-                                status = await FirebaseAuthClient.login(
-                                    _emailController.text,
-                                    _passwordController.text);
-                              } else {
-                                status = await FirebaseAuthClient.register(
-                                    _emailController.text,
-                                    _passwordController.text);
-                              }
-                              if (status ==
-                                      FirebaseAuthResultStatus.Successful &&
-                                  mounted) {
-                                Navigator.of(context)
-                                    .pushReplacementNamed('/mainHost');
-                              }
-                              // _formKey.currentWidget
-                              setState(() {
-                                _errorMessage =
-                                    FirebaseAuthClient.exceptionMessage(status);
-                                _isLoading = false;
-                              });
+                              if (_isLoading) return;
+                              await _loginOrRegisterAction();
                             },
                             child: Text(_isLoginMode ? "ログイン" : "新規登録")),
                         const SizedBox(height: 8),
@@ -167,7 +174,6 @@ class _AuthScreenState extends State<AuthScreen> {
                 ],
               ),
             ),
-            _isLoading ? const LoadingDialog() : Container()
           ],
         ),
       ),
