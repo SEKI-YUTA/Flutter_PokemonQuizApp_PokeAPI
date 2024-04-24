@@ -36,12 +36,12 @@ class _PokemonListScreenState extends ConsumerState<PokemonListScreen> {
     }
     var pokemonList =
         await PokeApi.fetchPokemonListWithOffsetIndex(_nextOffset, FETCH_SIZE);
-    if (appendMode == true) {
-      ref.read(pokemonDictionaryListProvider.notifier).addAll(pokemonList);
-    } else {
-      ref.read(pokemonDictionaryListProvider.notifier).setValue(pokemonList);
-    }
     if (mounted) {
+      if (appendMode == true) {
+        ref.read(pokemonDictionaryListProvider.notifier).addAll(pokemonList);
+      } else {
+        ref.read(pokemonDictionaryListProvider.notifier).setValue(pokemonList);
+      }
       setState(() {
         _nextOffset += FETCH_SIZE;
         _isLoading = false;
