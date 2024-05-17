@@ -15,18 +15,15 @@ class SettingScreen extends StatefulWidget {
 
 class _SettingScreenState extends State<SettingScreen> {
   UserData? userData;
-  bool _isLoading = false;
 
   Future<void> _getUserData() async {
     setState(() {
-      _isLoading = true;
     });
     var user = FirebaseAuth.instance.currentUser;
     if (user != null) {
       var userData = await FireStoreClient.getUserData(user.uid);
       setState(() {
         this.userData = userData;
-        _isLoading = false;
       });
     }
   }
