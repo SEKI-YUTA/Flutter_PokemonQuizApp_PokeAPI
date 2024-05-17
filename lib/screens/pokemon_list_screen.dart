@@ -1,3 +1,5 @@
+// ignore_for_file: non_constant_identifier_names
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:pokemon_quiz_app/components/pokemon_card.dart';
@@ -15,13 +17,13 @@ class PokemonListScreen extends ConsumerStatefulWidget {
 
 class _PokemonListScreenState extends ConsumerState<PokemonListScreen> {
   int _nextOffset = 0;
-  final int FETCH_SIZE = 20;
+  final int _FETCH_SIZE = 20;
   bool _isLoading = false;
   late ScrollController scrollController;
 
   Future<void> _getPokemonData(bool? appendMode) async {
     if (ref.read(pokemonDictionaryListProvider).length >
-        _nextOffset + FETCH_SIZE) {
+        _nextOffset + _FETCH_SIZE) {
       if (mounted) {
         setState(() {
           _nextOffset = ref.read(pokemonDictionaryListProvider).length;
@@ -35,7 +37,7 @@ class _PokemonListScreenState extends ConsumerState<PokemonListScreen> {
       });
     }
     var pokemonList =
-        await PokeApi.fetchPokemonListWithOffsetIndex(_nextOffset, FETCH_SIZE);
+        await PokeApi.fetchPokemonListWithOffsetIndex(_nextOffset, _FETCH_SIZE);
     if (mounted) {
       if (appendMode == true) {
         ref.read(pokemonDictionaryListProvider.notifier).addAll(pokemonList);
@@ -43,7 +45,7 @@ class _PokemonListScreenState extends ConsumerState<PokemonListScreen> {
         ref.read(pokemonDictionaryListProvider.notifier).setValue(pokemonList);
       }
       setState(() {
-        _nextOffset += FETCH_SIZE;
+        _nextOffset += _FETCH_SIZE;
         _isLoading = false;
       });
     }

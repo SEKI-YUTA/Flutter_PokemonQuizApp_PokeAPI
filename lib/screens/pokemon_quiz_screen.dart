@@ -1,7 +1,6 @@
 import 'package:audioplayers/audioplayers.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:pokemon_quiz_app/components/HintItems.dart';
 import 'package:pokemon_quiz_app/components/center_message.dart';
@@ -85,6 +84,7 @@ class _PokemonQuizScreenState extends State<PokemonQuizScreen> {
   @override
   Widget build(BuildContext context) {
     var pokemonData = _quizData?.pokemonData;
+    // ここはデモを見せる際に問題の答えを知る必要があるので必要
     print(pokemonData?.pokemonName);
 
     return SizedBox(

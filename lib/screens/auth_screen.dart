@@ -139,7 +139,6 @@ class _AuthScreenState extends State<AuthScreen> {
                           FirebaseAuth.instance
                               .signInWithProvider(GoogleAuthProvider())
                               .then((result) {
-                            print("auth result: $result");
                             if (result.user != null) {
                               Navigator.of(context)
                                   .pushReplacementNamed('/mainHost');

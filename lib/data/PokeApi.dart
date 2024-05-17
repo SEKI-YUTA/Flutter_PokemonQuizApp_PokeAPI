@@ -22,7 +22,6 @@ class PokeApi {
       });
       futureList.add(f);
     }
-    futureList = futureList.where((f) => f != null).toList();
     await Future.wait(futureList);
     return list;
   }
