@@ -16,7 +16,6 @@ class FirebaseAuthClient {
         result = FirebaseAuthResultStatus.Successful;
       }
     } catch (error) {
-      print("error: ${(error as FirebaseAuthException).code}");
       result = handleException(error as FirebaseAuthException);
     }
     return result;
@@ -44,7 +43,6 @@ class FirebaseAuthClient {
         "photoURL": ""
       });
     } catch (error) {
-      print("error: $error");
       result = handleException(error as FirebaseAuthException);
     }
     return result;
