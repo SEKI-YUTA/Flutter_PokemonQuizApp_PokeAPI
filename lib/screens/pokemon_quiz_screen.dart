@@ -84,6 +84,7 @@ class _PokemonQuizScreenState extends State<PokemonQuizScreen> {
   @override
   Widget build(BuildContext context) {
     var pokemonData = _quizData?.pokemonData;
+    // ここはデモを見せる際に問題の答えを知る必要があるので必要
     print(pokemonData?.pokemonName);
 
     return SizedBox(
