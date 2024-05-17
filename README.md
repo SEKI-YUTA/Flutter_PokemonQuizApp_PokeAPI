@@ -4,7 +4,7 @@
 2. 通常の Flutter プロジェクトのセットアップをする(`flutter pub get`など)
 3. Firebase のプロジェクトで必要な google-services.json や GoogleService-Info.plist をダウンロードして、`android/app`と`ios/Runner`ディレクトリに配置する
 4. `./gradlew signingReport`を実行して署名情報を取得する
-5. 2 の手順で出力された SHA1 の値を Firebase のプロジェクトに登録する
+5. 4の手順で出力された SHA1 の値を Firebase のプロジェクトに登録する
 
 > [!WARNING]
 > この手順を実行しないと、Firebase で使用するファイルなどがないのでビルド自体ができません。
