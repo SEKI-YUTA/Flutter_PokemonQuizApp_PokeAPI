@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 
 class TypeBadge extends StatelessWidget {
-  Map<String, dynamic> data;
-  TypeBadge({super.key, required this.data});
+  final Map<String, dynamic> data;
+  const TypeBadge({super.key, required this.data});
 
   @override
   Widget build(BuildContext context) {

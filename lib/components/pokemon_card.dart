@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:pokemon_quiz_app/data/model/PokemonData.dart';
 
 class PokemonCard extends StatelessWidget {
-  PokemonData item;
-  Function()? onPressed;
-  Function()? onLongPress;
-  PokemonCard(
+  final PokemonData item;
+  final Function()? onPressed;
+  final Function()? onLongPress;
+  const PokemonCard(
       {super.key, required this.item, this.onPressed, this.onLongPress});
 
   @override
