@@ -48,7 +48,9 @@ class _SettingScreenState extends State<SettingScreen> {
             TextButton(
                 onPressed: () async {
                   await FirebaseAuth.instance.signOut();
-                  Navigator.of(context).pushReplacementNamed("/auth");
+                  if(mounted) {
+                    Navigator.of(context).pushReplacementNamed("/auth");
+                  }
                 },
                 child: const Text("ログアウト"))
           ],
