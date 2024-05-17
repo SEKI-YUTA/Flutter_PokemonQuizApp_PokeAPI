@@ -7,8 +7,7 @@ class PokemonTypeConverter {
     return pokemonTypeMapList
             .where((item) => item['typeEn'] == typeInEnglish)
             .first['data']['typeJa']
-            .toString() ??
-        "不明";
+            .toString();
   }
 
   static List<Widget> convertTypeFromEnToBadge(List<String> types) {
