@@ -34,6 +34,17 @@ jobs:
               with:
                   name: pokemonQuiz.apk
                   path: build/app/outputs/apk/release/app-release.apk
+            - name: Check Flutter issues
+              run: flutter analyze > analyze_result.txt
+            - name: Upload lint results as a comment
+              uses: machine-learning-apps/pr-comment@v1.0.0
+              env:
+                GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+              with:
+                path: analyze_result.txt
+                REPO: ${{ github.repository }}
+                PR_NUMBER: ${{ github.event.number }}
+                COMMENT_HEADER: "## Flutter Lint Results\n"  # コメントのヘッダー
             # macOSで実行する必要があるのでAndroidのビルドだけにする
             # - name: Build iOS
             #   run: flutter build ios --no-codesign
