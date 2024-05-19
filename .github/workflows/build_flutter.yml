@@ -37,9 +37,9 @@ jobs:
             - name: Check Flutter issues
               run: flutter analyze > analyze_result.txt
             - name: Upload lint results as a comment
-              uses: machine-learning-apps/pr-comment@v1.0.0
+              uses: machine-learning-apps/pr-comment@master
               env:
-                GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+                GITHUB_TOKEN: ${{ secrets.MY_GITHUB_TOKEN }}
               with:
                 path: analyze_result.txt
                 REPO: ${{ github.repository }}
