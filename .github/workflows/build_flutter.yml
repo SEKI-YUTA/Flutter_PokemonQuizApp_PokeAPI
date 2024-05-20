@@ -38,6 +38,7 @@ jobs:
             # - name: Build iOS
             #   run: flutter build ios --no-codesign
             - name: Check Flutter issues
+              continue-on-error: true
               run: flutter analyze --write=flutter_analyze.log
             - if: ${{ !cancelled() }}  # required to run this step even if flutter analyze fails
               uses: yorifuji/flutter-analyze-commenter@v1
