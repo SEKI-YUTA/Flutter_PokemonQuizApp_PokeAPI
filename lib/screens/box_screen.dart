@@ -4,6 +4,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:pokemon_quiz_app/components/center_message.dart';
 import 'package:pokemon_quiz_app/components/pokemon_card.dart';
+import 'package:pokemon_quiz_app/components/shimmer_pokemon_card.dart';
 import 'package:pokemon_quiz_app/data/FireStoreClient.dart';
 import 'package:pokemon_quiz_app/data/PokeApi.dart';
 import 'package:pokemon_quiz_app/data/model/PokemonData.dart';
@@ -91,37 +92,36 @@ class _BoxScreenState extends State<BoxScreen> {
                     showingLoadingIndicatoro: false,
                   )
                 : Container(),
-            _isLoading && _pokemonList.isEmpty
-                ? const CenterMessage(
-                    message: "読み込み中...",
-                    showingLoadingIndicatoro: true,
-                  )
-                : Flexible(
-                    child: ListView.builder(
-                        controller: scrollController,
-                        itemCount: _pokemonList.length + 1,
-                        itemBuilder: (context, index) {
-                          if (index == _pokemonList.length) {
-                            return _isLoading
-                                ? const SizedBox(
-                                    width: double.infinity,
-                                    child: Center(
-                                        child: CircularProgressIndicator()))
-                                : Container();
-                          }
-                          var pokemonData = _pokemonList[index];
-                          return PokemonCard(
-                            item: pokemonData,
-                            onPressed: () {
-                              Navigator.of(context).push(MaterialPageRoute(
-                                  builder: (context) => PokemonDetailScreen(
-                                        pokemonData: pokemonData,
-                                        shouldShowStatus: true,
-                                      )));
-                            },
-                          );
-                        }),
-                  ),
+            Flexible(
+              child: _isLoading && _pokemonList.isEmpty
+                  ? ListView.builder(itemBuilder: (context, index) {
+                      return const ShimmerPokemonCard();
+                    })
+                  : ListView.builder(
+                      controller: scrollController,
+                      itemCount: _pokemonList.length + 1,
+                      itemBuilder: (context, index) {
+                        if (index == _pokemonList.length) {
+                          return _isLoading
+                              ? const SizedBox(
+                                  width: double.infinity,
+                                  child: Center(
+                                      child: CircularProgressIndicator()))
+                              : Container();
+                        }
+                        var pokemonData = _pokemonList[index];
+                        return PokemonCard(
+                          item: pokemonData,
+                          onPressed: () {
+                            Navigator.of(context).push(MaterialPageRoute(
+                                builder: (context) => PokemonDetailScreen(
+                                      pokemonData: pokemonData,
+                                      shouldShowStatus: true,
+                                    )));
+                          },
+                        );
+                      }),
+            ),
           ],
         ));
   }
