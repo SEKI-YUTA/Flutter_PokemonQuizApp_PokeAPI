@@ -95,7 +95,7 @@ class _PokemonQuizScreenState extends State<PokemonQuizScreen> {
           children: [
             _isLoading || pokemonData == null
                 ? const CenterMessage(
-                    message: "読み込み中...",
+                    message: "ポケモンクイズを作成中\n少しまってね。",
                     showingLoadingIndicatoro: true,
                   )
                 : Flexible(
