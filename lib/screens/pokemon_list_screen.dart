@@ -3,7 +3,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:pokemon_quiz_app/components/pokemon_card.dart';
-import 'package:pokemon_quiz_app/components/center_message.dart';
+import 'package:pokemon_quiz_app/components/shimmer_pokemon_card.dart';
 import 'package:pokemon_quiz_app/data/PokeApi.dart';
 import 'package:pokemon_quiz_app/main.dart';
 import 'package:pokemon_quiz_app/screens/pokemon_detail_screen.dart';
@@ -73,39 +73,37 @@ class _PokemonListScreenState extends ConsumerState<PokemonListScreen> {
         height: MediaQuery.of(context).size.height,
         child: Column(
           children: [
-            _isLoading && pokemonList.isEmpty
-                ? const CenterMessage(
-                    message: "読み込み中...",
-                    showingLoadingIndicatoro: true,
-                  )
-                : Flexible(
-                    child: ListView.builder(
-                        controller: scrollController,
-                        itemCount: pokemonList.length + 1,
-                        itemBuilder: (context, index) {
-                          if (index == pokemonList.length) {
-                            return _isLoading
-                                ? const SizedBox(
-                                    width: double.infinity,
-                                    child: Center(
-                                        child: CircularProgressIndicator()))
-                                : Container();
-                          }
-                          var pokemonData = pokemonList[index];
-                          return pokemonData != null
-                              ? PokemonCard(
-                                  item: pokemonData,
-                                  onPressed: () {
-                                    Navigator.of(context).push(
-                                        MaterialPageRoute(
-                                            builder: (context) =>
-                                                PokemonDetailScreen(
-                                                    pokemonData: pokemonData)));
-                                  },
-                                )
-                              : const SizedBox();
-                        }),
-                  )
+            // _isLoading && pokemonList.isEmpty
+            Flexible(
+              child: _isLoading && pokemonList.isEmpty
+                  ? ListView.builder(itemBuilder: (context, index) {
+                      return const ShimmerPokemonCard();
+                    })
+                  : ListView.builder(
+                      controller: scrollController,
+                      itemCount: pokemonList.length + 1,
+                      itemBuilder: (context, index) {
+                        if (index == pokemonList.length) {
+                          return _isLoading
+                              ? const SizedBox(
+                                  width: double.infinity,
+                                  child: Center(
+                                      child: CircularProgressIndicator()))
+                              : Container();
+                        }
+                        var pokemonData = pokemonList[index];
+                        return pokemonData != null
+                            ? PokemonCard(
+                                item: pokemonData,
+                                onPressed: () {
+                                  Navigator.of(context).push(MaterialPageRoute(
+                                      builder: (context) => PokemonDetailScreen(
+                                          pokemonData: pokemonData)));
+                                },
+                              )
+                            : const SizedBox();
+                      }),
+            )
           ],
         ));
   }
