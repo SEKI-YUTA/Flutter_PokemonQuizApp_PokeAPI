@@ -1,36 +1,43 @@
+import 'package:pokemon_quiz_app/data/PokeApi.dart';
 import 'package:pokemon_quiz_app/data/model/PokemonData.dart';
 import 'package:riverpod/riverpod.dart';
 
-class PokemonDictionaryList extends Notifier<List<PokemonData?>> {
-  // final _LIMIT = 200;
+class PokemonDictionaryList extends AsyncNotifier<List<PokemonData?>> {
+  final _LIMIT = 1302;
+  final _FETCH_SIZE = 20;
+  bool isFetching = false;
+  int _nextOffset = 0;
+
   @override
-  List<PokemonData?> build() => [];
-
-  void setValue(List<PokemonData?> pokemonDataList) {
-    state = pokemonDataList;
+  Future<List<PokemonData?>> build() async {
+    isFetching = true;
+    var pokemonList =
+        await PokeApi.fetchPokemonListWithOffsetIndex(_nextOffset, _FETCH_SIZE);
+    _nextOffset += _FETCH_SIZE;
+    isFetching = false;
+    return pokemonList;
   }
 
-  void add(PokemonData? pokemonData) {
-    // メモリの使いすぎを防ぐために保管する数に制限をかける処理をしたいが複雑になるので今回はしない
-    // if (state.length >= _LIMIT) {
-    //   state = [...state.sublist(1), pokemonData];
-    // } else {
-    //   state = [...state, pokemonData];
-    // }
-    state = [...state, pokemonData];
+  Future<void> fetchMore() async {
+    isFetching = true;
+    try {
+      var pokemonList = await PokeApi.fetchPokemonListWithOffsetIndex(
+          _nextOffset, _FETCH_SIZE);
+      _nextOffset += _FETCH_SIZE;
+      state = AsyncValue.data([...state.value!, ...pokemonList]);
+    } catch (e) {
+      state = AsyncValue.error(e, StackTrace.current);
+    } finally {
+      isFetching = false;
+    }
   }
 
-  void addAll(List<PokemonData?> pokemonDataList) {
-    // メモリの使いすぎを防ぐために保管する数に制限をかける処理をしたいが複雑になるので今回はしない
-    // var willSize = state.length + pokemonDataList.length;
-    // if (willSize > _LIMIT) {
-    //   state = [
-    //     ...state.sublist(willSize - _LIMIT),
-    //     ...pokemonDataList.sublist(0, _LIMIT - state.length)
-    //   ];
-    // } else {
-    //   state = [...state, ...pokemonDataList];
-    // }
-    state = [...state, ...pokemonDataList];
+  bool checkMoreData() {
+    return _LIMIT > _nextOffset;
   }
+
+  bool isLoading() {
+    return isFetching;
+  }
+
 }

@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:pokemon_quiz_app/components/pokemon_card.dart';
 import 'package:pokemon_quiz_app/components/shimmer_pokemon_card.dart';
-import 'package:pokemon_quiz_app/data/PokeApi.dart';
+import 'package:pokemon_quiz_app/data/model/PokemonData.dart';
 import 'package:pokemon_quiz_app/main.dart';
 import 'package:pokemon_quiz_app/screens/pokemon_detail_screen.dart';
 
@@ -16,50 +16,27 @@ class PokemonListScreen extends ConsumerStatefulWidget {
 }
 
 class _PokemonListScreenState extends ConsumerState<PokemonListScreen> {
-  int _nextOffset = 0;
-  final int _FETCH_SIZE = 20;
-  bool _isLoading = false;
+  bool _shouldShowMoreLoadingUI = false;
   late ScrollController scrollController;
-
-  Future<void> _getPokemonData(bool? appendMode) async {
-    if (ref.read(pokemonDictionaryListProvider).length >
-        _nextOffset + _FETCH_SIZE) {
-      if (mounted) {
-        setState(() {
-          _nextOffset = ref.read(pokemonDictionaryListProvider).length;
-        });
-      }
-      return;
-    }
-    if (mounted) {
-      setState(() {
-        _isLoading = true;
-      });
-    }
-    var pokemonList =
-        await PokeApi.fetchPokemonListWithOffsetIndex(_nextOffset, _FETCH_SIZE);
-    if (mounted) {
-      if (appendMode == true) {
-        ref.read(pokemonDictionaryListProvider.notifier).addAll(pokemonList);
-      } else {
-        ref.read(pokemonDictionaryListProvider.notifier).setValue(pokemonList);
-      }
-      setState(() {
-        _nextOffset += _FETCH_SIZE;
-        _isLoading = false;
-      });
-    }
-  }
 
   @override
   void initState() {
-    _getPokemonData(null);
+    // _getPokemonData(null);
     scrollController = ScrollController();
     scrollController.addListener(() async {
+      var isFetching =
+          ref.read(pokemonDictionaryListProvider.notifier).isFetching;
       if (scrollController.position.pixels >=
               scrollController.position.maxScrollExtent * 0.95 &&
-          !_isLoading) {
-        _getPokemonData(true);
+          ref.read(pokemonDictionaryListProvider.notifier).checkMoreData() &&
+          !isFetching) {
+        setState(() {
+          _shouldShowMoreLoadingUI = true;
+        });
+        await ref.read(pokemonDictionaryListProvider.notifier).fetchMore();
+        setState(() {
+          _shouldShowMoreLoadingUI = false;
+        });
       }
     });
     super.initState();
@@ -73,38 +50,45 @@ class _PokemonListScreenState extends ConsumerState<PokemonListScreen> {
         height: MediaQuery.of(context).size.height,
         child: Column(
           children: [
-            // _isLoading && pokemonList.isEmpty
             Flexible(
-              child: _isLoading && pokemonList.isEmpty
-                  ? ListView.builder(itemBuilder: (context, index) {
-                      return const ShimmerPokemonCard();
-                    })
-                  : ListView.builder(
-                      controller: scrollController,
-                      itemCount: pokemonList.length + 1,
-                      itemBuilder: (context, index) {
-                        if (index == pokemonList.length) {
-                          return _isLoading
-                              ? const SizedBox(
-                                  width: double.infinity,
-                                  child: Center(
-                                      child: CircularProgressIndicator()))
-                              : Container();
-                        }
-                        var pokemonData = pokemonList[index];
-                        return pokemonData != null
-                            ? PokemonCard(
-                                item: pokemonData,
-                                onPressed: () {
-                                  Navigator.of(context).push(MaterialPageRoute(
-                                      builder: (context) => PokemonDetailScreen(
-                                          pokemonData: pokemonData)));
-                                },
-                              )
-                            : const SizedBox();
-                      }),
-            )
+                child: pokemonList.when(
+              data: (data) => DataContent(data),
+              error: (error, stackTrace) => const Text('Error'),
+              loading: () => LoadingContent(),
+            ))
           ],
         ));
+  }
+
+  Widget LoadingContent() {
+    return ListView.builder(itemBuilder: (context, index) {
+      return const ShimmerPokemonCard();
+    });
+  }
+
+  Widget DataContent(List<PokemonData?> pokemonList) {
+    return ListView.builder(
+        controller: scrollController,
+        itemCount: pokemonList.length + 1,
+        itemBuilder: (context, index) {
+          if (index == pokemonList.length) {
+            return _shouldShowMoreLoadingUI
+                ? const SizedBox(
+                    width: double.infinity,
+                    child: Center(child: CircularProgressIndicator()))
+                : Container();
+          }
+          var pokemonData = pokemonList[index];
+          return pokemonData != null
+              ? PokemonCard(
+                  item: pokemonData,
+                  onPressed: () {
+                    Navigator.of(context).push(MaterialPageRoute(
+                        builder: (context) =>
+                            PokemonDetailScreen(pokemonData: pokemonData)));
+                  },
+                )
+              : const SizedBox();
+        });
   }
 }

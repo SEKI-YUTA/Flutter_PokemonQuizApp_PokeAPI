@@ -8,7 +8,7 @@ import 'package:pokemon_quiz_app/screens/auth_screen.dart';
 import 'package:pokemon_quiz_app/screens/destination_screen.dart';
 
 final pokemonDictionaryListProvider =
-    NotifierProvider<PokemonDictionaryList, List<PokemonData?>>(
+    AsyncNotifierProvider<PokemonDictionaryList, List<PokemonData?>>(
         PokemonDictionaryList.new);
 
 void main() async {
