@@ -1,15 +1,11 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:pokemon_quiz_app/data/model/PokemonData.dart';
-import 'package:pokemon_quiz_app/data/model/PokemonDictionaryList.dart';
 import 'package:pokemon_quiz_app/main_host.dart';
 import 'package:pokemon_quiz_app/screens/auth_screen.dart';
 import 'package:pokemon_quiz_app/screens/destination_screen.dart';
 
-final pokemonDictionaryListProvider =
-    AsyncNotifierProvider<PokemonDictionaryList, List<PokemonData?>>(
-        PokemonDictionaryList.new);
+
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
