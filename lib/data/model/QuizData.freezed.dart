@@ -23,6 +23,7 @@ mixin _$QuizData {
   QuizStatus get status => throw _privateConstructorUsedError;
   PokemonData get pokemonData => throw _privateConstructorUsedError;
   int get hintStep => throw _privateConstructorUsedError;
+  String get userAnswer => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -35,7 +36,11 @@ abstract class $QuizDataCopyWith<$Res> {
   factory $QuizDataCopyWith(QuizData value, $Res Function(QuizData) then) =
       _$QuizDataCopyWithImpl<$Res, QuizData>;
   @useResult
-  $Res call({QuizStatus status, PokemonData pokemonData, int hintStep});
+  $Res call(
+      {QuizStatus status,
+      PokemonData pokemonData,
+      int hintStep,
+      String userAnswer});
 
   $PokemonDataCopyWith<$Res> get pokemonData;
 }
@@ -56,6 +61,7 @@ class _$QuizDataCopyWithImpl<$Res, $Val extends QuizData>
     Object? status = null,
     Object? pokemonData = null,
     Object? hintStep = null,
+    Object? userAnswer = null,
   }) {
     return _then(_value.copyWith(
       status: null == status
@@ -70,6 +76,10 @@ class _$QuizDataCopyWithImpl<$Res, $Val extends QuizData>
           ? _value.hintStep
           : hintStep // ignore: cast_nullable_to_non_nullable
               as int,
+      userAnswer: null == userAnswer
+          ? _value.userAnswer
+          : userAnswer // ignore: cast_nullable_to_non_nullable
+              as String,
     ) as $Val);
   }
 
@@ -90,7 +100,11 @@ abstract class _$$QuizDataImplCopyWith<$Res>
       __$$QuizDataImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({QuizStatus status, PokemonData pokemonData, int hintStep});
+  $Res call(
+      {QuizStatus status,
+      PokemonData pokemonData,
+      int hintStep,
+      String userAnswer});
 
   @override
   $PokemonDataCopyWith<$Res> get pokemonData;
@@ -110,6 +124,7 @@ class __$$QuizDataImplCopyWithImpl<$Res>
     Object? status = null,
     Object? pokemonData = null,
     Object? hintStep = null,
+    Object? userAnswer = null,
   }) {
     return _then(_$QuizDataImpl(
       status: null == status
@@ -124,6 +139,10 @@ class __$$QuizDataImplCopyWithImpl<$Res>
           ? _value.hintStep
           : hintStep // ignore: cast_nullable_to_non_nullable
               as int,
+      userAnswer: null == userAnswer
+          ? _value.userAnswer
+          : userAnswer // ignore: cast_nullable_to_non_nullable
+              as String,
     ));
   }
 }
@@ -134,7 +153,8 @@ class _$QuizDataImpl with DiagnosticableTreeMixin implements _QuizData {
   const _$QuizDataImpl(
       {this.status = QuizStatus.NOT_ANSWERED,
       required this.pokemonData,
-      required this.hintStep});
+      required this.hintStep,
+      required this.userAnswer});
 
   factory _$QuizDataImpl.fromJson(Map<String, dynamic> json) =>
       _$$QuizDataImplFromJson(json);
@@ -146,10 +166,12 @@ class _$QuizDataImpl with DiagnosticableTreeMixin implements _QuizData {
   final PokemonData pokemonData;
   @override
   final int hintStep;
+  @override
+  final String userAnswer;
 
   @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
-    return 'QuizData(status: $status, pokemonData: $pokemonData, hintStep: $hintStep)';
+    return 'QuizData(status: $status, pokemonData: $pokemonData, hintStep: $hintStep, userAnswer: $userAnswer)';
   }
 
   @override
@@ -159,7 +181,8 @@ class _$QuizDataImpl with DiagnosticableTreeMixin implements _QuizData {
       ..add(DiagnosticsProperty('type', 'QuizData'))
       ..add(DiagnosticsProperty('status', status))
       ..add(DiagnosticsProperty('pokemonData', pokemonData))
-      ..add(DiagnosticsProperty('hintStep', hintStep));
+      ..add(DiagnosticsProperty('hintStep', hintStep))
+      ..add(DiagnosticsProperty('userAnswer', userAnswer));
   }
 
   @override
@@ -171,12 +194,15 @@ class _$QuizDataImpl with DiagnosticableTreeMixin implements _QuizData {
             (identical(other.pokemonData, pokemonData) ||
                 other.pokemonData == pokemonData) &&
             (identical(other.hintStep, hintStep) ||
-                other.hintStep == hintStep));
+                other.hintStep == hintStep) &&
+            (identical(other.userAnswer, userAnswer) ||
+                other.userAnswer == userAnswer));
   }
 
   @JsonKey(ignore: true)
   @override
-  int get hashCode => Object.hash(runtimeType, status, pokemonData, hintStep);
+  int get hashCode =>
+      Object.hash(runtimeType, status, pokemonData, hintStep, userAnswer);
 
   @JsonKey(ignore: true)
   @override
@@ -196,7 +222,8 @@ abstract class _QuizData implements QuizData {
   const factory _QuizData(
       {final QuizStatus status,
       required final PokemonData pokemonData,
-      required final int hintStep}) = _$QuizDataImpl;
+      required final int hintStep,
+      required final String userAnswer}) = _$QuizDataImpl;
 
   factory _QuizData.fromJson(Map<String, dynamic> json) =
       _$QuizDataImpl.fromJson;
@@ -207,6 +234,8 @@ abstract class _QuizData implements QuizData {
   PokemonData get pokemonData;
   @override
   int get hintStep;
+  @override
+  String get userAnswer;
   @override
   @JsonKey(ignore: true)
   _$$QuizDataImplCopyWith<_$QuizDataImpl> get copyWith =>
