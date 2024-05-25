@@ -5,15 +5,16 @@ import 'package:pokemon_quiz_app/data/model/QuizStatus.dart';
 import 'dart:math' as math;
 
 import 'package:pokemon_quiz_app/other/PokeApiEndpoints.dart';
+import 'package:pokemon_quiz_app/provider/caught_pokemon_provider.dart';
 
 
 final pokemonQuizProvider =
-    AsyncNotifierProvider<PokemonQuiz, QuizData>(PokemonQuiz.new);
+    AutoDisposeAsyncNotifierProvider<PokemonQuiz, QuizData>(PokemonQuiz.new);
 
-class PokemonQuiz extends AsyncNotifier<QuizData> {
+class PokemonQuiz extends AutoDisposeAsyncNotifier<QuizData> {
   @override
   Future<QuizData> build() async {
-    return await createPokemonQuizData();
+    return createPokemonQuizData();
   }
 
   Future<QuizData> createPokemonQuizData() async {
