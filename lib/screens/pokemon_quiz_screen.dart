@@ -22,68 +22,12 @@ class PokemonQuizScreen extends ConsumerStatefulWidget {
 }
 
 class _PokemonQuizScreenState extends ConsumerState<PokemonQuizScreen> {
-  // QuizData? _quizData;
-  // bool _isLoading = false;
   final TextEditingController _userAnswerController = TextEditingController();
   final ExpansionTileController hint2Controller = ExpansionTileController();
   final ExpansionTileController hint3Controller = ExpansionTileController();
 
-  // Future<void> _fetchRandomPokemonData() async {
-  //   _userAnswerController.text = "";
-  //   setState(() {
-  //     _isLoading = true;
-  //   });
-  //   var maxCount = 1025;
-  //   var randomNumber = math.Random().nextInt(maxCount) + 1;
-  //   var data = await PokeApi.fetchPokemonDetail(
-  //       PokeApiEndpoints.createPokemonDetailURL(randomNumber.toString()));
-  //   if (mounted) {
-  //     setState(() {
-  //       _quizData = QuizData(
-  //           pokemonData: data, hintStep: 1, status: QuizStatus.NOT_ANSWERED);
-  //       _isLoading = false;
-  //     });
-  //   }
-  // }
-
-  Future<void> _answerAction() async {
-    var quizData = ref.read(pokemonQuizProvider).value;
-    if (quizData == null) {
-      return;
-    }
-    final isCorrect =
-        quizData.pokemonData.pokemonName == _userAnswerController.text;
-    if (isCorrect) {
-      FireStoreClient.addCaughtPokemon(FirebaseAuth.instance.currentUser!.uid,
-          quizData.pokemonData.id, DateTime.now().millisecondsSinceEpoch);
-    }
-    final player = AudioPlayer();
-    player.play(
-        AssetSource(isCorrect
-            ? "sounds/correct_sound.mp3"
-            : "sounds/incorrect_sound.mp3"),
-        mode: PlayerMode.lowLatency,
-        volume: 1);
-    setState(() {
-      quizData = quizData!.copyWith(
-          status: isCorrect ? QuizStatus.CORRECT : QuizStatus.INCORRECT);
-    });
-    showDialog(
-        context: context,
-        builder: (context) => QuizResultDialog(
-              isCorrect: isCorrect,
-              pokemonName: quizData!.pokemonData.pokemonName,
-              pokemonImageUrl: quizData!.pokemonData.pokemonImageURL,
-              onNextClick: () {
-                Navigator.of(context).pop();
-                // _fetchRandomPokemonData();
-              },
-            ));
-  }
-
   @override
   void initState() {
-    // _fetchRandomPokemonData();
     super.initState();
   }
 
@@ -202,6 +146,9 @@ class _PokemonQuizScreenState extends ConsumerState<PokemonQuizScreen> {
                 hintText: "ポケモンの名前(例：ピカチュウ)",
               ),
               maxLines: 1,
+              onChanged: (value) => ref
+                  .read(pokemonQuizProvider.notifier)
+                  .updateUserAnswer(value),
             ),
             const SizedBox(
               height: 8,
@@ -212,7 +159,23 @@ class _PokemonQuizScreenState extends ConsumerState<PokemonQuizScreen> {
                         if (_userAnswerController.text.isEmpty) {
                           Fluttertoast.showToast(msg: "ポケモンの名前を入力してください");
                         } else {
-                          _answerAction();
+                          var isCorrect = ref
+                              .read(pokemonQuizProvider.notifier)
+                              .anserAction();
+                          showDialog(
+                              context: context,
+                              builder: (context) => QuizResultDialog(
+                                    isCorrect: isCorrect,
+                                    pokemonName: pokemonData.pokemonName,
+                                    pokemonImageUrl:
+                                        pokemonData.pokemonImageURL,
+                                    onNextClick: () {
+                                      Navigator.of(context).pop();
+                                      ref
+                                          .read(pokemonQuizProvider.notifier)
+                                          .nextPokemonQuiz();
+                                    },
+                                  ));
                         }
                       }
                     : null,
@@ -254,7 +217,7 @@ class _PokemonQuizScreenState extends ConsumerState<PokemonQuizScreen> {
                     ref.read(pokemonQuizProvider.notifier).nextPokemonQuiz();
                   },
                   child: const Text("次の問題")),
-            ])
+            ]),
           ],
         ),
       ),
