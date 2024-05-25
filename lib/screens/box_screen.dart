@@ -18,7 +18,7 @@ class BoxScreen extends ConsumerStatefulWidget {
 }
 
 class _BoxScreenState extends ConsumerState<BoxScreen> {
-  bool _isLoading = false;
+  bool shouldShowMoreLoadingUI = false;
   late ScrollController scrollController;
 
   @override
@@ -29,7 +29,13 @@ class _BoxScreenState extends ConsumerState<BoxScreen> {
       if (scrollController.position.pixels >=
               scrollController.position.maxScrollExtent * 0.95 &&
           !isFetching) {
-        ref.read(pokemonBoxProvider.notifier).fetchMore();
+            setState(() {
+          shouldShowMoreLoadingUI = true;
+            });
+        await ref.read(pokemonBoxProvider.notifier).fetchMore();
+        setState(() {
+          shouldShowMoreLoadingUI = false;
+        });
       }
     });
     super.initState();
@@ -72,7 +78,7 @@ class _BoxScreenState extends ConsumerState<BoxScreen> {
                 itemCount: caughtPokemonList.length + 1,
                 itemBuilder: (context, index) {
                   if (index == caughtPokemonList.length) {
-                    return _isLoading
+                    return shouldShowMoreLoadingUI
                         ? const SizedBox(
                             width: double.infinity,
                             child: Center(child: CircularProgressIndicator()))
