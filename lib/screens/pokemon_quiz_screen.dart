@@ -1,5 +1,3 @@
-import 'package:audioplayers/audioplayers.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -9,7 +7,6 @@ import 'package:pokemon_quiz_app/components/center_message.dart';
 import 'package:pokemon_quiz_app/components/correct_answer_for_debug.dart';
 import 'package:pokemon_quiz_app/components/question_image.dart';
 import 'package:pokemon_quiz_app/components/quiz_result_dialog.dart';
-import 'package:pokemon_quiz_app/data/FireStoreClient.dart';
 import 'package:pokemon_quiz_app/data/model/QuizData.dart';
 import 'package:pokemon_quiz_app/data/model/QuizStatus.dart';
 import 'package:pokemon_quiz_app/provider/pokemon_quiz_provider.dart';

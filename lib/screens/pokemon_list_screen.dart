@@ -5,7 +5,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:pokemon_quiz_app/components/pokemon_card.dart';
 import 'package:pokemon_quiz_app/components/shimmer_pokemon_card.dart';
 import 'package:pokemon_quiz_app/data/model/PokemonData.dart';
-import 'package:pokemon_quiz_app/provider/caught_pokemon_provider.dart';
 import 'package:pokemon_quiz_app/provider/pokemon_dictionary_list_provider.dart';
 import 'package:pokemon_quiz_app/screens/pokemon_detail_screen.dart';
 

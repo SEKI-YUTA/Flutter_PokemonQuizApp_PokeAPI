@@ -3,9 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:pokemon_quiz_app/components/shimmer_user_information_card.dart';
 import 'package:pokemon_quiz_app/components/user_information_card.dart';
-import 'package:pokemon_quiz_app/data/FireStoreClient.dart';
-import 'package:pokemon_quiz_app/data/model/UserData.dart';
-import 'package:pokemon_quiz_app/provider/caught_pokemon_provider.dart';
 import 'package:pokemon_quiz_app/provider/user_data_provider.dart';
 
 class SettingScreen extends ConsumerStatefulWidget {
