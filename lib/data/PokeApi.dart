@@ -1,5 +1,8 @@
 import 'dart:convert';
 
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:pokemon_quiz_app/data/FireStoreClient.dart';
+import 'package:pokemon_quiz_app/data/model/CaughtPokemon.dart';
 import 'package:pokemon_quiz_app/data/model/PokemonData.dart';
 import 'package:http/http.dart' as http;
 import 'package:pokemon_quiz_app/other/PokeApiEndpoints.dart';
@@ -24,6 +27,28 @@ class PokeApi {
     }
     await Future.wait(futureList);
     return list;
+  }
+
+  static Future<List<PokemonData?>> fetchCaughtPokemonListWithOffsetIndex(
+      List<CaughtPokemon> caughtPokemonList,
+      int? offset,
+      int? fetchSize) async {
+    offset = offset ?? 0;
+    fetchSize = fetchSize ?? 20;
+    var addPokemonList = <PokemonData>[];
+    var futureList = <Future>[];
+    for (int i = offset; i < offset + fetchSize; i++) {
+      if (i >= caughtPokemonList.length) {
+        break;
+      }
+      var f = PokeApi.fetchPokemonDetail(
+              PokeApiEndpoints.createPokemonDetailURL(
+                  caughtPokemonList[i].id.toString()))
+          .then((pokemon) => addPokemonList.add(pokemon));
+      futureList.add(f);
+    }
+    await Future.wait(futureList);
+    return addPokemonList;
   }
 
   // こっちは近いうちに消す予定
