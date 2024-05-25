@@ -5,7 +5,7 @@ import 'package:pokemon_quiz_app/data/model/PokemonData.dart';
 final pokemonDictionaryListProvider =
     AsyncNotifierProvider<PokemonDictionaryList, List<PokemonData?>>(
         PokemonDictionaryList.new);
-        
+
 class PokemonDictionaryList extends AsyncNotifier<List<PokemonData?>> {
   final _LIMIT = 1302;
   final _FETCH_SIZE = 20;
@@ -43,5 +43,4 @@ class PokemonDictionaryList extends AsyncNotifier<List<PokemonData?>> {
   bool isLoading() {
     return isFetching;
   }
-
 }
