@@ -1,3 +1,5 @@
+// ignore_for_file: non_constant_identifier_names, avoid_public_notifier_properties
+
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:pokemon_quiz_app/data/PokeApi.dart';
 import 'package:pokemon_quiz_app/data/model/PokemonData.dart';
@@ -17,7 +19,6 @@ class PokemonBox extends AutoDisposeAsyncNotifier<List<PokemonData?>> {
     isFetching = true;
     var caughtPokemonList = await ref.read(getCaughtPokemonListProvider(FirebaseAuth.instance.currentUser!.uid).future);
     var pokemonList = await PokeApi.fetchCaughtPokemonListWithOffsetIndex(caughtPokemonList, _nextOffset, _FETCH_SIZE);
-    print(pokemonList.length);
     _nextOffset += _FETCH_SIZE;
     isFetching = false;
     return pokemonList;

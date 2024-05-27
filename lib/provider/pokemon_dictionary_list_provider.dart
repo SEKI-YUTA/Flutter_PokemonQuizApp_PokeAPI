@@ -1,3 +1,5 @@
+// ignore_for_file: non_constant_identifier_names, avoid_public_notifier_properties
+
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:pokemon_quiz_app/data/PokeApi.dart';
 import 'package:pokemon_quiz_app/data/model/PokemonData.dart';
