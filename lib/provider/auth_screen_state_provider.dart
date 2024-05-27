@@ -1,6 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:pokemon_quiz_app/auth/FirebaseAuthClient.dart';
 import 'package:pokemon_quiz_app/data/model/AuthScreenState.dart';
@@ -55,27 +54,6 @@ class AuthScreenNotifier extends StateNotifier<AuthScreenState> {
     return status == FirebaseAuthResultStatus.Successful;
   }
 
-  // Future<bool> authWithFirebaseAuth() async {
-  //   await FirebaseAuth.instance
-  //       .signInWithProvider(GoogleAuthProvider())
-  //       .then((result) async {
-  //     if (result.user != null) {
-  //       var userDoc = FirebaseFirestore.instance
-  //           .collection("users")
-  //           .doc(result.user!.uid);
-  //       await userDoc.set({
-  //         "created_at": DateTime.now().millisecondsSinceEpoch,
-  //         "name": result.user!.displayName,
-  //         "email": result.user!.email,
-  //         "photoURL": result.user!.photoURL
-  //       });
-  //       return true;
-  //     } else {
-  //       return false;
-  //     }
-  //   });
-  //   return false;
-  // }
 
   Future<bool> authWithFirebaseAuth() async {
   try {
