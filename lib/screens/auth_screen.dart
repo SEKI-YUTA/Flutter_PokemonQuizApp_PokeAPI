@@ -1,59 +1,54 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:pokemon_quiz_app/auth/FirebaseAuthClient.dart';
-import 'package:pokemon_quiz_app/components/loading_dialog.dart';
-import 'package:pokemon_quiz_app/data/model/FirebaseAuthResultStatus.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:pokemon_quiz_app/provider/auth_screen_state_provider.dart';
 import 'package:sign_in_button/sign_in_button.dart';
 
-class AuthScreen extends StatefulWidget {
+class AuthScreen extends ConsumerStatefulWidget {
   const AuthScreen({super.key});
 
   @override
-  State<AuthScreen> createState() => _AuthScreenState();
+  ConsumerState<AuthScreen> createState() => _AuthScreenState();
 }
 
-class _AuthScreenState extends State<AuthScreen> {
-  bool _isLoginMode = true;
-  bool _isPasswordVisible = false;
-  bool _isLoading = false;
-  String _errorMessage = "";
+class _AuthScreenState extends ConsumerState<AuthScreen> {
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
   final _formKey = GlobalKey<FormState>();
 
   Future<void> _loginOrRegisterAction() async {
     if (!_formKey.currentState!.validate()) return;
-    if (mounted) {
-      _isLoading = true;
-      showDialog(
-          context: context,
-          barrierDismissible: false,
-          builder: (context) => const LoadingDialog(message: "処理中..."));
+    var authScreenStateNotifier = ref.read(authScreenProvider.notifier);
+    var isAuthSuccessful =
+        await authScreenStateNotifier.loginOrRegisterAction();
+    if (isAuthSuccessful && mounted) {
+      Navigator.of(context).pushReplacementNamed("/mainHost");
     }
-    FirebaseAuthResultStatus status;
-    if (_isLoginMode) {
-      status = await FirebaseAuthClient.login(
-          _emailController.text, _passwordController.text);
-    } else {
-      status = await FirebaseAuthClient.register(
-          _emailController.text, _passwordController.text);
-    }
-    setState(() {
-      _errorMessage = FirebaseAuthClient.exceptionMessage(status);
-    });
-    if (mounted) {
-      if (status == FirebaseAuthResultStatus.Successful) {
-        Navigator.of(context).pushReplacementNamed('/mainHost');
-      } else {
-        Navigator.pop(context);
-      }
-      _isLoading = false;
+  }
+
+  Future<void> _authWithFirebaseAuth() async {
+    var authScreenStateNotifier = ref.read(authScreenProvider.notifier);
+    var isAuthSuccessful =  await authScreenStateNotifier.authWithFirebaseAuth();
+    print(isAuthSuccessful);
+    if (isAuthSuccessful && mounted) {
+      Navigator.of(context).pushReplacementNamed("/mainHost");
     }
   }
 
   @override
   Widget build(BuildContext context) {
+    var authScreenStateNotifier = ref.read(authScreenProvider.notifier);
+    var authScreenState = ref.watch(authScreenProvider);
+
+    // WidgetsBinding.instance.addPostFrameCallback((_) {
+    //   if (authScreenState.isLoading) {
+    //     _showLogindDialog();
+    //   } else {
+    //     if (Navigator.canPop(context)) {
+    //       Navigator.of(context).pop();
+    //     }
+    //   }
+    // });
+
     return Scaffold(
         body: SafeArea(
       child: SingleChildScrollView(
@@ -71,7 +66,7 @@ class _AuthScreenState extends State<AuthScreen> {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Text(
-                          _isLoginMode ? "ログイン" : "新規登録",
+                          authScreenState.isLoginMode ? "ログイン" : "新規登録",
                           style: Theme.of(context).textTheme.headlineSmall,
                         ),
                         Form(
@@ -92,6 +87,9 @@ class _AuthScreenState extends State<AuthScreen> {
                                   },
                                   decoration: const InputDecoration(
                                       label: Text("メールアドレス")),
+                                  onChanged: (value) {
+                                    authScreenStateNotifier.setEmail(value);
+                                  },
                                 ),
                                 TextFormField(
                                   controller: _passwordController,
@@ -103,70 +101,60 @@ class _AuthScreenState extends State<AuthScreen> {
                                     }
                                     return null;
                                   },
-                                  obscureText: !_isPasswordVisible,
+                                  obscureText:
+                                      !authScreenState.isPasswordVisible,
                                   decoration: InputDecoration(
                                       label: const Text("パスワード"),
                                       suffixIcon: IconButton(
-                                        icon: Icon(_isPasswordVisible
-                                            ? Icons.visibility
-                                            : Icons.visibility_off),
+                                        icon: Icon(
+                                            authScreenState.isPasswordVisible
+                                                ? Icons.visibility
+                                                : Icons.visibility_off),
                                         onPressed: () {
-                                          setState(() {
-                                            _isPasswordVisible =
-                                                !_isPasswordVisible;
-                                          });
+                                          authScreenStateNotifier
+                                              .setIsPasswordVisible(
+                                                  !authScreenState
+                                                      .isPasswordVisible);
                                         },
                                       )),
+                                  onChanged: (value) {
+                                    authScreenStateNotifier.setPassword(value);
+                                  },
                                 ),
                               ],
                             )),
                         const SizedBox(height: 8),
                         Text(
-                          _errorMessage,
+                          authScreenState.errorMessage,
                           style: const TextStyle(color: Colors.red),
                         ),
                         const SizedBox(height: 8),
                         ElevatedButton(
                             onPressed: () async {
-                              if (_isLoading) return;
+                              if (authScreenState.isLoading) return;
                               await _loginOrRegisterAction();
                             },
-                            child: Text(_isLoginMode ? "ログイン" : "新規登録")),
+                            child: Text(
+                                authScreenState.isLoginMode ? "ログイン" : "新規登録")),
                         const SizedBox(height: 8),
                         const Divider(),
                         const SizedBox(height: 8),
                         SignInButton(Buttons.google, onPressed: () {
-                          FirebaseAuth.instance
-                              .signInWithProvider(GoogleAuthProvider())
-                              .then((result) {
-                            if (result.user != null) {
-                              Navigator.of(context)
-                                  .pushReplacementNamed('/mainHost');
-                              FirebaseFirestore.instance
-                                  .collection("users")
-                                  .doc(result.user!.uid)
-                                  .set({
-                                "created_at":
-                                    DateTime.now().millisecondsSinceEpoch,
-                                "name": result.user!.displayName,
-                                "email": result.user!.email,
-                                "photoURL": result.user!.photoURL
-                              });
-                            }
-                          });
+                          _authWithFirebaseAuth();
                         }),
                         const SizedBox(
                           height: 40,
                         ),
                         TextButton(
                             onPressed: () {
-                              setState(() {
-                                _isLoginMode = !_isLoginMode;
-                              });
+                              authScreenStateNotifier
+                                  .setIsLoginMode(!authScreenState.isLoginMode);
                               _emailController.text = "";
                               _passwordController.text = "";
                             },
-                            child: Text(_isLoginMode ? "新規登録画面へ" : "ログイン画面へ")),
+                            child: Text(authScreenState.isLoginMode
+                                ? "新規登録画面へ"
+                                : "ログイン画面へ")),
                       ],
                     ),
                   ),
@@ -177,5 +165,18 @@ class _AuthScreenState extends State<AuthScreen> {
         ),
       ),
     ));
+  }
+
+  void _showLogindDialog() {
+    showDialog(
+        context: context,
+        barrierDismissible: false,
+        // builder: (context) => const LoadingDialog(message: "処理中...")
+        builder: (context) => ElevatedButton(onPressed: () {
+          print(ref.read(authScreenProvider).isLoading);
+        }, child: Text("Hoge"))
+        ).then((value) {
+          ref.read(authScreenProvider.notifier).setIsLoading(false);
+        });
   }
 }
