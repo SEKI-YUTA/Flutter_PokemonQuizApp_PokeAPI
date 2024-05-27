@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:pokemon_quiz_app/components/loading_dialog.dart';
 import 'package:pokemon_quiz_app/provider/auth_screen_state_provider.dart';
 import 'package:sign_in_button/sign_in_button.dart';
 
@@ -14,6 +15,7 @@ class _AuthScreenState extends ConsumerState<AuthScreen> {
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
   final _formKey = GlobalKey<FormState>();
+  bool _isDialogVisible = false;
 
   Future<void> _loginOrRegisterAction() async {
     if (!_formKey.currentState!.validate()) return;
@@ -21,15 +23,20 @@ class _AuthScreenState extends ConsumerState<AuthScreen> {
     var isAuthSuccessful =
         await authScreenStateNotifier.loginOrRegisterAction();
     if (isAuthSuccessful && mounted) {
+      if (Navigator.canPop(context)) {
+        Navigator.of(context).pop();
+      }
       Navigator.of(context).pushReplacementNamed("/mainHost");
     }
   }
 
   Future<void> _authWithFirebaseAuth() async {
     var authScreenStateNotifier = ref.read(authScreenProvider.notifier);
-    var isAuthSuccessful =  await authScreenStateNotifier.authWithFirebaseAuth();
-    print(isAuthSuccessful);
+    var isAuthSuccessful = await authScreenStateNotifier.authWithFirebaseAuth();
     if (isAuthSuccessful && mounted) {
+      if (Navigator.canPop(context)) {
+        Navigator.of(context).pop();
+      }
       Navigator.of(context).pushReplacementNamed("/mainHost");
     }
   }
@@ -39,37 +46,37 @@ class _AuthScreenState extends ConsumerState<AuthScreen> {
     var authScreenStateNotifier = ref.read(authScreenProvider.notifier);
     var authScreenState = ref.watch(authScreenProvider);
 
-    // WidgetsBinding.instance.addPostFrameCallback((_) {
-    //   if (authScreenState.isLoading) {
-    //     _showLogindDialog();
-    //   } else {
-    //     if (Navigator.canPop(context)) {
-    //       Navigator.of(context).pop();
-    //     }
-    //   }
-    // });
+    ref.listen<bool>(authScreenProvider.select((state) => state.isLoading), (previous, next) {
+      if (next) {
+        _showLogindDialog();
+      } else {
+        if (_isDialogVisible) {
+          Navigator.of(context).pop();
+        }
+      }
+    });
 
     return Scaffold(
-        body: SafeArea(
-      child: SingleChildScrollView(
-        child: Stack(
-          children: [
-            SizedBox(
-              width: double.infinity,
-              height: MediaQuery.of(context).size.height,
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  ConstrainedBox(
-                    constraints: const BoxConstraints.tightFor(width: 300),
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Text(
-                          authScreenState.isLoginMode ? "ログイン" : "新規登録",
-                          style: Theme.of(context).textTheme.headlineSmall,
-                        ),
-                        Form(
+      body: SafeArea(
+        child: SingleChildScrollView(
+          child: Stack(
+            children: [
+              SizedBox(
+                width: double.infinity,
+                height: MediaQuery.of(context).size.height,
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    ConstrainedBox(
+                      constraints: const BoxConstraints.tightFor(width: 300),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Text(
+                            authScreenState.isLoginMode ? "ログイン" : "新規登録",
+                            style: Theme.of(context).textTheme.headlineSmall,
+                          ),
+                          Form(
                             key: _formKey,
                             child: Column(
                               children: [
@@ -104,48 +111,52 @@ class _AuthScreenState extends ConsumerState<AuthScreen> {
                                   obscureText:
                                       !authScreenState.isPasswordVisible,
                                   decoration: InputDecoration(
-                                      label: const Text("パスワード"),
-                                      suffixIcon: IconButton(
-                                        icon: Icon(
-                                            authScreenState.isPasswordVisible
-                                                ? Icons.visibility
-                                                : Icons.visibility_off),
-                                        onPressed: () {
-                                          authScreenStateNotifier
-                                              .setIsPasswordVisible(
-                                                  !authScreenState
-                                                      .isPasswordVisible);
-                                        },
-                                      )),
+                                    label: const Text("パスワード"),
+                                    suffixIcon: IconButton(
+                                      icon: Icon(
+                                          authScreenState.isPasswordVisible
+                                              ? Icons.visibility
+                                              : Icons.visibility_off),
+                                      onPressed: () {
+                                        authScreenStateNotifier
+                                            .setIsPasswordVisible(
+                                                !authScreenState
+                                                    .isPasswordVisible);
+                                      },
+                                    ),
+                                  ),
                                   onChanged: (value) {
                                     authScreenStateNotifier.setPassword(value);
                                   },
                                 ),
                               ],
-                            )),
-                        const SizedBox(height: 8),
-                        Text(
-                          authScreenState.errorMessage,
-                          style: const TextStyle(color: Colors.red),
-                        ),
-                        const SizedBox(height: 8),
-                        ElevatedButton(
+                            ),
+                          ),
+                          const SizedBox(height: 8),
+                          Text(
+                            authScreenState.errorMessage,
+                            style: const TextStyle(color: Colors.red),
+                          ),
+                          const SizedBox(height: 8),
+                          ElevatedButton(
                             onPressed: () async {
                               if (authScreenState.isLoading) return;
                               await _loginOrRegisterAction();
                             },
-                            child: Text(
-                                authScreenState.isLoginMode ? "ログイン" : "新規登録")),
-                        const SizedBox(height: 8),
-                        const Divider(),
-                        const SizedBox(height: 8),
-                        SignInButton(Buttons.google, onPressed: () {
-                          _authWithFirebaseAuth();
-                        }),
-                        const SizedBox(
-                          height: 40,
-                        ),
-                        TextButton(
+                            child: Text(authScreenState.isLoginMode
+                                ? "ログイン"
+                                : "新規登録"),
+                          ),
+                          const SizedBox(height: 8),
+                          const Divider(),
+                          const SizedBox(height: 8),
+                          SignInButton(Buttons.google, onPressed: () {
+                            _authWithFirebaseAuth();
+                          }),
+                          const SizedBox(
+                            height: 40,
+                          ),
+                          TextButton(
                             onPressed: () {
                               authScreenStateNotifier
                                   .setIsLoginMode(!authScreenState.isLoginMode);
@@ -154,29 +165,30 @@ class _AuthScreenState extends ConsumerState<AuthScreen> {
                             },
                             child: Text(authScreenState.isLoginMode
                                 ? "新規登録画面へ"
-                                : "ログイン画面へ")),
-                      ],
+                                : "ログイン画面へ"),
+                          ),
+                        ],
+                      ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
-    ));
+    );
   }
 
   void _showLogindDialog() {
+    if (_isDialogVisible) return;
+    _isDialogVisible = true;
     showDialog(
-        context: context,
-        barrierDismissible: false,
-        // builder: (context) => const LoadingDialog(message: "処理中...")
-        builder: (context) => ElevatedButton(onPressed: () {
-          print(ref.read(authScreenProvider).isLoading);
-        }, child: Text("Hoge"))
-        ).then((value) {
-          ref.read(authScreenProvider.notifier).setIsLoading(false);
-        });
+      context: context,
+      barrierDismissible: false,
+      builder: (context) => const LoadingDialog(message: "処理中..."),
+    ).then((_) {
+      _isDialogVisible = false;
+    });
   }
 }
