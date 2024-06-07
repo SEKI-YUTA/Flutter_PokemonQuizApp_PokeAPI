@@ -107,9 +107,7 @@ class _PokemonQuizScreenState extends ConsumerState<PokemonQuizScreen> {
                           if (quizData.hintStep == 1) {
                             setState(() {
                               hint2Controller.expand();
-                              ref
-                                  .read(pokemonQuizProvider.notifier)
-                                  .updateHintStep(2);
+                              pokemonQuizNotifier.updateHintStep(2);
                             });
                           }
                         },
@@ -128,9 +126,7 @@ class _PokemonQuizScreenState extends ConsumerState<PokemonQuizScreen> {
                         onPressed: () {
                           if (quizData.hintStep == 2) {
                             hint3Controller.expand();
-                            ref
-                                .read(pokemonQuizProvider.notifier)
-                                .updateHintStep(3);
+                            pokemonQuizNotifier.updateHintStep(3);
                           }
                         },
                         child: const Text("ヒント3を見る"))
@@ -144,9 +140,7 @@ class _PokemonQuizScreenState extends ConsumerState<PokemonQuizScreen> {
                 hintText: "ポケモンの名前(例：ピカチュウ)",
               ),
               maxLines: 1,
-              onChanged: (value) => ref
-                  .read(pokemonQuizProvider.notifier)
-                  .updateUserAnswer(value),
+              onChanged: (value) => pokemonQuizNotifier.updateUserAnswer(value),
             ),
             const SizedBox(
               height: 8,
@@ -157,9 +151,7 @@ class _PokemonQuizScreenState extends ConsumerState<PokemonQuizScreen> {
                         if (_userAnswerController.text.isEmpty) {
                           Fluttertoast.showToast(msg: "ポケモンの名前を入力してください");
                         } else {
-                          var isCorrect = ref
-                              .read(pokemonQuizProvider.notifier)
-                              .anserAction();
+                          var isCorrect = pokemonQuizNotifier.anserAction();
                           showDialog(
                               context: context,
                               builder: (context) => QuizResultDialog(
@@ -169,9 +161,7 @@ class _PokemonQuizScreenState extends ConsumerState<PokemonQuizScreen> {
                                         pokemonData.pokemonImageURL,
                                     onNextClick: () {
                                       Navigator.of(context).pop();
-                                      ref
-                                          .read(pokemonQuizProvider.notifier)
-                                          .nextPokemonQuiz();
+                                      pokemonQuizNotifier.nextPokemonQuiz();
                                     },
                                   ));
                         }
@@ -209,7 +199,7 @@ class _PokemonQuizScreenState extends ConsumerState<PokemonQuizScreen> {
               ElevatedButton(
                   onPressed: () {
                     // _fetchRandomPokemonData();
-                    ref.read(pokemonQuizProvider.notifier).nextPokemonQuiz();
+                    pokemonQuizNotifier.nextPokemonQuiz();
                   },
                   child: const Text("次の問題")),
             ]),
