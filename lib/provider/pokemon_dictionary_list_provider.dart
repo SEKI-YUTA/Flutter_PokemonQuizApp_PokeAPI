@@ -2,35 +2,39 @@
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:pokemon_quiz_app/data/PokeApi.dart';
-import 'package:pokemon_quiz_app/data/model/PokemonData.dart';
+import 'package:pokemon_quiz_app/data/model/ListScrenState.dart';
 
 final pokemonDictionaryListProvider =
-    AsyncNotifierProvider<PokemonDictionaryList, List<PokemonData?>>(
+    AsyncNotifierProvider<PokemonDictionaryList, ListScreenState?>(
         PokemonDictionaryList.new);
 
-class PokemonDictionaryList extends AsyncNotifier<List<PokemonData?>> {
+class PokemonDictionaryList extends AsyncNotifier<ListScreenState?> {
   final _LIMIT = 1302;
   final _FETCH_SIZE = 20;
   bool isFetching = false;
   int _nextOffset = 0;
 
   @override
-  Future<List<PokemonData?>> build() async {
+  Future<ListScreenState?> build() async {
     isFetching = true;
     var pokemonList =
         await PokeApi.fetchPokemonListWithOffsetIndex(_nextOffset, _FETCH_SIZE);
     _nextOffset += _FETCH_SIZE;
     isFetching = false;
-    return pokemonList;
+    return ListScreenState(pokemonList: pokemonList);
   }
 
   Future<void> fetchMore() async {
     isFetching = true;
     try {
+      state = AsyncValue.data(state.value?.copyWith(shouldShowMoreLoadingUI: true));
       var pokemonList = await PokeApi.fetchPokemonListWithOffsetIndex(
           _nextOffset, _FETCH_SIZE);
       _nextOffset += _FETCH_SIZE;
-      state = AsyncValue.data([...state.value!, ...pokemonList]);
+      state = AsyncValue.data(ListScreenState(
+        pokemonList: [...state.value?.pokemonList ?? [], ...pokemonList],
+        shouldShowMoreLoadingUI: false
+      ));
     } catch (e) {
       state = AsyncValue.error(e, StackTrace.current);
     } finally {

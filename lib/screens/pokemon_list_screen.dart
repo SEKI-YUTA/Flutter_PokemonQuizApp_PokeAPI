@@ -16,7 +16,6 @@ class PokemonListScreen extends ConsumerStatefulWidget {
 }
 
 class _PokemonListScreenState extends ConsumerState<PokemonListScreen> {
-  bool _shouldShowMoreLoadingUI = false;
   late ScrollController scrollController;
 
   @override
@@ -30,13 +29,7 @@ class _PokemonListScreenState extends ConsumerState<PokemonListScreen> {
               scrollController.position.maxScrollExtent * 0.95 &&
           ref.read(pokemonDictionaryListProvider.notifier).checkMoreData() &&
           !isFetching) {
-        setState(() {
-          _shouldShowMoreLoadingUI = true;
-        });
         await ref.read(pokemonDictionaryListProvider.notifier).fetchMore();
-        setState(() {
-          _shouldShowMoreLoadingUI = false;
-        });
       }
     });
     super.initState();
@@ -44,15 +37,15 @@ class _PokemonListScreenState extends ConsumerState<PokemonListScreen> {
 
   @override
   Widget build(BuildContext context) {
-    var pokemonList = ref.watch(pokemonDictionaryListProvider);
+    var listScreenState = ref.watch(pokemonDictionaryListProvider);
     return SizedBox(
         width: MediaQuery.of(context).size.width,
         height: MediaQuery.of(context).size.height,
         child: Column(
           children: [
             Flexible(
-                child: pokemonList.when(
-              data: (data) => DataContent(data),
+                child: listScreenState.when(
+              data: (data) => DataContent(data?.pokemonList ?? [], data?.shouldShowMoreLoadingUI ?? false),
               error: (error, stackTrace) => const Text('Error'),
               loading: () => LoadingContent(),
             ))
@@ -66,13 +59,13 @@ class _PokemonListScreenState extends ConsumerState<PokemonListScreen> {
     });
   }
 
-  Widget DataContent(List<PokemonData?> pokemonList) {
+  Widget DataContent(List<PokemonData?> pokemonList, bool shouldShowMoreLoadingUI) {
     return ListView.builder(
         controller: scrollController,
         itemCount: pokemonList.length + 1,
         itemBuilder: (context, index) {
           if (index == pokemonList.length) {
-            return _shouldShowMoreLoadingUI
+            return shouldShowMoreLoadingUI
                 ? const SizedBox(
                     width: double.infinity,
                     child: Center(child: CircularProgressIndicator()))
