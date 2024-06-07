@@ -59,6 +59,7 @@ class _PokemonQuizScreenState extends ConsumerState<PokemonQuizScreen> {
 
   Widget dataContent(QuizData quizData) {
     var pokemonData = quizData.pokemonData;
+    var pokemonQuizNotifier = ref.read(pokemonQuizProvider.notifier);
     return Flexible(
       child: SingleChildScrollView(
         child: Column(
@@ -199,10 +200,7 @@ class _PokemonQuizScreenState extends ConsumerState<PokemonQuizScreen> {
             ElevatedButton(
                 onPressed: quizData.status == QuizStatus.NOT_ANSWERED
                     ? () {
-                        setState(() {
-                          quizData =
-                              quizData.copyWith(status: QuizStatus.GIVE_UP);
-                        });
+                        pokemonQuizNotifier.giveUp();
                       }
                     : null,
                 child: const Text("答えを見る")),

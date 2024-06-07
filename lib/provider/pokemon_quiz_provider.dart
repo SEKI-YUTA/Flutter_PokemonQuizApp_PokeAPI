@@ -73,4 +73,8 @@ class PokemonQuiz extends AutoDisposeAsyncNotifier<QuizData> {
   void updateUserAnswer(String input) {
     state = state.whenData((data) => data.copyWith(userAnswer: input));
   }
+
+  void giveUp() {
+    state = state.whenData((data) => data.copyWith(status: QuizStatus.GIVE_UP));
+  }
 }
