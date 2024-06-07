@@ -162,6 +162,7 @@ class _PokemonQuizScreenState extends ConsumerState<PokemonQuizScreen> {
                                     onNextClick: () {
                                       Navigator.of(context).pop();
                                       pokemonQuizNotifier.nextPokemonQuiz();
+                                      _userAnswerController.clear();
                                     },
                                   ));
                         }
@@ -200,6 +201,7 @@ class _PokemonQuizScreenState extends ConsumerState<PokemonQuizScreen> {
                   onPressed: () {
                     // _fetchRandomPokemonData();
                     pokemonQuizNotifier.nextPokemonQuiz();
+                    _userAnswerController.clear();
                   },
                   child: const Text("次の問題")),
             ]),
