@@ -17,7 +17,6 @@ class BoxScreen extends ConsumerStatefulWidget {
 }
 
 class _BoxScreenState extends ConsumerState<BoxScreen> {
-  bool shouldShowMoreLoadingUI = false;
   late ScrollController scrollController;
 
   @override
@@ -28,13 +27,7 @@ class _BoxScreenState extends ConsumerState<BoxScreen> {
       if (scrollController.position.pixels >=
               scrollController.position.maxScrollExtent * 0.95 &&
           !isFetching) {
-            setState(() {
-          shouldShowMoreLoadingUI = true;
-            });
         await ref.read(pokemonBoxProvider.notifier).fetchMore();
-        setState(() {
-          shouldShowMoreLoadingUI = false;
-        });
       }
     });
     super.initState();
@@ -42,7 +35,7 @@ class _BoxScreenState extends ConsumerState<BoxScreen> {
 
   @override
   Widget build(BuildContext context) {
-    var caughtPokemonList = ref.watch(pokemonBoxProvider);
+    var boxScreenState = ref.watch(pokemonBoxProvider);
     return SizedBox(
         width: MediaQuery.of(context).size.width,
         height: MediaQuery.of(context).size.height,
@@ -55,8 +48,11 @@ class _BoxScreenState extends ConsumerState<BoxScreen> {
             ),
             const SizedBox(height: 8),
             Flexible(
-              child: caughtPokemonList.when(
-                data: (data) => DataContent(data),
+              child: boxScreenState.when(
+                data: (data) => DataContent(
+                  data?.caughtPokemonList ?? [],
+                  data?.shouldShowMoreLoadingUI ?? false,
+                ),
                 error: (error, stackTrace) => const Text('Error'),
                 loading: () => LoadingContent(),
               ),
@@ -65,7 +61,10 @@ class _BoxScreenState extends ConsumerState<BoxScreen> {
         ));
   }
 
-  Widget DataContent(List<PokemonData?> caughtPokemonList) {
+  Widget DataContent(
+    List<PokemonData?> caughtPokemonList,
+    bool shouldShowMoreLoadingUI,
+  ) {
     return caughtPokemonList.isEmpty
         ? const CenterMessage(
             message: "捕まえたポケモンがいません。\n ポケモンクイズに正解してポケモンを捕まえよう!",
