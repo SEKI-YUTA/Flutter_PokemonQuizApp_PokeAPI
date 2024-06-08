@@ -10,6 +10,10 @@ jobs:
         steps:
             - name: clone repository
               uses: actions/checkout@v4
+            - uses: actions/setup-java@v4
+              with:
+                distribution: 'temurin' # See 'Supported distributions' for available options
+                java-version: '17'
             - name: Decode Secrets and Create file
               env:
                   GOOGLE_SERVICES_DATA: ${{secrets.GOOGLE_SERVICES_DATA}}
