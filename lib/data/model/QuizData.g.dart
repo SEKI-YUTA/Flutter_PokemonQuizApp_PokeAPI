@@ -13,6 +13,7 @@ _$QuizDataImpl _$$QuizDataImplFromJson(Map<String, dynamic> json) =>
       pokemonData:
           PokemonData.fromJson(json['pokemonData'] as Map<String, dynamic>),
       hintStep: json['hintStep'] as int,
+      userAnswer: json['userAnswer'] as String,
     );
 
 Map<String, dynamic> _$$QuizDataImplToJson(_$QuizDataImpl instance) =>
@@ -20,6 +21,7 @@ Map<String, dynamic> _$$QuizDataImplToJson(_$QuizDataImpl instance) =>
       'status': _$QuizStatusEnumMap[instance.status]!,
       'pokemonData': instance.pokemonData,
       'hintStep': instance.hintStep,
+      'userAnswer': instance.userAnswer,
     };
 
 const _$QuizStatusEnumMap = {

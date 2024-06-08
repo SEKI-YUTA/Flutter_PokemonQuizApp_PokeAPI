@@ -13,6 +13,7 @@ class QuizData with _$QuizData {
     @Default(QuizStatus.NOT_ANSWERED) QuizStatus status,
     required PokemonData pokemonData,
     required int hintStep,
+    required String userAnswer,
   }) = _QuizData;
 
   factory QuizData.fromJson(Map<String, Object?> json) =>
